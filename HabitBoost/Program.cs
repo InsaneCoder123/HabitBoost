@@ -4,7 +4,7 @@ namespace Main
 {
     public class MainLoop 
     {
-        static int main(string[] args)
+        static int Main(string[] args)
         {
             // Login Screen
             // Prompt for a login for user
@@ -12,10 +12,20 @@ namespace Main
             // else, load user data and proceed to main screen
             UserData user = new UserData();
 
+            //Placeholder (This should be where the program reads the data from a file)
+            user.Id = 12;
+            user.UserStats.Level = 1;
+            user.UserStats.Experience = 5;
+
+
             // Main screen
             // Display user stats
             // Display display habits, dailies, journals, and todos
             // Prompt user to select an option
+            Console.Write($"User ID: {user.Id}\n");
+            Console.Write($"Level: {user.UserStats.Level}\n");
+            Console.Write($"Experience: {user.UserStats.Experience}\n");
+
 
             //Habit screen
 

@@ -21,9 +21,13 @@ namespace Collection
     }
     public class UserData : IWriteData, IReadData
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public Game UserStats { get; set; }
 
+        public UserData() 
+        {
+            UserStats = new Game();
+        }
         public void WriteData()
         {
         }

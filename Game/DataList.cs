@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game
+namespace DataList
 {
     public struct Habit
     {
@@ -37,13 +37,13 @@ namespace Game
         public double Experience { get; set; }
         public bool Completed { get; set; }
     }
-    public class DataList
+    public class UserDataList
     {
         public List<Habit> Habit { get; set; }
         public List<Daily> Daily { get; set; }
         public List<Journal> Journal { get; set; }
         public List<Todo> Todo { get; set; }
-        public DataList()
+        public UserDataList()
         {
             Habit = new List<Habit>();
             Daily = new List<Daily>();

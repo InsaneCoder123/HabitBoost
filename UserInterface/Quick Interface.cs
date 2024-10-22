@@ -87,6 +87,7 @@ namespace QuickInterface
     public static class ScreenRenderer {
         public static void RenderScreen(UserData user, ProgramManager.CurrentSubMenu currentMenu)
         {
+            Console.Clear();
             Console.Write($"User ID: {user.Id}\n");
             Console.Write($"Level: {user.UserStats.Level}\n");
             Console.Write($"Experience: {user.UserStats.Experience}\n");

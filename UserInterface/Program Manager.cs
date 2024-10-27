@@ -33,7 +33,6 @@ namespace UserInterface
         {
             subMenus = new List<SubMenu>();
             subMenus.Add(new HabitMenu(userDataList.Habit));
-            subMenus.Add(new DailyMenu());
             subMenus.Add(new TodoMenu());
             subMenus.Add(new JournalMenu());
         }

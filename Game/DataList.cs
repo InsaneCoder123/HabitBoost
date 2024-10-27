@@ -14,14 +14,6 @@ namespace User
         public double Experience { get; set; }
         public bool Completed { get; set; }
     }
-    public struct Daily
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int Level { get; set; }
-        public double Experience { get; set; }
-        public bool Completed { get; set; }
-    }
     public struct JournalType
     {
         public string Name { get; set; }

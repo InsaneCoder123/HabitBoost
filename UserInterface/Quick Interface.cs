@@ -34,7 +34,7 @@ namespace UserInterface
                 }
             }
         }
-        public HabitMenu(List<Habit> habitsList)
+        public HabitMenu(List<HabitType> habitsList)
         {
             totalItems = habitsList.Count;
         }
@@ -122,7 +122,7 @@ namespace UserInterface
 
             if (ProgramManager.subMenus != null && ProgramManager.subMenus.Count > 0)
             {
-                foreach (Habit habit in user.UserDataList.Habit)
+                foreach (HabitType habit in user.UserDataList.Habit)
                 {
                     int currentIndex = user.UserDataList.Habit.IndexOf(habit);
                     if (currentIndex == ProgramManager.subMenus[0].currentIndexSelector)

@@ -18,12 +18,12 @@
         public int Id { get; set; }
         private string Password { get; set; }
         public Game UserStats { get; set; }
-        public UserDataList UserDataList { get; set; }
+        public UserDataListType UserDataList { get; set; }
 
         public UserData() 
         {
             UserStats = new Game();
-            UserDataList = new UserDataList();
+            UserDataList = new UserDataListType();
         }
         public void WriteData()
         {

@@ -28,7 +28,7 @@ namespace UserInterface
             keyPressedInfo = Console.ReadKey(intercept: true);
             UserInputControl();
         }
-        public static void InitiateSubMenu(UserDataList userDataList)
+        public static void InitiateSubMenu(UserDataListType userDataList)
         {
             optionList = new OptionList(4);
             subMenus = new List<SubMenu>();

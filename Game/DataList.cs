@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace User
 {
-    public struct Habit
+    public struct HabitType
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -22,14 +22,14 @@ namespace User
         public double Experience { get; set; }
         public bool Completed { get; set; }
     }
-    public struct Journal
+    public struct JournalType
     {
         public string Name { get; set; }
         public string Description { get; set; }
         public int Level { get; set; }
         public double Experience { get; set; }
     }
-    public struct Todo
+    public struct TodoType
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -37,27 +37,27 @@ namespace User
         public double Experience { get; set; }
         public bool Completed { get; set; }
     }
-    public class UserDataList
+    public class UserDataListType
     {
-        public List<Habit> Habit { get; set; }
-        public List<Journal> Journal { get; set; }
-        public List<Todo> Todo { get; set; }
-        public UserDataList()
+        public List<HabitType> Habit { get; set; }
+        public List<JournalType> Journal { get; set; }
+        public List<TodoType> Todo { get; set; }
+        public UserDataListType()
         {
-            Habit = new List<Habit>();
-            Journal = new List<Journal>();
-            Todo = new List<Todo>();
+            Habit = new List<HabitType>();
+            Journal = new List<JournalType>();
+            Todo = new List<TodoType>();
         }
 
-        public void AddHabit(Habit habit)
+        public void AddHabit(HabitType habit)
         {
             Habit.Add(habit);
         }
-        public void DeleteHabit(Habit habit)
+        public void DeleteHabit(HabitType habit)
         {
             Habit.Remove(habit);
         }
-        public void EditHabit(Habit habit, string name, string description, int level, double experience, bool completed)
+        public void EditHabit(HabitType habit, string name, string description, int level, double experience, bool completed)
         {
             habit.Name = name;
             habit.Description = description;
@@ -66,15 +66,15 @@ namespace User
             habit.Completed = completed;
         }
 
-        public void AddJournal(Journal journal)
+        public void AddJournal(JournalType journal)
         {
             Journal.Add(journal);
         }
-        public void DeleteJournal(Journal journal)
+        public void DeleteJournal(JournalType journal)
         {
             Journal.Remove(journal);
         }
-        public void EditJournal(Journal journal, string name, string description, int level, double experience)
+        public void EditJournal(JournalType journal, string name, string description, int level, double experience)
         {
             journal.Name = name;
             journal.Description = description;
@@ -82,15 +82,15 @@ namespace User
             journal.Experience = experience;
         }
 
-        public void AddTodo(Todo todo)
+        public void AddTodo(TodoType todo)
         {
             Todo.Add(todo);
         }
-        public void DeleteTodo(Todo todo)
+        public void DeleteTodo(TodoType todo)
         {
             Todo.Remove(todo);
         }
-        public void EditTodo(Todo todo, string name, string description, int level, double experience, bool completed)
+        public void EditTodo(TodoType todo, string name, string description, int level, double experience, bool completed)
         {
             todo.Name = name;
             todo.Description = description;

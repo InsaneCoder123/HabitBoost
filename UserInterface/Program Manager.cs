@@ -17,7 +17,6 @@ namespace UserInterface
         public static DateTime currentDate { get; set; }
         public static OptionList optionList { get; set; }
 
-
         public static void StartProgram()
         {
             isProgramRunning = true;
@@ -72,6 +71,24 @@ namespace UserInterface
                     subMenus[(int)subMenu].currentIndexSelector++;
                     break;
             }
+        }
+
+        public static void AttemptLogin() 
+        {
+            // Login
+            // - Check if user exists
+            // - Check if password is correct
+            // - If user does not exist, create a new user
+            // - If password is incorrect, prompt user to re-enter password
+        }
+
+        public static void CreatePassword()
+        {
+            // Create password
+            // - Check if password is strong
+            // - If password is weak, prompt user to re-enter password
+            // If password is strong, create a new user
+            // Then store user data to a file contained in a folder named "UserData" in the User's folder
         }
     }
 }

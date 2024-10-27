@@ -14,7 +14,6 @@ namespace Main
             UserData user = new UserData();
 
             //Placeholder (This should be where the program reads the data from a file)
-            user.Id = 12;
             user.UserStats.Level = 1;
             user.UserStats.Experience = 5;
             user.UserDataList.Habit.Add(new Habit { Name = "Exercise", Description = "Exercise for 30 minutes", Level = 1, Experience = 5, Completed = false });
@@ -25,6 +24,14 @@ namespace Main
             ProgramManager.InitiateSubMenu(user.UserDataList);
             while (ProgramManager.isProgramRunning == true)
             {
+                // Login Screen
+                // - Check if user exists
+                // - Check if password is correct
+                // - If user does not exist, create a new user
+                // - If password is incorrect, prompt user to re-enter password
+
+
+
                 // Main screen
                 // Display user stats
                 // Display display habits, dailies, journals, and todos

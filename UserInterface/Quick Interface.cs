@@ -80,7 +80,6 @@ namespace UserInterface
         {
             Console.Clear();
             Console.Write($"{ProgramManager.currentDate:d}\n");
-            Console.Write($"User ID: {user.Id}\n");
             Console.Write($"Level: {user.UserStats.Level}\n");
             Console.Write($"Experience: {user.UserStats.Experience}\n\n");
 

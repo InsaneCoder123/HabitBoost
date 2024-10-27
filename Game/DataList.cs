@@ -45,7 +45,6 @@ namespace User
         public UserDataList()
         {
             Habit = new List<Habit>();
-            Daily = new List<Daily>();
             Journal = new List<Journal>();
             Todo = new List<Todo>();
         }

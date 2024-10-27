@@ -122,9 +122,9 @@ namespace UserInterface
 
             if (ProgramManager.subMenus != null && ProgramManager.subMenus.Count > 0)
             {
-                foreach (HabitType habit in user.UserDataList.Habit)
+                foreach (HabitType habit in user.UserDataList.HabitList)
                 {
-                    int currentIndex = user.UserDataList.Habit.IndexOf(habit);
+                    int currentIndex = user.UserDataList.HabitList.IndexOf(habit);
                     if (currentIndex == ProgramManager.subMenus[0].currentIndexSelector)
                     {
                         Console.BackgroundColor = ConsoleColor.Yellow;

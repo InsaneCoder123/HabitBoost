@@ -32,7 +32,7 @@ namespace UserInterface
         {
             optionList = new OptionList(4);
             subMenus = new List<SubMenu>();
-            subMenus.Add(new HabitMenu(userDataList.Habit));
+            subMenus.Add(new HabitMenu(userDataList.HabitList));
             subMenus.Add(new TodoMenu());
             subMenus.Add(new JournalMenu());
         }

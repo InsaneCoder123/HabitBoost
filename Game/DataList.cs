@@ -39,23 +39,23 @@ namespace User
     }
     public class UserDataListType
     {
-        public List<HabitType> Habit { get; set; }
-        public List<JournalType> Journal { get; set; }
-        public List<TodoType> Todo { get; set; }
+        public List<HabitType> HabitList { get; set; }
+        public List<JournalType> JournalList { get; set; }
+        public List<TodoType> TodoList { get; set; }
         public UserDataListType()
         {
-            Habit = new List<HabitType>();
-            Journal = new List<JournalType>();
-            Todo = new List<TodoType>();
+            HabitList = new List<HabitType>();
+            JournalList = new List<JournalType>();
+            TodoList = new List<TodoType>();
         }
 
         public void AddHabit(HabitType habit)
         {
-            Habit.Add(habit);
+            HabitList.Add(habit);
         }
         public void DeleteHabit(HabitType habit)
         {
-            Habit.Remove(habit);
+            HabitList.Remove(habit);
         }
         public void EditHabit(HabitType habit, string name, string description, int level, double experience, bool completed)
         {
@@ -68,11 +68,11 @@ namespace User
 
         public void AddJournal(JournalType journal)
         {
-            Journal.Add(journal);
+            JournalList.Add(journal);
         }
         public void DeleteJournal(JournalType journal)
         {
-            Journal.Remove(journal);
+            JournalList.Remove(journal);
         }
         public void EditJournal(JournalType journal, string name, string description, int level, double experience)
         {
@@ -84,11 +84,11 @@ namespace User
 
         public void AddTodo(TodoType todo)
         {
-            Todo.Add(todo);
+            TodoList.Add(todo);
         }
         public void DeleteTodo(TodoType todo)
         {
-            Todo.Remove(todo);
+            TodoList.Remove(todo);
         }
         public void EditTodo(TodoType todo, string name, string description, int level, double experience, bool completed)
         {

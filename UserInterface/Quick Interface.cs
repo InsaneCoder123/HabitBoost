@@ -45,6 +45,35 @@ namespace UserInterface
     public class TodoMenu : SubMenu
     {
     }
+    public class OptionList : SubMenu 
+    {
+        public bool isOptionSelected { get; set; }
+        private int _currentIndexSelector;
+        public override int currentIndexSelector
+        {
+            get { return _currentIndexSelector; }
+            set
+            {
+                if (value < 0)
+                {
+                    _currentIndexSelector = totalItems - 1;
+                }
+                else if (value >= totalItems)
+                {
+                    _currentIndexSelector = 0;
+                }
+                else
+                {
+                    _currentIndexSelector = value;
+                }
+            }
+        }
+        public OptionList(int totalItems)
+        {
+            this.totalItems = totalItems;
+            isOptionSelected = true;
+        }
+    }
     public static class ScreenRenderer
     {
         public static void RenderScreen(UserData user, ProgramManager.CurrentSubMenu currentMenu)
@@ -58,8 +87,7 @@ namespace UserInterface
             switch (currentMenu)
             {
                 case ProgramManager.CurrentSubMenu.Habit:
-                    Console.Write("HabitMenu\n");
-                    RenderHabitMenu(user);
+                    Console.Write("Habit Menu\n");
                     break;
                 case ProgramManager.CurrentSubMenu.Journal:
                     Console.Write("Journal Menu\n");
@@ -68,8 +96,25 @@ namespace UserInterface
                     Console.Write("Todo Menu\n");
                     break;
             }
+            RenderOptions(user);
         }
-        public static void RenderOptions(UserData user) { 
+        public static void RenderOptions(UserData user)
+        {
+            string[] options = { "View", "Add", "Edit", "Delete" };
+            foreach (string opt in options)
+            {
+                if (ProgramManager.subMenus != null && ProgramManager.subMenus.Count > 0)
+                {
+                    int currentIndex = Array.IndexOf(options, opt);
+                    if (currentIndex == ProgramManager.optionList.currentIndexSelector)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Yellow;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                    }
+                    Console.Write($"{opt}\n");
+                    Console.ResetColor();
+                }
+            }
         }
         public static void RenderHabitMenu(UserData user)
         {

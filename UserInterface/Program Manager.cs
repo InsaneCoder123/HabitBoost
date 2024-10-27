@@ -7,7 +7,6 @@ namespace UserInterface
         public enum CurrentSubMenu
         {
             Habit,
-            Daily,
             Journal,
             Todo
         }
@@ -16,6 +15,7 @@ namespace UserInterface
         public static List<SubMenu>? subMenus { get; set; }
         public static CurrentSubMenu subMenu { get; set; }
         public static DateTime currentDate { get; set; }
+        public static OptionList optionList { get; set; }
 
 
         public static void StartProgram()
@@ -31,6 +31,7 @@ namespace UserInterface
         }
         public static void InitiateSubMenu(UserDataList userDataList)
         {
+            optionList = new OptionList(4);
             subMenus = new List<SubMenu>();
             subMenus.Add(new HabitMenu(userDataList.Habit));
             subMenus.Add(new TodoMenu());
@@ -41,6 +42,7 @@ namespace UserInterface
             switch (keyPressedInfo.Key)
             {
                 case ConsoleKey.RightArrow:
+                    if (optionList.isOptionSelected) { optionList.currentIndexSelector = 0; }
                     if (subMenu == CurrentSubMenu.Todo)
                     {
                         subMenu = CurrentSubMenu.Habit;
@@ -51,6 +53,7 @@ namespace UserInterface
                     }
                     break;
                 case ConsoleKey.LeftArrow:
+                    if (optionList.isOptionSelected) { optionList.currentIndexSelector = 0; }
                     if (subMenu == CurrentSubMenu.Habit)
                     {
                         subMenu = CurrentSubMenu.Todo;
@@ -61,9 +64,11 @@ namespace UserInterface
                     }
                     break;
                 case ConsoleKey.UpArrow:
+                    if (optionList.isOptionSelected) { optionList.currentIndexSelector--; break; }
                     subMenus[(int)subMenu].currentIndexSelector--;
                     break;
                 case ConsoleKey.DownArrow:
+                    if (optionList.isOptionSelected) { optionList.currentIndexSelector++; break; }
                     subMenus[(int)subMenu].currentIndexSelector++;
                     break;
             }

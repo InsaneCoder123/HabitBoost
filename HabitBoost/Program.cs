@@ -1,6 +1,5 @@
 ﻿using User;
 using UserInterface;
-using static UserInterface.HabitMenu;
 
 namespace Main 
 {

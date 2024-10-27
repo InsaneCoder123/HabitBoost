@@ -1,18 +1,57 @@
-﻿using Collection;
-using DataList;
-using System;
+﻿using User;
 
-namespace QuickInterface 
+namespace UserInterface
 {
-    public class SubMenu { 
-        public static UserDataList data = new UserDataList();
+    public abstract class SubMenu
+    {
+        private int _currentIndexSelector = 0;
+        public virtual int currentIndexSelector
+        {
+            get { return _currentIndexSelector; }
+            set { _currentIndexSelector = value; }
+        }
 
-        public void LoadData(){
+        public virtual void UpdateData(UserData userData)
+        {
             // Placeholder (This should be where the program reads the data from a file)
         }
     }
     public class HabitMenu : SubMenu
     {
+        private List<Habit> UserHabits { get; set; }
+        private int _currentIndexSelector;
+        public HabitMenu (List<Habit> UserHabits)
+        {
+            this.UserHabits = UserHabits;
+        }
+        public override int currentIndexSelector
+        {
+            get { return _currentIndexSelector; }
+            set
+            {
+                if (value < 0)
+                {
+                    _currentIndexSelector = UserHabits.Count - 1;
+                }
+                else if (value >= UserHabits.Count)
+                {
+                    _currentIndexSelector = 0;
+                }
+                else
+                {
+                    _currentIndexSelector = value;
+                }
+            }
+        }
+        public override void UpdateData(UserData userData)
+        {
+            // Load habits from userdata to UserHabits
+            UserHabits.Clear();
+            for (int i = 0; i < userData.UserDataList.Habit.Count; i++)
+            {
+                UserHabits.Add(userData.UserDataList.Habit[i]);
+            
+        }
     }
     public class DailyMenu : SubMenu
     {
@@ -23,78 +62,19 @@ namespace QuickInterface
     public class TodoMenu : SubMenu
     {
     }
-
-    public static class ProgramManager
+    public static class ScreenRenderer
     {
-        public enum CurrentSubMenu
-        {
-            Habit,
-            Daily,
-            Journal,
-            Todo
-        }
-        public static bool isProgramRunning { get; set; }
-        public static ConsoleKeyInfo keyPressedInfo { get; set; }
-        public static List<SubMenu>? subMenus { get; set; }
-        public static CurrentSubMenu subMenu { get; set; }
-
-
-        public static void StartProgram()
-        {
-            isProgramRunning = true;
-            subMenu = CurrentSubMenu.Habit;
-        }
-        public static void WaitForKeyInput()
-        {
-            keyPressedInfo = Console.ReadKey(intercept: true);
-            SwitchSubMenu();
-        }
-        public static void InitiateSubMenu()
-        {
-            subMenus = new List<SubMenu>();
-            subMenus.Add(new HabitMenu());
-            subMenus.Add(new DailyMenu());
-            subMenus.Add(new TodoMenu());
-            subMenus.Add(new JournalMenu());
-        }
-        public static void SwitchSubMenu()
-        {
-            if (keyPressedInfo.Key == ConsoleKey.RightArrow)
-            {
-                if (subMenu == CurrentSubMenu.Todo)
-                {
-                    subMenu = CurrentSubMenu.Habit;
-                }
-                else
-                {
-                    subMenu++;
-                }
-            }
-            else if (keyPressedInfo.Key == ConsoleKey.LeftArrow)
-            {
-                if (subMenu == CurrentSubMenu.Habit)
-                {
-                    subMenu = CurrentSubMenu.Todo;
-                }
-                else
-                {
-                    subMenu--;
-                }
-            }
-        }
-    }
-
-    public static class ScreenRenderer {
         public static void RenderScreen(UserData user, ProgramManager.CurrentSubMenu currentMenu)
         {
             Console.Clear();
             Console.Write($"User ID: {user.Id}\n");
             Console.Write($"Level: {user.UserStats.Level}\n");
-            Console.Write($"Experience: {user.UserStats.Experience}\n");
+            Console.Write($"Experience: {user.UserStats.Experience}\n\n");
 
-            switch (currentMenu) {
+            switch (currentMenu)
+            {
                 case ProgramManager.CurrentSubMenu.Habit:
-                    Console.Write("Habit Menu\n");
+                    RenderHabitMenu(user);
                     break;
                 case ProgramManager.CurrentSubMenu.Daily:
                     Console.Write("Daily Menu\n");
@@ -107,5 +87,16 @@ namespace QuickInterface
                     break;
             }
         }
+        public static void RenderHabitMenu(UserData user)
+        {
+            Console.Write("Habit Menu\n");
+            Console.Write("Habits\n");
+
+            foreach (Habit habit in user.UserDataList.Habit)
+            {
+                Console.Write($"{habit.Name}\n");
+            }
+        }
+    }
     }
 }

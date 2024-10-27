@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Collection
+﻿namespace User
 {
     interface IWriteData
     {
@@ -23,10 +17,12 @@ namespace Collection
     {
         public int Id { get; set; }
         public Game UserStats { get; set; }
+        public UserDataList UserDataList { get; set; }
 
         public UserData() 
         {
             UserStats = new Game();
+            UserDataList = new UserDataList();
         }
         public void WriteData()
         {

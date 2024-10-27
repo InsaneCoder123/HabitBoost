@@ -15,11 +15,13 @@ namespace UserInterface
         public static ConsoleKeyInfo keyPressedInfo { get; set; }
         public static List<SubMenu>? subMenus { get; set; }
         public static CurrentSubMenu subMenu { get; set; }
+        public static DateTime currentDate { get; set; }
 
 
         public static void StartProgram()
         {
             isProgramRunning = true;
+            currentDate = DateTime.Today;
             subMenu = CurrentSubMenu.Habit;
         }
         public static void WaitForKeyInput()
@@ -31,41 +33,40 @@ namespace UserInterface
         {
             subMenus = new List<SubMenu>();
             subMenus.Add(new HabitMenu(userDataList.Habit));
-            //subMenus.Add(new DailyMenu());
-            //subMenus.Add(new TodoMenu());
-            //subMenus.Add(new JournalMenu());
+            subMenus.Add(new DailyMenu());
+            subMenus.Add(new TodoMenu());
+            subMenus.Add(new JournalMenu());
         }
         public static void UserInputControl()
         {
-            if (keyPressedInfo.Key == ConsoleKey.RightArrow)
+            switch (keyPressedInfo.Key)
             {
-                if (subMenu == CurrentSubMenu.Todo)
-                {
-                    subMenu = CurrentSubMenu.Habit;
-                }
-                else
-                {
-                    subMenu++;
-                }
-            }
-            else if (keyPressedInfo.Key == ConsoleKey.LeftArrow)
-            {
-                if (subMenu == CurrentSubMenu.Habit)
-                {
-                    subMenu = CurrentSubMenu.Todo;
-                }
-                else
-                {
-                    subMenu--;
-                }
-            }
-            else if (keyPressedInfo.Key == ConsoleKey.UpArrow)
-            {
-                subMenus[(int)subMenu].currentIndexSelector--;
-            }
-            else if (keyPressedInfo.Key == ConsoleKey.DownArrow)
-            {
-                subMenus[(int)subMenu].currentIndexSelector++;
+                case ConsoleKey.RightArrow:
+                    if (subMenu == CurrentSubMenu.Todo)
+                    {
+                        subMenu = CurrentSubMenu.Habit;
+                    }
+                    else
+                    {
+                        subMenu++;
+                    }
+                    break;
+                case ConsoleKey.LeftArrow:
+                    if (subMenu == CurrentSubMenu.Habit)
+                    {
+                        subMenu = CurrentSubMenu.Todo;
+                    }
+                    else
+                    {
+                        subMenu--;
+                    }
+                    break;
+                case ConsoleKey.UpArrow:
+                    subMenus[(int)subMenu].currentIndexSelector--;
+                    break;
+                case ConsoleKey.DownArrow:
+                    subMenus[(int)subMenu].currentIndexSelector++;
+                    break;
             }
         }
     }

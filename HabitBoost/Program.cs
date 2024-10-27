@@ -19,6 +19,7 @@ namespace Main
             user.UserStats.Experience = 5;
             user.UserDataList.Habit.Add(new Habit { Name = "Exercise", Description = "Exercise for 30 minutes", Level = 1, Experience = 5, Completed = false });
             user.UserDataList.Habit.Add(new Habit { Name = "Assignment", Description = "Assignment for 10 minutes", Level = 2, Experience = 10, Completed = false });
+            user.UserDataList.Habit.Add(new Habit { Name = "Paper", Description = "Practice", Level = 2, Experience = 10, Completed = false });
 
             ProgramManager.StartProgram();
             ProgramManager.InitiateSubMenu(user.UserDataList);

@@ -53,6 +53,7 @@ namespace UserInterface
         public static void RenderScreen(UserData user, ProgramManager.CurrentSubMenu currentMenu)
         {
             Console.Clear();
+            Console.Write($"{ProgramManager.currentDate:d}\n");
             Console.Write($"User ID: {user.Id}\n");
             Console.Write($"Level: {user.UserStats.Level}\n");
             Console.Write($"Experience: {user.UserStats.Experience}\n\n");
@@ -60,6 +61,7 @@ namespace UserInterface
             switch (currentMenu)
             {
                 case ProgramManager.CurrentSubMenu.Habit:
+                    Console.Write("HabitMenu\n");
                     RenderHabitMenu(user);
                     break;
                 case ProgramManager.CurrentSubMenu.Daily:
@@ -72,6 +74,8 @@ namespace UserInterface
                     Console.Write("Todo Menu\n");
                     break;
             }
+        }
+        public static void RenderOptions(UserData user) { 
         }
         public static void RenderHabitMenu(UserData user)
         {

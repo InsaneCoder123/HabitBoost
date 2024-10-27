@@ -39,9 +39,6 @@ namespace UserInterface
             totalItems = habitsList.Count;
         }
     }
-    public class DailyMenu : SubMenu
-    {
-    }
     public class JournalMenu : SubMenu
     {
     }
@@ -63,9 +60,6 @@ namespace UserInterface
                 case ProgramManager.CurrentSubMenu.Habit:
                     Console.Write("HabitMenu\n");
                     RenderHabitMenu(user);
-                    break;
-                case ProgramManager.CurrentSubMenu.Daily:
-                    Console.Write("Daily Menu\n");
                     break;
                 case ProgramManager.CurrentSubMenu.Journal:
                     Console.Write("Journal Menu\n");

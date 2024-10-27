@@ -40,7 +40,6 @@ namespace User
     public class UserDataList
     {
         public List<Habit> Habit { get; set; }
-        public List<Daily> Daily { get; set; }
         public List<Journal> Journal { get; set; }
         public List<Todo> Todo { get; set; }
         public UserDataList()
@@ -49,6 +48,18 @@ namespace User
             Daily = new List<Daily>();
             Journal = new List<Journal>();
             Todo = new List<Todo>();
+        }
+        public void AddHabit(Habit habit)
+        {
+            Habit.Add(habit);
+        }
+        public void AddJournal(Journal journal)
+        {
+            Journal.Add(journal);
+        }
+        public void AddTodo(Todo todo)
+        {
+            Todo.Add(todo);
         }
     }
 }

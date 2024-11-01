@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Game\User.csproj" />
+    <ProjectReference Include="..\Habit User Data Structures\Habit User Data Structures.csproj" />
     <ProjectReference Include="..\UserInterface\UserInterface.csproj" />
   </ItemGroup>
 

@@ -131,7 +131,7 @@ public class InputField : HabitInterface
                 }
 
 
-                
+                // TODO fix the last char not highlighting when it is private
                 if (IsInterfaceSelected && StartingIndex + InputIndex == FieldText.Length - 1 )
                 {
                     if (IsPrivate) { CustomDisplay.DisplayHighlightedText("*"); return; }

@@ -45,7 +45,7 @@
         public static bool IsLetterOrValidSymbol(char input)
         {
             string validSymbols = "!@#$%^&*()-_=+,.[];<>?/\\\'\"";
-            if (!char.IsLetter(input) && !validSymbols.Contains(input)) { return false; }
+            if (!char.IsLetter(input) && !validSymbols.Contains(input) && !char.IsDigit(input)) { return false; }
             return true;
         }
 

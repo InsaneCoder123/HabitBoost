@@ -28,6 +28,9 @@
 
         public static LoginGraphic LoginGraphic { get; set; } = new LoginGraphic();
 
+        public static GraphicElement? currentGraphicElement { get; set; }
+        public static Button? currentActiveButton { get; set; }
+
         public static List<GraphicElement> GraphicElement { get; set; } = [];
 
         public static GraphicElement? GetCurrentActiveGraphicElement() 
@@ -39,6 +42,13 @@
             return null;
         }
 
+        public static bool IsLetterOrValidSymbol(char input)
+        {
+            string validSymbols = "!@#$%^&*()-_=+,.[];<>?/\\\'\"";
+            if (!char.IsLetter(input) && !validSymbols.Contains(input)) { return false; }
+            return true;
+        }
+
         public static void UserInput()
         {
             UserInputStreamString = "";
@@ -48,12 +58,14 @@
             if (UserInputStream.Key == ConsoleKey.UpArrow && CurrentInterfaceIndexSelector != 0)
             {
                 UserInputStreamString = "";
-                --CurrentInterfaceIndexSelector;
+                if (CurrentProgramState == ProgramState.Browse)
+                { --CurrentInterfaceIndexSelector; }
             }
             else if (UserInputStream.Key == ConsoleKey.DownArrow)
             {
                 UserInputStreamString = "";
-                ++CurrentInterfaceIndexSelector;
+                if (CurrentProgramState == ProgramState.Browse)
+                { ++CurrentInterfaceIndexSelector; }
             }
             else if (UserInputStream.Key == ConsoleKey.Enter && CurrentProgramState == ProgramState.Browse)
             {
@@ -63,8 +75,7 @@
 
                 #region Button Non-Invokable Binded to InputField
                 // Error spot! Warning! null stuff
-                GraphicElement? currentGraphicElement = GetCurrentActiveGraphicElement();
-                Button? currentActiveButton;
+                currentGraphicElement = GetCurrentActiveGraphicElement();
                 if (currentGraphicElement != null) 
                 {
                     currentActiveButton = currentGraphicElement.GetCurrentActiveButton();
@@ -73,6 +84,7 @@
                         HabitInterface? bindedInterface = currentActiveButton.BindedInterface;
                         if (bindedInterface != null)
                         {
+                            CurrentProgramState = ProgramState.Edit;
                             CurrentInterfaceLevel = bindedInterface.MenuInterfaceLevel;
                             CurrentInterfaceIndexSelector = bindedInterface.InterfaceIndex;
                         }
@@ -92,7 +104,19 @@
                 #endregion
 
             }
-            else
+            else if (UserInputStream.Key == ConsoleKey.Escape)
+            {
+                if (CurrentProgramState == ProgramState.Edit)
+                {
+                    CurrentProgramState = ProgramState.Browse;
+                    if (currentActiveButton != null)
+                    {
+                        CurrentInterfaceLevel = currentActiveButton.MenuInterfaceLevel;
+                        CurrentInterfaceIndexSelector = currentActiveButton.InterfaceIndex;                      
+                    }
+                }
+            }
+            else if (CurrentProgramState == ProgramState.Edit)
             {
                 foreach (GraphicElement graphicElement in GraphicElement)
                 {
@@ -113,13 +137,7 @@
                                 {
                                     inputField.AddFieldText(' ');
                                 }
-                                else if (UserInputStream.Key == ConsoleKey.Enter)
-                                {
-                                    UserInputStreamString = "";
-                                    ++CurrentInterfaceLevel;
-                                    CurrentInterfaceIndexSelector = 0;
-                                }
-                                else
+                                else if (IsLetterOrValidSymbol(UserInputStream.KeyChar))
                                 {
                                     inputField.AddFieldText(UserInputStream.KeyChar);
                                 }

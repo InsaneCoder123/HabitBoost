@@ -32,16 +32,61 @@
 
         public static void UserInput()
         {
+            UserInputStreamString = "";
             UserInputStream = Console.ReadKey(intercept: true);
             UserInputStreamString = UserInputStream.KeyChar.ToString();
 
             if (UserInputStream.Key == ConsoleKey.UpArrow && CurrentInterfaceIndexSelector != 0)
             {
+                UserInputStreamString = "";
                 --CurrentInterfaceIndexSelector;
             }
             else if (UserInputStream.Key == ConsoleKey.DownArrow)
             {
+                UserInputStreamString = "";
                 ++CurrentInterfaceIndexSelector;
+            }
+            else if (UserInputStream.Key == ConsoleKey.Enter)
+            {
+                UserInputStreamString = "";
+                ++CurrentInterfaceLevel;
+                CurrentInterfaceIndexSelector = 0;
+            }
+            else
+            {
+                foreach (GraphicElement graphicElement in GraphicElement)
+                {
+                    if (graphicElement.InputFields != null && graphicElement.IsGraphicElementActive == true)
+                    {
+                        foreach (InputField inputField in graphicElement.InputFields)
+                        {
+                            if (CurrentInterfaceIndexSelector == inputField.InterfaceIndex && CurrentInterfaceLevel == inputField.MenuInterfaceLevel)
+                            {
+                                if (UserInputStream.Key == ConsoleKey.Backspace)
+                                {
+                                    if (inputField.FieldText.Length > 0)
+                                    {
+                                        inputField.RemoveFieldText();
+                                    }
+                                }
+                                else if (UserInputStream.Key == ConsoleKey.Spacebar)
+                                {
+                                    inputField.AddFieldText(' ');
+                                }
+                                else if (UserInputStream.Key == ConsoleKey.Enter)
+                                {
+                                    UserInputStreamString = "";
+                                    ++CurrentInterfaceLevel;
+                                    CurrentInterfaceIndexSelector = 0;
+                                }
+                                else
+                                {
+                                    inputField.AddFieldText(UserInputStream.KeyChar);
+                                }
+                            }
+                        }
+                    }
+                }
             }
             // Later implement to validate if the input are characters or numbers and not enter or space
         }
@@ -61,10 +106,11 @@
 
         public static void InitiateGraphics()
         {
-            //Console.CursorVisible = false;
+            Console.CursorVisible = false;
 
             LoginGraphic.AbsolutePositionX = 4;
             LoginGraphic.AbsolutePositionY = 2;
+            LoginGraphic.IsGraphicElementActive = true;
             GraphicElement.Add(LoginGraphic);
         }
 
@@ -85,6 +131,9 @@
                         {
                             foreach (InputField inputField in graphicElement.InputFields)
                             {
+                                if (inputField.InterfaceIndex == CurrentInterfaceIndexSelector && inputField.MenuInterfaceLevel == CurrentInterfaceLevel)
+                                { inputField.IsInterfaceSelected = true; }
+                                else { inputField.IsInterfaceSelected = false; }
                                 inputField.RenderInputField(graphicElement.RenderPointerX, graphicElement.RenderPointerY);
                             }
                         }
@@ -95,6 +144,9 @@
                         {
                             foreach (Button buttons in graphicElement.Buttons)
                             {
+                                if (buttons.InterfaceIndex == CurrentInterfaceIndexSelector && buttons.MenuInterfaceLevel == CurrentInterfaceLevel)
+                                { buttons.IsInterfaceSelected = true; }
+                                else { buttons.IsInterfaceSelected = false; }
                                 buttons.RenderButton(graphicElement.RenderPointerX, graphicElement.RenderPointerY, 
                                     graphicElement, graphicIndex, CurrentInterfaceIndexSelector, CurrentInterfaceLevel);
                             }

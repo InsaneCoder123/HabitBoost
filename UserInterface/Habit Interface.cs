@@ -89,6 +89,7 @@ public class InputField : HabitInterface
         public int RenderPointerY { get; set; } = 0;
         public int StartingIndex { get; set; } = 0;
         public bool IsPrivate { get; set; } = false;
+        public bool IsHorizontalExpandable { get; set; } = false;
 
         public void RenderInputField(int RelativeX, int RelativeY) 
         { 
@@ -103,20 +104,28 @@ public class InputField : HabitInterface
                     Console.Write(" ");
                     return;
                 }
+
                 if (FieldText.Length <= InputIndex) 
                 {
+                    if (IsInterfaceSelected && FieldText.Length == 0)
+                    {
+                        CustomDisplay.DisplayColor(ConsoleColor.Green);
+                        return;
+                    }
                     Console.Write(" ");
                     return;
                 }
 
-                if (IsPrivate)
+
+                
+                if (IsInterfaceSelected && StartingIndex + InputIndex == FieldText.Length - 1 )
                 {
-                    Console.Write("*");
+                    if (IsPrivate) { CustomDisplay.DisplayHighlightedText("*"); return; }
+                    CustomDisplay.DisplayHighlightedText(FieldText[StartingIndex + InputIndex].ToString());
+                    return;
                 }
-                else
-                {
-                    Console.Write(FieldText[StartingIndex + InputIndex]);
-                }
+                if (IsPrivate) { Console.Write("*"); }
+                else { Console.Write(FieldText[StartingIndex + InputIndex]); }
 
 
                 if (InputIndex == HorizontalLength - 1)
@@ -126,6 +135,23 @@ public class InputField : HabitInterface
                     return;
                 }
 
+            }
+        }
+
+        public void AddFieldText(char input)
+        {
+            FieldText += input;
+            if (IsHorizontalExpandable && StartingIndex + FieldText.Length >= HorizontalLength)
+            {
+                ++StartingIndex;
+            }
+        }
+        public void RemoveFieldText() 
+        {
+            FieldText = FieldText.Remove(FieldText.Length - 1);
+            if (IsHorizontalExpandable && StartingIndex > 0)
+            {
+                --StartingIndex;
             }
         }
     }

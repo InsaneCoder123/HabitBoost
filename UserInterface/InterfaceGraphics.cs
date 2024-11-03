@@ -14,6 +14,8 @@
         public virtual int MaxWidth { get; set; } = 0;
         public virtual int MaxHeight { get; set; } = 0;
 
+        public bool IsGraphicElementActive { get; set; } = false;
+
         public int AbsolutePositionX { get; set; } = 0;
         public int AbsolutePositionY { get; set; } = 0;
 
@@ -49,7 +51,8 @@
             UsernameInput.XPosition = 10;
             UsernameInput.YPosition = 1;
             UsernameInput.MenuInterfaceLevel = 1;
-            UsernameInput.FieldText = "qwertyuiopasdfghjklzxcvbnm";
+            UsernameInput.FieldText = "";
+            UsernameInput.IsHorizontalExpandable = true;
             UsernameInput.InterfaceIndex = 0;
 
             PasswordInput.HorizontalLength = 20;
@@ -57,8 +60,9 @@
             PasswordInput.XPosition = 10;
             PasswordInput.YPosition = 3;
             PasswordInput.MenuInterfaceLevel = 1;
-            PasswordInput.FieldText = "Test2";
+            PasswordInput.FieldText = "";
             PasswordInput.IsPrivate = true;
+            UsernameInput.IsHorizontalExpandable = true;
             PasswordInput.InterfaceIndex = 1;
 
             Username.HorizontalLength = 8;

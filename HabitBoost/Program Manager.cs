@@ -174,7 +174,10 @@ namespace UserInterface
                     }
                 }
             }
-            // Later implement to validate if the input are characters or numbers and not enter or space
+            else if (UserInputStream.Key == ConsoleKey.W) 
+            {
+                User.WriteData(UserFolderPath + @"\" + User.Username);
+            }
         }
     }
 }

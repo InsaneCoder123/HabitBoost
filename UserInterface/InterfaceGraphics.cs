@@ -90,6 +90,7 @@
             PasswordInput.IsPrivate = true;
             UsernameInput.IsHorizontalExpandable = true;
             PasswordInput.InterfaceIndex = 1;
+            PasswordInput.MaxFieldTextLength = 10;
 
             Username.HorizontalLength = 8;
             Username.VerticalLength = 1;
@@ -127,14 +128,16 @@
             Buttons.Add(Login);
         }
 
-        public static object LoginUser()
+        public string LoginUser()
         {
-            // Login
-            // - Check if user exists
-            // - Check if password is correct
-            // - If user does not exist, create a new user
-            // - If password is incorrect, prompt user to re-enter password
-            return new object();
+            string LoginToken = "0";
+            // Returns a string of int filled with information about the user input field
+            // 0 - first digit signifies the invoke type, 0 for login
+            // 000000000000000... - Next 30 chars are the user ID
+            // 0000000000 - next 10 chars are the user password
+            LoginToken += UsernameInput.FieldText.PadRight(30, '~');
+            LoginToken += PasswordInput.FieldText.PadRight(10, '~');
+            return LoginToken;
         }
     }
 }

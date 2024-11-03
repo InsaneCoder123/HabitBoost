@@ -42,18 +42,18 @@ namespace UserInterface
         public int ButtonXPosition { get; set; }
         public int ButtonYPosition { get; set; }
         public HabitInterface? BindedInterface { get; set; }
-        private Func<object>? AtInvoked;
+        private Func<string>? AtInvoked;
 
-        public void SetInvokedMethod(Func<object>? method)
+        public void SetInvokedMethod(Func<string>? method)
         {
             if (method == null) { return; }
             AtInvoked = method;
         }
 
-        public void InvokeButton()
+        public string InvokeButton()
         {
-            if (AtInvoked == null) { return; }
-            AtInvoked();
+            if (AtInvoked == null) { return ""; }
+            return AtInvoked();
         }
 
         public void RenderButton(int RelativeX, int RelativeY, GraphicElement graphicElement, int graphicIndex, 
@@ -104,6 +104,7 @@ public class InputField : HabitInterface
         public int StartingIndex { get; set; } = 0;
         public bool IsPrivate { get; set; } = false;
         public bool IsHorizontalExpandable { get; set; } = false;
+        public int MaxFieldTextLength { get; set; } = -1;
 
         public void RenderInputField(int RelativeX, int RelativeY) 
         { 
@@ -154,6 +155,7 @@ public class InputField : HabitInterface
 
         public void AddFieldText(char input)
         {
+            if (MaxFieldTextLength != -1 && FieldText.Length >= MaxFieldTextLength) { return; }
             FieldText += input;
             if (IsHorizontalExpandable && StartingIndex + FieldText.Length >= HorizontalLength)
             {

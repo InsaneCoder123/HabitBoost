@@ -10,10 +10,12 @@ namespace Main
 
             ProgramManager.StartProgram();
             ScreenRenderer.InitiateGraphics();
+            UserData.VerifySystemFolder(ProgramManager.HabitBoostFolderPath);
+
             while (ProgramManager.isProgramRunning == true)
             {           
                 ScreenRenderer.RenderScreen();
-                ScreenRenderer.UserInput();
+                ProgramManager.UserInput();
             }
             return 0;
         }

@@ -28,7 +28,16 @@
 
         public static LoginGraphic LoginGraphic { get; set; } = new LoginGraphic();
 
-        public static List<GraphicElement> GraphicElement { get; set; } = new List<GraphicElement>();
+        public static List<GraphicElement> GraphicElement { get; set; } = [];
+
+        public static GraphicElement? GetCurrentActiveGraphicElement() 
+        {
+            foreach (GraphicElement graphicElement in GraphicElement)
+            {
+                if (graphicElement.IsGraphicElementActive) { return graphicElement; }
+            }
+            return null;
+        }
 
         public static void UserInput()
         {
@@ -46,11 +55,29 @@
                 UserInputStreamString = "";
                 ++CurrentInterfaceIndexSelector;
             }
-            else if (UserInputStream.Key == ConsoleKey.Enter)
+            else if (UserInputStream.Key == ConsoleKey.Enter && CurrentProgramState == ProgramState.Browse)
             {
                 UserInputStreamString = "";
-                ++CurrentInterfaceLevel;
-                CurrentInterfaceIndexSelector = 0;
+                //++CurrentInterfaceLevel;
+                //CurrentInterfaceIndexSelector = 0;
+
+                // Error spot! Warning! null stuff
+                GraphicElement? currentGraphicElement = GetCurrentActiveGraphicElement();
+                Button? currentActiveButton;
+                if (currentGraphicElement != null) 
+                {
+                    currentActiveButton = currentGraphicElement.GetCurrentActiveButton();
+                    if (currentActiveButton != null)
+                    { 
+                        HabitInterface? bindedInterface = currentActiveButton.BindedInterface;
+                        if (bindedInterface != null)
+                        {
+                            CurrentInterfaceLevel = bindedInterface.MenuInterfaceLevel;
+                            CurrentInterfaceIndexSelector = bindedInterface.InterfaceIndex;
+                        }
+                    }
+                }
+
             }
             else
             {
@@ -96,6 +123,7 @@
             switch (CurrentProgramScreen)
             {
                 case ProgramScreen.Login:
+                    GraphicElement[0].IsGraphicElementActive = true; // Set Login Element to Active
                     RenderLoginScreen();
                     break;
                 case ProgramScreen.Main:

@@ -22,6 +22,32 @@
         public virtual string Graphic { get; set; } = "";
         public List<InputField>? InputFields { get; set; }
         public List<Button>? Buttons { get; set; }
+
+        public InputField? GetCurrentActiveInputField ()
+        {
+            if (InputFields == null) { return null; }
+            foreach (InputField inputField in InputFields)
+            {
+                if (inputField.IsInterfaceSelected == true)
+                {
+                    return inputField;
+                }
+            }
+            return null;
+        }
+
+        public Button? GetCurrentActiveButton() 
+        {
+            if (Buttons == null) { return null; }
+            foreach (Button button in Buttons)
+            {
+                if (button.IsInterfaceSelected == true)
+                {
+                    return button;
+                }
+            }
+            return null;
+        }
     }
     public class LoginGraphic : GraphicElement
     {
@@ -71,6 +97,7 @@
             Username.YPosition = 1;
             Username.MenuInterfaceLevel = 0;
             Username.ButtonText = "USERNAME";
+            Username.BindedInterface = UsernameInput;
             Username.InterfaceIndex = 0;
 
             Password.HorizontalLength = 8;
@@ -78,6 +105,7 @@
             Password.XPosition = 1;
             Password.YPosition = 3;
             Password.MenuInterfaceLevel = 0;
+            Password.BindedInterface = PasswordInput;
             Password.ButtonText = "PASSWORD";
             Password.InterfaceIndex = 1;
 

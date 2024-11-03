@@ -12,6 +12,8 @@ namespace UserInterface
         public int VerticalLength { get; set; }
         public int XPosition { get; set; }
         public int YPosition { get; set; }
+        public int RenderPointerX { get; set; } = 0;
+        public int RenderPointerY { get; set; } = 0;
     }
 
     public abstract class InterfaceOption : HabitInterface // Mother class for options like add, edit, delete
@@ -38,8 +40,7 @@ namespace UserInterface
         public string ButtonText { get; set; } = "";
         public int ButtonXPosition { get; set; }
         public int ButtonYPosition { get; set; }
-        public int RenderPointerX { get; set; } = 0;
-        public int RenderPointerY { get; set; } = 0;
+        public HabitInterface? BindedInterface { get; set; }
         public void RenderButton(int RelativeX, int RelativeY, GraphicElement graphicElement, int graphicIndex, 
             int CurrentInterfaceIndexSelector, int CurrentInterfaceLevel)
         {
@@ -85,8 +86,6 @@ namespace UserInterface
 public class InputField : HabitInterface
     {
         public string FieldText { get; set; } = "";
-        public int RenderPointerX { get; set; } = 0;
-        public int RenderPointerY { get; set; } = 0;
         public int StartingIndex { get; set; } = 0;
         public bool IsPrivate { get; set; } = false;
         public bool IsHorizontalExpandable { get; set; } = false;

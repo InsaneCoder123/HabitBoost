@@ -6,16 +6,8 @@ using System.Threading.Tasks;
 
 namespace Habit_User_Data_Structures
 {
-    interface IWriteData
-    {
-        void WriteData(string DataFolder);
-    }
-    interface IReadData
-    {
-        void ReadData(string DataFolder);
-    }
 
-    public class UserData : IWriteData, IReadData
+    public class UserData
     {
         public string? Username { get; set; }
         public string? Password { get; set; }
@@ -28,6 +20,7 @@ namespace Habit_User_Data_Structures
         public List<Task> TaskList { get; set; } = [];
         public List<Achievement> AchievementList { get; set; } = [];
 
+        #region File Handling
         public void WriteData(string DataFolder)
         {
             try
@@ -94,13 +87,13 @@ namespace Habit_User_Data_Structures
                                     {
                                         string[] taskData =
                                         {
-                                    task.ID,
-                                    task.Name,
-                                    task.Difficulty.ToString(),
-                                    task.Experience.ToString(),
-                                    task.Completed.ToString(),
-                                    task.DateDue.ToString()
-                                };
+                                            task.ID,
+                                            task.Name,
+                                            task.Difficulty.ToString(),
+                                            task.Experience.ToString(),
+                                            task.Completed.ToString(),
+                                            task.DateDue.ToString()
+                                        };
 
                                         string taskFileName = task.DateCreated.ToString("ddMMyyyy") + task.ID.PadLeft(3, '0') + ".txt";
                                         string taskFilePath = Path.Combine(userContentFolder, taskFileName);
@@ -134,7 +127,6 @@ namespace Habit_User_Data_Structures
                 Console.WriteLine($"An unexpected error occurred: {ex.Message}");
             }
         }
-
 
         public void ReadData(string DataFolder)
         {
@@ -268,7 +260,6 @@ namespace Habit_User_Data_Structures
             }
         }
 
-
         public static void VerifySystemFolder(string DataFolder)
         {
             if (Directory.Exists(DataFolder))
@@ -279,6 +270,63 @@ namespace Habit_User_Data_Structures
             {
                 Directory.CreateDirectory(DataFolder);
             }
+        }
+        #endregion
+
+        public static string FindFreeID(List<IIdentifiable> targetData)
+        {
+            for (int number = 1; number < 1000; number++)
+            {
+                string currentNumber = number.ToString().PadLeft(3, '0');
+                bool idExists = targetData.Any(data => data.ID == currentNumber);
+
+                if (!idExists)
+                {
+                    return currentNumber;
+                }
+            }
+            return "ERROR";
+        }
+
+        public void AddHabit()
+        {
+            Habit habit = new()
+            {
+                ID = FindFreeID(HabitList.Cast<IIdentifiable>().ToList()),
+                Name = "New Habit",
+                Experience = 3,
+                Completed = false,
+                Difficulty = HabitBoostDifficulty.Easy,
+                DateCreated = DateTime.Now
+            };
+            HabitList.Add(habit);
+        }
+
+        public void AddJournalEntry()
+        {
+            JournalEntry entry = new()
+            {
+                ID = FindFreeID(JournalList.Cast<IIdentifiable>().ToList()),
+                Name = "New Journal Entry",
+                Entry = "Oh yeah test test test test",
+                DateCreated = DateTime.Now
+            };
+            JournalList.Add(entry);
+        }
+
+        public void AddTask()
+        {
+            Task task = new()
+            {
+                ID = FindFreeID(TaskList.Cast<IIdentifiable>().ToList()),
+                Name = "New Task",
+                Experience = 5,
+                Completed = false,
+                Difficulty = HabitBoostDifficulty.Medium,
+                DateCreated = DateTime.Now,
+                DateDue = DateTime.Now.AddDays(7)
+            };
+            TaskList.Add(task);
         }
 
     }

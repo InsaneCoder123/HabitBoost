@@ -174,9 +174,16 @@ namespace UserInterface
                     }
                 }
             }
-            else if (UserInputStream.Key == ConsoleKey.W) 
+            else if (UserInputStream.Key == ConsoleKey.W)
             {
                 User.WriteData(UserFolderPath + @"\" + User.Username);
+                User.ReadData(UserFolderPath + @"\" + User.Username);
+            }
+            else if (UserInputStream.Key == ConsoleKey.Q)
+            {
+                //User.AddHabit();
+                //User.AddJournalEntry();
+                User.AddTask();
             }
         }
     }

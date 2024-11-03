@@ -61,6 +61,7 @@
                 //++CurrentInterfaceLevel;
                 //CurrentInterfaceIndexSelector = 0;
 
+                #region Button Non-Invokable Binded to InputField
                 // Error spot! Warning! null stuff
                 GraphicElement? currentGraphicElement = GetCurrentActiveGraphicElement();
                 Button? currentActiveButton;
@@ -77,6 +78,18 @@
                         }
                     }
                 }
+                #endregion
+
+                #region Button Invokable
+                if (currentGraphicElement != null)
+                {
+                    currentActiveButton = currentGraphicElement.GetCurrentActiveButton();
+                    if (currentActiveButton != null && currentActiveButton.IsInvokable)
+                    {
+                        currentActiveButton.InvokeButton();
+                    }
+                }
+                #endregion
 
             }
             else

@@ -14,6 +14,7 @@ namespace UserInterface
         public int YPosition { get; set; }
         public int RenderPointerX { get; set; } = 0;
         public int RenderPointerY { get; set; } = 0;
+        public bool IsInvokable { get; set; } = false;
     }
 
     public abstract class InterfaceOption : HabitInterface // Mother class for options like add, edit, delete
@@ -41,6 +42,20 @@ namespace UserInterface
         public int ButtonXPosition { get; set; }
         public int ButtonYPosition { get; set; }
         public HabitInterface? BindedInterface { get; set; }
+        private Func<object>? AtInvoked;
+
+        public void SetInvokedMethod(Func<object>? method)
+        {
+            if (method == null) { return; }
+            AtInvoked = method;
+        }
+
+        public void InvokeButton()
+        {
+            if (AtInvoked == null) { return; }
+            AtInvoked();
+        }
+
         public void RenderButton(int RelativeX, int RelativeY, GraphicElement graphicElement, int graphicIndex, 
             int CurrentInterfaceIndexSelector, int CurrentInterfaceLevel)
         {

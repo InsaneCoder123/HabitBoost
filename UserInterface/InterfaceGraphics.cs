@@ -116,6 +116,8 @@
             Login.MenuInterfaceLevel = 0;
             Login.ButtonText = "           LOGIN             ";
             Login.InterfaceIndex = 2;
+            Login.IsInvokable = true;
+            Login.SetInvokedMethod(LoginUser);
 
             InputFields.Add(UsernameInput);
             InputFields.Add(PasswordInput);
@@ -123,6 +125,16 @@
             Buttons.Add(Username);
             Buttons.Add(Password);
             Buttons.Add(Login);
+        }
+
+        public static object LoginUser()
+        {
+            // Login
+            // - Check if user exists
+            // - Check if password is correct
+            // - If user does not exist, create a new user
+            // - If password is incorrect, prompt user to re-enter password
+            return new object();
         }
     }
 }

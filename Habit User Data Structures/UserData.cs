@@ -30,53 +30,111 @@ namespace Habit_User_Data_Structures
 
         public void WriteData(string DataFolder)
         {
-            string[] userFolders = Directory.GetDirectories(DataFolder);
-
-            foreach (string userFolder in userFolders)
+            try
             {
-                string userFolderName = Path.GetFileName(userFolder);
-                if (userFolderName == "UserContents")
+                string[] userFolders = Directory.GetDirectories(DataFolder);
+
+                foreach (string userFolder in userFolders)
                 {
-                    foreach(string userContentFolder in Directory.GetDirectories(userFolder))
+                    string userFolderName = Path.GetFileName(userFolder);
+                    if (userFolderName == "UserContents")
                     {
-                        string userContentFolderName = Path.GetFileName(userContentFolder);
-                        if (userContentFolderName == "Habit")
+                        foreach (string userContentFolder in Directory.GetDirectories(userFolder))
                         {
-                            foreach (Habit habit in HabitList) 
+                            string userContentFolderName = Path.GetFileName(userContentFolder);
+                            if (userContentFolderName == "Habit")
                             {
-                                string[] habitData = { habit.ID, habit.Name, habit.Difficulty.ToString(), 
-                                    habit.Experience.ToString(), habit.Completed.ToString() };
-                                string habitFileName = habit.DateCreated.ToString("ddMMyyyy") + habit.ID.PadLeft(3, '0') + ".txt";
-                                File.WriteAllLines(Path.Combine(userContentFolder, habitFileName), habitData);
+                                foreach (Habit habit in HabitList)
+                                {
+                                    try
+                                    {
+                                        string[] habitData =
+                                        {
+                                    habit.ID,
+                                    habit.Name,
+                                    habit.Difficulty.ToString(),
+                                    habit.Experience.ToString(),
+                                    habit.Completed.ToString()
+                                };
+
+                                        string habitFileName = habit.DateCreated.ToString("ddMMyyyy") + habit.ID.PadLeft(3, '0') + ".txt";
+                                        string habitFilePath = Path.Combine(userContentFolder, habitFileName);
+
+                                        File.WriteAllLines(habitFilePath, habitData);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine($"Error writing habit file for ID {habit.ID}: {ex.Message}");
+                                    }
+                                }
+                            }
+                            else if (userContentFolderName == "Journal")
+                            {
+                                foreach (JournalEntry entry in JournalList)
+                                {
+                                    try
+                                    {
+                                        string[] journalData = { entry.ID, entry.Name, entry.Entry };
+                                        string journalFileName = entry.DateCreated.ToString("ddMMyyyy") + entry.ID.PadLeft(3, '0') + ".txt";
+                                        string journalFilePath = Path.Combine(userContentFolder, journalFileName);
+
+                                        File.WriteAllLines(journalFilePath, journalData);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine($"Error writing journal file for ID {entry.ID}: {ex.Message}");
+                                    }
+                                }
+                            }
+                            else if (userContentFolderName == "TODO")
+                            {
+                                foreach (Task task in TaskList)
+                                {
+                                    try
+                                    {
+                                        string[] taskData =
+                                        {
+                                    task.ID,
+                                    task.Name,
+                                    task.Difficulty.ToString(),
+                                    task.Experience.ToString(),
+                                    task.Completed.ToString(),
+                                    task.DateDue.ToString()
+                                };
+
+                                        string taskFileName = task.DateCreated.ToString("ddMMyyyy") + task.ID.PadLeft(3, '0') + ".txt";
+                                        string taskFilePath = Path.Combine(userContentFolder, taskFileName);
+
+                                        File.WriteAllLines(taskFilePath, taskData);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine($"Error writing task file for ID {task.ID}: {ex.Message}");
+                                    }
+                                }
+                            }
+                            else if (userContentFolderName == "Achievements")
+                            {
+                                // Handle "Achievements" folder when implemented (if there is time)
                             }
                         }
-                        else if (userContentFolderName == "Journal")
-                        {
-                            foreach (JournalEntry entry in JournalList)
-                            {
-                                string[] journalData = { entry.ID, entry.Name, entry.Entry };
-                                string journalFileName = entry.DateCreated.ToString("ddMMyyyy") + entry.ID.PadLeft(3, '0') + ".txt";
-                                File.WriteAllLines(Path.Combine(userContentFolder, journalFileName), journalData);
-                            }
-                        }
-                        else if (userContentFolderName == "TODO")
-                        {
-                            foreach (Task task in TaskList)
-                            {
-                                string[] taskData = { task.ID, task.Name, task.Difficulty.ToString(),
-                                    task.Experience.ToString(), task.Completed.ToString(), task.DateDue.ToString() };
-                                string taskFileName = task.DateCreated.ToString("ddMMyyyy") + task.ID.PadLeft(3, '0') + ".txt";
-                                File.WriteAllLines(Path.Combine(userContentFolder, taskFileName), taskData);
-                            }
-                        }
-                        else if (userContentFolderName == "Achievements")
-                        {
-                            // Handle "Achievements" folder when implemented (if there is time)
-                        }
-                    }    
+                    }
                 }
             }
+            catch (DirectoryNotFoundException ex)
+            {
+                Console.WriteLine($"Directory not found: {ex.Message}");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Console.WriteLine($"Access denied: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+            }
         }
+
 
         public void ReadData(string DataFolder)
         {

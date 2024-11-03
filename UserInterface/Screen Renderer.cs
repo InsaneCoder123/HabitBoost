@@ -51,6 +51,7 @@
 
         public static void RenderScreen()
         {
+            Console.Clear();
             switch (CurrentProgramScreen)
             {
                 case ProgramScreen.Login:
@@ -133,7 +134,6 @@
 
         public static void RenderLoginScreen()
         {
-            Console.Clear();
             for (int y = 0; y < ScreenHeight; y++)
             {
                 for (int x = 0; x < ScreenWidth; x++)

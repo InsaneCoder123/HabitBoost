@@ -9,9 +9,8 @@
     }
     public abstract class HabitBoostData
     {
-        public required string Name { get; set; }
-        public required string ID { get; set; }
-        public required string Description { get; set; }
+        public string ID { get; set; } = "";
+        public string Name { get; set; } = "";
         // 00 00 0000 - Date, Month, Year Created
         // 0 - Habit Boost Data Type {0 - Habit, 1 - ToDo, 2 - Journal Entry, 3 - Achievement}
         // 000 - habit ID
@@ -19,10 +18,10 @@
     }
     public class Habit : HabitBoostData
     {
-        public required double Experience { get; set; }
-        public required bool Completed { get; set; }
-        public required HabitBoostDifficulty Difficulty { get; set; }
-        public required DateTime DateCreated { get; set; }
+        public int Experience { get; set; }
+        public bool Completed { get; set; }
+        public HabitBoostDifficulty Difficulty { get; set; }
+        public DateTime DateCreated { get; set; }
     }
     public class Task : HabitBoostData
     {
@@ -35,10 +34,12 @@
     public class JournalEntry : HabitBoostData
     {
         public required DateTime DateCreated { get; set; }
+        public required string Entry { get; set; }
     }
     public class Achievement : HabitBoostData
     {
-        public required double Experience { get; set; }
+        public required string AchievementDescription { get; set; }
+        public int Experience { get; set; } = 10;
         public required bool Completed { get; set; }
         public required HabitBoostDifficulty Difficulty { get; set; }
     }

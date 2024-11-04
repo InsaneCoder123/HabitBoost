@@ -27,6 +27,7 @@
         public static ProgramScreen CurrentProgramScreen { get; set; } = ProgramScreen.Login;
 
         public static LoginGraphic LoginGraphic { get; set; } = new LoginGraphic();
+        public static MainMenuGraphic MainMenuGraphic { get; set; } = new MainMenuGraphic();
 
         public static GraphicElement? currentGraphicElement { get; set; }
         public static Button? currentActiveButton { get; set; }
@@ -70,8 +71,14 @@
 
             LoginGraphic.AbsolutePositionX = 4;
             LoginGraphic.AbsolutePositionY = 2;
-            LoginGraphic.IsGraphicElementActive = true;
+            LoginGraphic.IsGraphicElementActive = false;
+
+            MainMenuGraphic.AbsolutePositionX = 4;
+            MainMenuGraphic.AbsolutePositionY = 10;
+            MainMenuGraphic.IsGraphicElementActive = true;
+
             GraphicElement.Add(LoginGraphic);
+            GraphicElement.Add(MainMenuGraphic);
         }
 
         public static bool AtGraphicElement(int x, int y)
@@ -79,7 +86,7 @@
             foreach (GraphicElement graphicElement in GraphicElement)
             {
                 if (x == graphicElement.AbsolutePositionX + graphicElement.RenderPointerX &&
-                    y == graphicElement.AbsolutePositionY + graphicElement.RenderPointerY)
+                    y == graphicElement.AbsolutePositionY + graphicElement.RenderPointerY && graphicElement.IsGraphicElementActive == true)
                 {
                     int graphicIndex = (graphicElement.RenderPointerY * graphicElement.MaxWidth) + graphicElement.RenderPointerX;
 
@@ -111,6 +118,10 @@
                                     graphicElement, graphicIndex, CurrentInterfaceIndexSelector, CurrentInterfaceLevel);
                             }
                         }
+                    }
+                    else if (graphicElement.Graphic[graphicIndex] == '.')
+                    {
+                        Console.Write(" ");
                     }
                     else
                     {

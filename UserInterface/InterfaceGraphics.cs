@@ -1,6 +1,7 @@
 ﻿namespace UserInterface
 {
     // @ = Green Color
+    // . = Blank Space
     // % = Input Field
     // # = Next Line
     // $ = End
@@ -138,6 +139,50 @@
             LoginToken += UsernameInput.FieldText.PadRight(30, '~');
             LoginToken += PasswordInput.FieldText.PadRight(10, '~');
             return LoginToken;
+        }
+    }
+
+    public class MainMenuGraphic : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&&&&&&&&&&&@" + // USER LOGIN
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&&&&&&&&&&&@" + // CREATE ACCOUNT
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+
+        public override int MaxWidth { get; set; } = 28;
+        public override int MaxHeight { get; set; } = 5;
+
+        public Button loginButton { get; set; } = new Button();
+        public Button createUserButton { get; set; } = new Button();
+
+        public MainMenuGraphic()
+        {
+            Buttons = [];
+            
+            loginButton.HorizontalLength = 26;
+            loginButton.VerticalLength = 1;
+            loginButton.XPosition = 1;
+            loginButton.YPosition = 1;
+            loginButton.MenuInterfaceLevel = 0;
+            loginButton.ButtonText = "        USER LOGIN         ";
+            loginButton.InterfaceIndex = 3;
+            loginButton.IsInvokable = true;
+            //loginButton.SetInvokedMethod(LoginUser);
+
+            createUserButton.HorizontalLength = 26;
+            createUserButton.VerticalLength = 1;
+            createUserButton.XPosition = 1;
+            createUserButton.YPosition = 3;
+            createUserButton.MenuInterfaceLevel = 0;
+            createUserButton.ButtonText = "      CREATE ACCOUNT      ";
+            createUserButton.InterfaceIndex = 4;
+            createUserButton.IsInvokable = true;
+            //loginButton.SetInvokedMethod(LoginUser);
+
+            Buttons.Add(loginButton);
+            Buttons.Add(createUserButton);
         }
     }
 }

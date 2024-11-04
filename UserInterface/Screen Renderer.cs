@@ -11,7 +11,9 @@
 
         public enum ProgramScreen
         {
+            MainMenu,
             Login,
+            CreateUser,
             Main
         }
 
@@ -24,7 +26,7 @@
 
         public static ProgramState CurrentProgramState { get; set; } = ProgramState.Browse;
         public static ConsoleKeyInfo UserInputStream { get; set; }
-        public static ProgramScreen CurrentProgramScreen { get; set; } = ProgramScreen.Login;
+        public static ProgramScreen CurrentProgramScreen { get; set; } = ProgramScreen.MainMenu;
 
         public static LoginGraphic LoginGraphic { get; set; } = new LoginGraphic();
         public static MainMenuGraphic MainMenuGraphic { get; set; } = new MainMenuGraphic();
@@ -50,18 +52,30 @@
             return true;
         }
 
+        public static void SwitchScreen()
+        {
+
+        }
+
         public static void RenderScreen()
         {
             Console.Clear();
-            switch (CurrentProgramScreen)
+            for (int y = 0; y < ScreenHeight; y++)
             {
-                case ProgramScreen.Login:
-                    GraphicElement[0].IsGraphicElementActive = true; // Set Login Element to Active
-                    RenderLoginScreen();
-                    break;
-                case ProgramScreen.Main:
-                    RenderMainScreen();
-                    break;
+                for (int x = 0; x < ScreenWidth; x++)
+                {
+                    if (y == 0 || y == ScreenHeight - 1 || x == 0 || x == ScreenWidth - 1)
+                    {
+                        CustomDisplay.DisplayColor(ConsoleColor.Green);
+                        continue;
+                    }
+                    else if (AtGraphicElement(x, y))
+                    {
+                        continue;
+                    }
+                    else { Console.Write(" "); }
+                }
+                Console.WriteLine();
             }
         }
 
@@ -71,7 +85,7 @@
 
             LoginGraphic.AbsolutePositionX = 4;
             LoginGraphic.AbsolutePositionY = 2;
-            LoginGraphic.IsGraphicElementActive = false;
+            LoginGraphic.IsGraphicElementActive = true;
 
             MainMenuGraphic.AbsolutePositionX = 4;
             MainMenuGraphic.AbsolutePositionY = 10;
@@ -141,32 +155,6 @@
                 }
             }
             return false;
-        }
-
-        public static void RenderLoginScreen()
-        {
-            for (int y = 0; y < ScreenHeight; y++)
-            {
-                for (int x = 0; x < ScreenWidth; x++)
-                {
-                    if (y == 0 || y == ScreenHeight - 1 || x == 0 || x == ScreenWidth - 1)
-                    {
-                        CustomDisplay.DisplayColor(ConsoleColor.Green);
-                        continue;
-                    }
-                    else if (AtGraphicElement(x, y))
-                    {
-                        continue;
-                    }
-                    else { Console.Write(" ");}
-                }
-                Console.WriteLine();
-            }
-        }
-
-        public static void RenderMainScreen()
-        {
-
         }
     }
 

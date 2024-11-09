@@ -92,7 +92,7 @@ namespace UserInterface
 
                 #region Button Non-Invokable Binded to InputField
                 // Error spot! Warning! null stuff
-                currentGraphicElement = GetCurrentActiveGraphicElement();
+                currentGraphicElement = GetCurrentActiveGraphicElement(GetCurrentActiveScene());
                 if (currentGraphicElement != null)
                 {
                     currentActiveButton = currentGraphicElement.GetCurrentActiveButton();
@@ -146,7 +146,7 @@ namespace UserInterface
             }
             else if (CurrentProgramState == ProgramState.Edit)
             {
-                foreach (GraphicElement graphicElement in ScreenRenderer.GraphicElement)
+                foreach (GraphicElement graphicElement in ScreenRenderer.MainMenuScene)
                 {
                     if (graphicElement.InputFields != null && graphicElement.IsGraphicElementActive == true)
                     {
@@ -186,7 +186,7 @@ namespace UserInterface
             }
             else if (UserInputStream.Key == ConsoleKey.R)
             {
-                User.DeleteHabit(HabitBoostFolderPath, "001");
+                SwitchScreen(ProgramScreen.Login);
             }
         }
     }

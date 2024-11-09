@@ -1,5 +1,12 @@
 ﻿namespace UserInterface
 {
+    public enum ProgramScreen
+    {
+        MainMenu,
+        Login,
+        CreateUser,
+        Main
+    }
     public static class ScreenRenderer
     {
         public enum ProgramState
@@ -9,24 +16,18 @@
             View
         }
 
-        public enum ProgramScreen
-        {
-            MainMenu,
-            Login,
-            CreateUser,
-            Main
-        }
 
         public static int ScreenWidth { get; set; } = 100;
         public static int ScreenHeight { get; set; } = 20;
 
         public static int CurrentInterfaceLevel { get; set; } = 0;
-        public static int CurrentInterfaceIndexSelector { get; set; } = 2;
+        public static int CurrentInterfaceIndexSelector { get; set; } = 0;
         public static string UserInputStreamString { get; set; } = "";
 
         public static ProgramState CurrentProgramState { get; set; } = ProgramState.Browse;
-        public static ConsoleKeyInfo UserInputStream { get; set; }
         public static ProgramScreen CurrentProgramScreen { get; set; } = ProgramScreen.MainMenu;
+
+        public static ConsoleKeyInfo UserInputStream { get; set; }
 
         public static LoginGraphic LoginGraphic { get; set; } = new LoginGraphic();
         public static MainMenuGraphic MainMenuGraphic { get; set; } = new MainMenuGraphic();
@@ -34,15 +35,32 @@
         public static GraphicElement? currentGraphicElement { get; set; }
         public static Button? currentActiveButton { get; set; }
 
-        public static List<GraphicElement> GraphicElement { get; set; } = [];
+        public static List<GraphicElement> MainMenuScene { get; set; } = [];
+        public static List<GraphicElement> LoginScene { get; set; } = [];
+        public static List<GraphicElement> CreateUserScene { get; set; } = [];
 
-        public static GraphicElement? GetCurrentActiveGraphicElement() 
+        public static GraphicElement? GetCurrentActiveGraphicElement(List<GraphicElement> Scenes) 
         {
-            foreach (GraphicElement graphicElement in GraphicElement)
+            foreach (GraphicElement scene in Scenes)
             {
-                if (graphicElement.IsGraphicElementActive) { return graphicElement; }
+                if (scene.IsGraphicElementActive) { return scene; }
             }
             return null;
+        }
+
+        public static List<GraphicElement> GetCurrentActiveScene()
+        {
+            switch (CurrentProgramScreen)
+            {
+                case ProgramScreen.MainMenu:
+                    return MainMenuScene;
+                case ProgramScreen.Login:
+                    return LoginScene;
+                case ProgramScreen.CreateUser:
+                    return CreateUserScene;
+                default:
+                    return MainMenuScene;
+            }
         }
 
         public static bool IsLetterOrValidSymbol(char input)
@@ -52,9 +70,66 @@
             return true;
         }
 
-        public static void SwitchScreen()
+        public static void InitiateGraphics()
         {
+            Console.CursorVisible = false;
 
+            LoginGraphic.AbsolutePositionX = 4;
+            LoginGraphic.AbsolutePositionY = 2;
+            LoginGraphic.IsGraphicElementActive = false;
+
+            MainMenuGraphic.AbsolutePositionX = 4;
+            MainMenuGraphic.AbsolutePositionY = 10;
+            MainMenuGraphic.IsGraphicElementActive = true;
+
+            MainMenuScene.Add(MainMenuGraphic);
+
+            LoginScene.Add(LoginGraphic);
+        }
+
+        public static void ToggleAllGraphicElements(ref List<GraphicElement> graphicElements, bool toggle) 
+        {
+            foreach (GraphicElement graphicElement in graphicElements)
+            {
+                graphicElement.IsGraphicElementActive = toggle;
+            }
+        }
+
+        public static void SwitchScreen(ProgramScreen programScreen)
+        {
+            // Set all scenes to false first
+            List<GraphicElement> mainMenuScene = MainMenuScene;
+            List<GraphicElement> loginScene = LoginScene;
+            List<GraphicElement> createUserScene = CreateUserScene;
+
+            ToggleAllGraphicElements(ref mainMenuScene, false);
+            ToggleAllGraphicElements(ref loginScene, false);
+            ToggleAllGraphicElements(ref createUserScene, false);
+
+            // Then set the selected scene to true
+            switch (programScreen)
+            {
+                case ProgramScreen.MainMenu:
+                    ToggleAllGraphicElements(ref mainMenuScene, true);
+                    CurrentProgramScreen = ProgramScreen.MainMenu; // Update the property if modified
+                    MainMenuScene = mainMenuScene; // Update the property if modified
+                    break;
+                case ProgramScreen.Login:
+                    ToggleAllGraphicElements(ref loginScene, true);
+                    CurrentProgramScreen = ProgramScreen.Login;
+                    LoginScene = loginScene;
+                    break;
+                case ProgramScreen.CreateUser:
+                    ToggleAllGraphicElements(ref createUserScene, true);
+                    CurrentProgramScreen = ProgramScreen.CreateUser;
+                    CreateUserScene = createUserScene;
+                    break;
+                default:
+                    ToggleAllGraphicElements(ref mainMenuScene, true);
+                    CurrentProgramScreen = ProgramScreen.MainMenu;
+                    MainMenuScene = mainMenuScene;
+                    break;
+            }
         }
 
         public static void RenderScreen()
@@ -69,7 +144,7 @@
                         CustomDisplay.DisplayColor(ConsoleColor.Green);
                         continue;
                     }
-                    else if (AtGraphicElement(x, y))
+                    else if (AtGraphicElement(x, y, GetCurrentActiveScene()))
                     {
                         continue;
                     }
@@ -79,25 +154,10 @@
             }
         }
 
-        public static void InitiateGraphics()
+
+        public static bool AtGraphicElement(int x, int y, List<GraphicElement> CurrentActiveScene)
         {
-            Console.CursorVisible = false;
-
-            LoginGraphic.AbsolutePositionX = 4;
-            LoginGraphic.AbsolutePositionY = 2;
-            LoginGraphic.IsGraphicElementActive = true;
-
-            MainMenuGraphic.AbsolutePositionX = 4;
-            MainMenuGraphic.AbsolutePositionY = 10;
-            MainMenuGraphic.IsGraphicElementActive = true;
-
-            GraphicElement.Add(LoginGraphic);
-            GraphicElement.Add(MainMenuGraphic);
-        }
-
-        public static bool AtGraphicElement(int x, int y)
-        {
-            foreach (GraphicElement graphicElement in GraphicElement)
+            foreach (GraphicElement graphicElement in CurrentActiveScene)
             {
                 if (x == graphicElement.AbsolutePositionX + graphicElement.RenderPointerX &&
                     y == graphicElement.AbsolutePositionY + graphicElement.RenderPointerY && graphicElement.IsGraphicElementActive == true)

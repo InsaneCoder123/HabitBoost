@@ -167,7 +167,7 @@
             loginButton.YPosition = 1;
             loginButton.MenuInterfaceLevel = 0;
             loginButton.ButtonText = "        USER LOGIN         ";
-            loginButton.InterfaceIndex = 3;
+            loginButton.InterfaceIndex = 0;
             loginButton.IsInvokable = true;
             //loginButton.SetInvokedMethod(LoginUser);
 
@@ -177,7 +177,7 @@
             createUserButton.YPosition = 3;
             createUserButton.MenuInterfaceLevel = 0;
             createUserButton.ButtonText = "      CREATE ACCOUNT      ";
-            createUserButton.InterfaceIndex = 4;
+            createUserButton.InterfaceIndex = 1;
             createUserButton.IsInvokable = true;
             //loginButton.SetInvokedMethod(LoginUser);
 

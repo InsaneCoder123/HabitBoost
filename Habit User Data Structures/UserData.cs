@@ -21,112 +21,6 @@ namespace Habit_User_Data_Structures
         public List<Achievement> AchievementList { get; set; } = [];
 
         #region File Handling
-        public void WriteData(string DataFolder)
-        {
-            try
-            {
-                string[] userFolders = Directory.GetDirectories(DataFolder);
-
-                foreach (string userFolder in userFolders)
-                {
-                    string userFolderName = Path.GetFileName(userFolder);
-                    if (userFolderName == "UserContents")
-                    {
-                        foreach (string userContentFolder in Directory.GetDirectories(userFolder))
-                        {
-                            string userContentFolderName = Path.GetFileName(userContentFolder);
-                            if (userContentFolderName == "Habit")
-                            {
-                                foreach (Habit habit in HabitList)
-                                {
-                                    try
-                                    {
-                                        string[] habitData =
-                                        {
-                                    habit.ID,
-                                    habit.Name,
-                                    habit.Difficulty.ToString(),
-                                    habit.Experience.ToString(),
-                                    habit.Completed.ToString()
-                                };
-
-                                        string habitFileName = habit.DateCreated.ToString("ddMMyyyy") + habit.ID.PadLeft(3, '0') + ".txt";
-                                        string habitFilePath = Path.Combine(userContentFolder, habitFileName);
-
-                                        File.WriteAllLines(habitFilePath, habitData);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Console.WriteLine($"Error writing habit file for ID {habit.ID}: {ex.Message}");
-                                    }
-                                }
-                            }
-                            else if (userContentFolderName == "Journal")
-                            {
-                                foreach (JournalEntry entry in JournalList)
-                                {
-                                    try
-                                    {
-                                        string[] journalData = { entry.ID, entry.Name, entry.Entry };
-                                        string journalFileName = entry.DateCreated.ToString("ddMMyyyy") + entry.ID.PadLeft(3, '0') + ".txt";
-                                        string journalFilePath = Path.Combine(userContentFolder, journalFileName);
-
-                                        File.WriteAllLines(journalFilePath, journalData);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Console.WriteLine($"Error writing journal file for ID {entry.ID}: {ex.Message}");
-                                    }
-                                }
-                            }
-                            else if (userContentFolderName == "TODO")
-                            {
-                                foreach (Task task in TaskList)
-                                {
-                                    try
-                                    {
-                                        string[] taskData =
-                                        {
-                                            task.ID,
-                                            task.Name,
-                                            task.Difficulty.ToString(),
-                                            task.Experience.ToString(),
-                                            task.Completed.ToString(),
-                                            task.DateDue.ToString()
-                                        };
-
-                                        string taskFileName = task.DateCreated.ToString("ddMMyyyy") + task.ID.PadLeft(3, '0') + ".txt";
-                                        string taskFilePath = Path.Combine(userContentFolder, taskFileName);
-
-                                        File.WriteAllLines(taskFilePath, taskData);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Console.WriteLine($"Error writing task file for ID {task.ID}: {ex.Message}");
-                                    }
-                                }
-                            }
-                            else if (userContentFolderName == "Achievements")
-                            {
-                                // Handle "Achievements" folder when implemented (if there is time)
-                            }
-                        }
-                    }
-                }
-            }
-            catch (DirectoryNotFoundException ex)
-            {
-                Console.WriteLine($"Directory not found: {ex.Message}");
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                Console.WriteLine($"Access denied: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
-            }
-        }
 
         public void ReadData(string DataFolder)
         {
@@ -225,7 +119,7 @@ namespace Habit_User_Data_Structures
                             }
                             else if (userContentFolderName == "Achievements")
                             {
-                                // Handle "Achievements" folder when implemented
+                                //Handle "Achievements" folder when implemented
                             }
                         }
                     }
@@ -260,6 +154,119 @@ namespace Habit_User_Data_Structures
             }
         }
 
+        public void WriteHabitData(string DataFolder, string HabitID)
+        {
+            if (Username == null) throw new Exception("Username not set.");
+            string habitFolder = Path.Combine(DataFolder, Username, "UserContents", "Habit");
+            VerifySystemFolder(habitFolder);
+
+            Habit? habit = HabitList.Find(habit => habit.ID == HabitID);
+            if (habit == null)
+            {
+                Console.WriteLine($"Habit with ID '{HabitID}' not found.");
+                return;
+            }
+
+            string habitFileName = habit.DateCreated.ToString("ddMMyyyy") + habit.ID  + ".txt";
+            string habitFilePath = Path.Combine(habitFolder, habitFileName);
+
+            try
+            {
+                string[] habitData =
+                [
+                    habit.ID,
+                    habit.Name,
+                    habit.Difficulty.ToString(),
+                    habit.Experience.ToString(),
+                    habit.Completed.ToString()
+                ];
+                File.WriteAllLines(habitFilePath, habitData);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error writing habit file '{habitFilePath}': {ex.Message}");
+            }
+        }
+
+        public void WriteJournalData(string DataFolder, string JournalID)
+        {
+            if (Username == null) throw new Exception("Username not set.");
+            string journalFolder = Path.Combine(DataFolder, Username, "UserContents", "Journal");
+            VerifySystemFolder(journalFolder);
+
+            JournalEntry? journal = JournalList.Find(journal => journal.ID == JournalID);
+            if (journal == null)
+            {
+                Console.WriteLine($"Journal with ID '{JournalID}' not found.");
+                return;
+            }
+
+            string journalFileName = journal.DateCreated.ToString("ddMMyyyy") + journal.ID + ".txt";
+            string journalFilePath = Path.Combine(journalFolder, journalFileName);
+
+            try
+            {
+                string[] journalData =
+                [
+                    journal.ID,
+                    journal.Name,
+                    journal.Entry
+                ];
+                File.WriteAllLines(journalFilePath, journalData);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error writing journal file '{journalFilePath}': {ex.Message}");
+            }
+        }
+
+        public void WriteTaskData(string DataFolder, string TaskID)
+        {
+            if (Username == null) throw new Exception("Username not set.");
+            string taskFolder = Path.Combine(DataFolder, Username, "UserContents", "TODO");
+            VerifySystemFolder(taskFolder);
+
+            Task? task = TaskList.Find(task => task.ID == TaskID);
+            if (task == null)
+            {
+                Console.WriteLine($"Task with ID '{TaskID}' not found.");
+                return;
+            }
+
+            string taskFileName = task.DateCreated.ToString("ddMMyyyy") + task.ID + ".txt";
+            string taskFilePath = Path.Combine(taskFolder, taskFileName);
+
+            try
+            {
+                string[] taskData =
+                [
+                    task.ID,
+                    task.Name,
+                    task.Difficulty.ToString(),
+                    task.Experience.ToString(),
+                    task.Completed.ToString(),
+                    task.DateDue.ToString()
+                ];
+                File.WriteAllLines(taskFilePath, taskData);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error writing task file '{taskFilePath}': {ex.Message}");
+            }
+        }
+
+        public static void DeleteBoostDataFile(string FilePath)
+        {
+            try
+            {
+                File.Delete(FilePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting file '{FilePath}': {ex.Message}");
+            }
+        }
+
         public static void VerifySystemFolder(string DataFolder)
         {
             if (Directory.Exists(DataFolder))
@@ -273,6 +280,7 @@ namespace Habit_User_Data_Structures
         }
         #endregion
 
+        #region Boost Data Creation and Deletion
         public static string FindFreeID(List<IIdentifiable> targetData)
         {
             for (int number = 1; number < 1000; number++)
@@ -288,7 +296,7 @@ namespace Habit_User_Data_Structures
             return "ERROR";
         }
 
-        public void AddHabit()
+        public void AddHabit(string DataFolder)
         {
             Habit habit = new()
             {
@@ -300,9 +308,10 @@ namespace Habit_User_Data_Structures
                 DateCreated = DateTime.Now
             };
             HabitList.Add(habit);
+            WriteHabitData(DataFolder, habit.ID);
         }
 
-        public void AddJournalEntry()
+        public void AddJournalEntry(string DataFolder)
         {
             JournalEntry entry = new()
             {
@@ -312,9 +321,10 @@ namespace Habit_User_Data_Structures
                 DateCreated = DateTime.Now
             };
             JournalList.Add(entry);
+            WriteJournalData(DataFolder, entry.ID);
         }
 
-        public void AddTask()
+        public void AddTask(string DataFolder)
         {
             Task task = new()
             {
@@ -327,7 +337,41 @@ namespace Habit_User_Data_Structures
                 DateDue = DateTime.Now.AddDays(7)
             };
             TaskList.Add(task);
+            WriteTaskData(DataFolder, task.ID);
         }
 
+        public void DeleteHabit(string DataFolder, string habitID)
+        {
+            Habit? habit = HabitList.Find(habit => habit.ID == habitID);
+            if (habit != null)
+            {
+                HabitList.Remove(habit);
+                if (Username != null)
+                DeleteBoostDataFile(Path.Combine(DataFolder, Username, "UserContents", "Habit", habit.DateCreated.ToString("ddMMyyyy") + habit.ID + ".txt"));
+            }
+        }
+
+        public void DeleteJournalEntry(string DataFolder, string journalID)
+        {
+            JournalEntry? journal = JournalList.Find(journal => journal.ID == journalID);
+            if (journal != null)
+            {
+                JournalList.Remove(journal);
+                if (Username != null)
+                    DeleteBoostDataFile(Path.Combine(DataFolder, Username, "UserContents", "Journal", journal.DateCreated.ToString("ddMMyyyy") + journal.ID + ".txt"));
+            }
+        }
+
+        public void DeleteTask(string DataFolder, string taskID)
+        {
+            Task? task = TaskList.Find(task => task.ID == taskID);
+            if (task != null)
+            {
+                TaskList.Remove(task);
+                if (Username != null)
+                    DeleteBoostDataFile(Path.Combine(DataFolder, Username, "UserContents", "TODO", task.DateCreated.ToString("ddMMyyyy") + task.ID + ".txt"));
+            }
+        }
+        #endregion
     }
 }

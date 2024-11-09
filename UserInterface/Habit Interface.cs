@@ -6,7 +6,8 @@ namespace UserInterface
     {
         public int MenuInterfaceLevel { get; set; }
         public bool IsInterfaceSelected { get; set; }
-        public int InterfaceIndex { get; set; }
+        public int InterfaceIndexY { get; set; }
+        public int InterfaceIndexX { get; set; }
         public int MaximumInterfaceSelector { get; set; }
         public int HorizontalLength { get; set; }
         public int VerticalLength { get; set; }
@@ -36,11 +37,47 @@ namespace UserInterface
         public required List<HabitSelectable> Selectables { get; set; }
     }
 
+    public class VariableLabel : HabitInterface
+    {
+        public string LabelText { get; set; } = "";
+
+        public void RenderLabel(int RelativeX, int RelativeY, GraphicElement graphicElement, int graphicIndex)
+        {
+            if (RelativeX == XPosition + RenderPointerX && RelativeY == YPosition + RenderPointerY)
+            {
+                int RenderIndex = (RenderPointerY * HorizontalLength) + RenderPointerX;
+
+                if (LabelText.Length <= RenderIndex)
+                {
+                    Console.Write(" ");
+                    ++RenderPointerX;
+                    return;
+                }
+
+                CustomDisplay.DisplayColoredText(LabelText[RenderIndex].ToString(), ConsoleColor.Red);
+
+                if (RenderIndex == (HorizontalLength * VerticalLength) - 1)
+                {
+                    RenderPointerX = 0;
+                    RenderPointerY = 0;
+                    return;
+                }
+
+                if (RenderIndex == HorizontalLength - 1)
+                {
+                    RenderPointerX = 0;
+                    ++RenderPointerY;
+                    return;
+                }
+
+                ++RenderPointerX;
+            }
+        }
+    }
+
     public class Button : HabitInterface
     {
         public string ButtonText { get; set; } = "";
-        public int ButtonXPosition { get; set; }
-        public int ButtonYPosition { get; set; }
         public HabitInterface? BindedInterface { get; set; }
         private Func<string>? AtInvoked;
 
@@ -57,36 +94,37 @@ namespace UserInterface
         }
 
         public void RenderButton(int RelativeX, int RelativeY, GraphicElement graphicElement, int graphicIndex, 
-            int CurrentInterfaceIndexSelector, int CurrentInterfaceLevel)
+            int CurrentInterfaceIndexSelectorY, int CurrentInterfaceIndexSelectorX, int CurrentInterfaceLevel)
         {
             if (RelativeX == XPosition + RenderPointerX && RelativeY == YPosition + RenderPointerY)
             {
-                int InputIndex = (RenderPointerY * HorizontalLength) + RenderPointerX;
+                int RenderIndex = (RenderPointerY * HorizontalLength) + RenderPointerX;
 
-                if (ButtonText.Length <= InputIndex)
+                if (ButtonText.Length <= RenderIndex)
                 {
                     Console.Write(" ");
                     ++RenderPointerX;
                     return;
                 }
 
-                if (CurrentInterfaceIndexSelector == InterfaceIndex && MenuInterfaceLevel == CurrentInterfaceLevel)
+                if (CurrentInterfaceIndexSelectorY == InterfaceIndexY && CurrentInterfaceIndexSelectorX == InterfaceIndexX
+                    && MenuInterfaceLevel == CurrentInterfaceLevel)
                 {
-                    CustomDisplay.DisplayHighlightedText(ButtonText[InputIndex].ToString());
+                    CustomDisplay.DisplayHighlightedText(ButtonText[RenderIndex].ToString());
                 }
                 else
                 {
-                    CustomDisplay.DisplayColoredText(ButtonText[InputIndex].ToString(), ConsoleColor.Red);
+                    CustomDisplay.DisplayColoredText(ButtonText[RenderIndex].ToString(), ConsoleColor.Red);
                 }
 
-                if (InputIndex == (HorizontalLength * VerticalLength) - 1)
+                if (RenderIndex == (HorizontalLength * VerticalLength) - 1)
                 {
                     RenderPointerX = 0;
                     RenderPointerY = 0;
                     return;
                 }
 
-                if (InputIndex == HorizontalLength - 1)
+                if (RenderIndex == HorizontalLength - 1)
                 {
                     RenderPointerX = 0;
                     ++RenderPointerY;
@@ -96,9 +134,9 @@ namespace UserInterface
                 ++RenderPointerX;
             }
         }
-}
+    }
 
-public class InputField : HabitInterface
+    public class InputField : HabitInterface
     {
         public string FieldText { get; set; } = "";
         public int StartingIndex { get; set; } = 0;

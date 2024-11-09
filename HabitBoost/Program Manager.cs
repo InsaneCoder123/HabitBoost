@@ -72,17 +72,29 @@ namespace UserInterface
             UserInputStream = Console.ReadKey(intercept: true);
             UserInputStreamString = UserInputStream.KeyChar.ToString();
 
-            if (UserInputStream.Key == ConsoleKey.UpArrow && CurrentInterfaceIndexSelector != 0)
+            if (UserInputStream.Key == ConsoleKey.UpArrow && CurrentInterfaceIndexSelectorY != 0)
             {
                 UserInputStreamString = "";
                 if (CurrentProgramState == ProgramState.Browse)
-                { --CurrentInterfaceIndexSelector; }
+                { --CurrentInterfaceIndexSelectorY; }
             }
             else if (UserInputStream.Key == ConsoleKey.DownArrow)
             {
                 UserInputStreamString = "";
                 if (CurrentProgramState == ProgramState.Browse)
-                { ++CurrentInterfaceIndexSelector; }
+                { ++CurrentInterfaceIndexSelectorY; }
+            }
+            else if (UserInputStream.Key == ConsoleKey.LeftArrow)
+            {
+                UserInputStreamString = "";
+                if (CurrentProgramState == ProgramState.Browse)
+                { --CurrentInterfaceIndexSelectorX; }
+            }
+            else if (UserInputStream.Key == ConsoleKey.RightArrow)
+            {
+                UserInputStreamString = "";
+                if (CurrentProgramState == ProgramState.Browse)
+                { ++CurrentInterfaceIndexSelectorX; }
             }
             else if (UserInputStream.Key == ConsoleKey.Enter && CurrentProgramState == ProgramState.Browse)
             {
@@ -103,7 +115,7 @@ namespace UserInterface
                         {
                             CurrentProgramState = ProgramState.Edit;
                             CurrentInterfaceLevel = bindedInterface.MenuInterfaceLevel;
-                            CurrentInterfaceIndexSelector = bindedInterface.InterfaceIndex;
+                            CurrentInterfaceIndexSelectorY = bindedInterface.InterfaceIndexY;
                         }
                     }
                 }
@@ -146,19 +158,19 @@ namespace UserInterface
                     if (currentActiveButton != null)
                     {
                         CurrentInterfaceLevel = currentActiveButton.MenuInterfaceLevel;
-                        CurrentInterfaceIndexSelector = currentActiveButton.InterfaceIndex;
+                        CurrentInterfaceIndexSelectorY = currentActiveButton.InterfaceIndexY;
                     }
                 }
             }
             else if (CurrentProgramState == ProgramState.Edit)
             {
-                foreach (GraphicElement graphicElement in ScreenRenderer.MainMenuScene)
+                foreach (GraphicElement graphicElement in GetCurrentActiveScene())
                 {
                     if (graphicElement.InputFields != null && graphicElement.IsGraphicElementActive == true)
                     {
                         foreach (InputField inputField in graphicElement.InputFields)
                         {
-                            if (CurrentInterfaceIndexSelector == inputField.InterfaceIndex && CurrentInterfaceLevel == inputField.MenuInterfaceLevel)
+                            if (CurrentInterfaceIndexSelectorY == inputField.InterfaceIndexY && CurrentInterfaceLevel == inputField.MenuInterfaceLevel)
                             {
                                 if (UserInputStream.Key == ConsoleKey.Backspace)
                                 {
@@ -192,7 +204,7 @@ namespace UserInterface
             }
             else if (UserInputStream.Key == ConsoleKey.R)
             {
-                SwitchScreen(ProgramScreen.Login);
+                SwitchScreen(ProgramScreen.Main);
             }
         }
     }

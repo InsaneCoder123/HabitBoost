@@ -6,6 +6,7 @@
     // # = Next Line
     // $ = End
     // & = Button
+    // + = Variable Label
     // Else = Button
     public abstract class GraphicElement 
     {
@@ -23,6 +24,7 @@
         public virtual string Graphic { get; set; } = "";
         public List<InputField>? InputFields { get; set; }
         public List<Button>? Buttons { get; set; }
+        public List<VariableLabel>? Labels { get; set; }
 
         public InputField? GetCurrentActiveInputField ()
         {
@@ -50,6 +52,60 @@
             return null;
         }
     }
+
+    #region Main Menu Scene Graphics
+    public class MainMenuGraphic : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&&&&&&&&&&&@" + // USER LOGIN
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&&&&&&&&&&&@" + // CREATE ACCOUNT
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+
+        public override int MaxWidth { get; set; } = 28;
+        public override int MaxHeight { get; set; } = 5;
+
+        public Button loginButton { get; set; } = new Button();
+        public Button createUserButton { get; set; } = new Button();
+
+        public MainMenuGraphic()
+        {
+            Buttons = [];
+            
+            loginButton.HorizontalLength = 26;
+            loginButton.VerticalLength = 1;
+            loginButton.XPosition = 1;
+            loginButton.YPosition = 1;
+            loginButton.MenuInterfaceLevel = 0;
+            loginButton.ButtonText = "        USER LOGIN         ";
+            loginButton.InterfaceIndexY = 0;
+            loginButton.InterfaceIndexX = 0;
+            loginButton.IsInvokable = true;
+            loginButton.SetInvokedMethod(SwitchToLoginScreen);
+
+            createUserButton.HorizontalLength = 26;
+            createUserButton.VerticalLength = 1;
+            createUserButton.XPosition = 1;
+            createUserButton.YPosition = 3;
+            createUserButton.MenuInterfaceLevel = 0;
+            createUserButton.ButtonText = "      CREATE ACCOUNT      ";
+            createUserButton.InterfaceIndexY = 1;
+            createUserButton.InterfaceIndexX = 0;
+            createUserButton.IsInvokable = true;
+            //loginButton.SetInvokedMethod(LoginUser);
+
+            Buttons.Add(loginButton);
+            Buttons.Add(createUserButton);
+        }
+
+        public string SwitchToLoginScreen()
+        {
+            return "1" + ((int)ProgramScreen.Login).ToString();
+        }
+    }
+    #endregion
+    #region Login Scene Graphics
     public class LoginGraphic : GraphicElement
     {
         public override string Graphic { get; set; } =
@@ -80,7 +136,9 @@
             UsernameInput.MenuInterfaceLevel = 1;
             UsernameInput.FieldText = "";
             UsernameInput.IsHorizontalExpandable = true;
-            UsernameInput.InterfaceIndex = 0;
+            UsernameInput.InterfaceIndexY = 0;
+            UsernameInput.InterfaceIndexX = 0;
+            UsernameInput.MaxFieldTextLength = 10;
 
             PasswordInput.HorizontalLength = 20;
             PasswordInput.VerticalLength = 1;
@@ -90,7 +148,8 @@
             PasswordInput.FieldText = "";
             PasswordInput.IsPrivate = true;
             UsernameInput.IsHorizontalExpandable = true;
-            PasswordInput.InterfaceIndex = 1;
+            PasswordInput.InterfaceIndexY = 1;
+            PasswordInput.InterfaceIndexX = 0;
             PasswordInput.MaxFieldTextLength = 10;
 
             Username.HorizontalLength = 8;
@@ -100,7 +159,8 @@
             Username.MenuInterfaceLevel = 0;
             Username.ButtonText = "USERNAME";
             Username.BindedInterface = UsernameInput;
-            Username.InterfaceIndex = 0;
+            Username.InterfaceIndexY = 0;
+            Username.InterfaceIndexX = 0;
 
             Password.HorizontalLength = 8;
             Password.VerticalLength = 1;
@@ -109,7 +169,8 @@
             Password.MenuInterfaceLevel = 0;
             Password.BindedInterface = PasswordInput;
             Password.ButtonText = "PASSWORD";
-            Password.InterfaceIndex = 1;
+            Password.InterfaceIndexY = 1;
+            Password.InterfaceIndexX = 0;
 
             Login.HorizontalLength = 29;
             Login.VerticalLength = 1;
@@ -117,7 +178,8 @@
             Login.YPosition = 5;
             Login.MenuInterfaceLevel = 0;
             Login.ButtonText = "           LOGIN             ";
-            Login.InterfaceIndex = 2;
+            Login.InterfaceIndexY = 2;
+            Login.InterfaceIndexX = 0;
             Login.IsInvokable = true;
             Login.SetInvokedMethod(LoginUser);
 
@@ -144,53 +206,114 @@
             return LoginToken;
         }
     }
+    #endregion
 
-    public class MainMenuGraphic : GraphicElement
+    #region Main Scene Graphics
+    public class TopBarGraphics : GraphicElement
     {
         public override string Graphic { get; set; } =
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@&&&&&&&&&&&&&&&&&&&&&&&&&&@" + // USER LOGIN
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@&&&&&&&&&&&&&&&&&&&&&&&&&&@" + // CREATE ACCOUNT
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@USERNAME ++++++++++     LVL +++     EXP +++++++@&&&&&&@&&&&&&&@&&&&@" + //HABITS + JOURNAL + TODO
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
 
-        public override int MaxWidth { get; set; } = 28;
-        public override int MaxHeight { get; set; } = 5;
+        public override int MaxWidth { get; set; } = 69;
+        public override int MaxHeight { get; set; } = 3;
 
-        public Button loginButton { get; set; } = new Button();
-        public Button createUserButton { get; set; } = new Button();
+        public Button HabitsButton { get; set; } = new Button();
+        public Button JournalButton { get; set; } = new Button();
+        public Button ToDoButton { get; set; } = new Button();
 
-        public MainMenuGraphic()
+        public VariableLabel UsernameLabel { get; set; } = new VariableLabel();
+        public VariableLabel LevelLabel { get; set; } = new VariableLabel();
+        public VariableLabel ExperienceLabel { get; set; } = new VariableLabel();
+
+        public TopBarGraphics()
         {
             Buttons = [];
-            
-            loginButton.HorizontalLength = 26;
-            loginButton.VerticalLength = 1;
-            loginButton.XPosition = 1;
-            loginButton.YPosition = 1;
-            loginButton.MenuInterfaceLevel = 0;
-            loginButton.ButtonText = "        USER LOGIN         ";
-            loginButton.InterfaceIndex = 0;
-            loginButton.IsInvokable = true;
-            loginButton.SetInvokedMethod(SwitchToLoginScreen);
+            Labels = [];
+            UsernameLabel.LabelText = "USERNAME11";
+            UsernameLabel.XPosition = 10;
+            UsernameLabel.YPosition = 1;
+            UsernameLabel.HorizontalLength = 10;
+            UsernameLabel.VerticalLength = 1;
 
-            createUserButton.HorizontalLength = 26;
-            createUserButton.VerticalLength = 1;
-            createUserButton.XPosition = 1;
-            createUserButton.YPosition = 3;
-            createUserButton.MenuInterfaceLevel = 0;
-            createUserButton.ButtonText = "      CREATE ACCOUNT      ";
-            createUserButton.InterfaceIndex = 1;
-            createUserButton.IsInvokable = true;
-            //loginButton.SetInvokedMethod(LoginUser);
+            LevelLabel.LabelText = "LVL";
+            LevelLabel.XPosition = 29;
+            LevelLabel.YPosition = 1;
+            LevelLabel.HorizontalLength = 3;
+            LevelLabel.VerticalLength = 1;
 
-            Buttons.Add(loginButton);
-            Buttons.Add(createUserButton);
-        }
+            ExperienceLabel.LabelText = "EXP1111";
+            ExperienceLabel.XPosition = 41;
+            ExperienceLabel.YPosition = 1;
+            ExperienceLabel.HorizontalLength = 7;
+            ExperienceLabel.VerticalLength = 1;
 
-        public string SwitchToLoginScreen()
-        {
-            return "1" + ((int)ProgramScreen.Login).ToString();
+            HabitsButton.HorizontalLength = 6;
+            HabitsButton.VerticalLength = 1;
+            HabitsButton.XPosition = 49;
+            HabitsButton.YPosition = 1;
+            HabitsButton.MenuInterfaceLevel = 0;
+            HabitsButton.ButtonText = "HABITS";
+            HabitsButton.InterfaceIndexY = 0;
+            HabitsButton.InterfaceIndexX = 0;
+
+            JournalButton.HorizontalLength = 7;
+            JournalButton.VerticalLength = 1;
+            JournalButton.XPosition = 56;
+            JournalButton.YPosition = 1;
+            JournalButton.MenuInterfaceLevel = 0;
+            JournalButton.ButtonText = "JOURNAL";
+            JournalButton.InterfaceIndexY = 0;
+            JournalButton.InterfaceIndexX = 1;
+
+            ToDoButton.HorizontalLength = 4;
+            ToDoButton.VerticalLength = 1;
+            ToDoButton.XPosition = 64;
+            ToDoButton.YPosition = 1;
+            ToDoButton.MenuInterfaceLevel = 0;
+            ToDoButton.ButtonText = "TODO";
+            ToDoButton.InterfaceIndexY = 0;
+            ToDoButton.InterfaceIndexX = 2;
+
+            Buttons.Add(HabitsButton);
+            Buttons.Add(JournalButton);
+            Buttons.Add(ToDoButton);
+
+            Labels.Add(UsernameLabel);
+            Labels.Add(LevelLabel);
+            Labels.Add(ExperienceLabel);
         }
     }
+
+    public class HabitListGraphics : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" + // 40 Character Limit for Habit Name NAME/FINISHED/UNFINISHED
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+
+
+        public override int MaxWidth { get; set; } = 69;
+        public override int MaxHeight { get; set; } = 3;
+    }
+    #endregion
 }

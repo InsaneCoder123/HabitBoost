@@ -21,7 +21,8 @@
         public static int ScreenHeight { get; set; } = 20;
 
         public static int CurrentInterfaceLevel { get; set; } = 0;
-        public static int CurrentInterfaceIndexSelector { get; set; } = 0;
+        public static int CurrentInterfaceIndexSelectorY { get; set; } = 0;
+        public static int CurrentInterfaceIndexSelectorX { get; set; } = 0;
         public static string UserInputStreamString { get; set; } = "";
 
         public static ProgramState CurrentProgramState { get; set; } = ProgramState.Browse;
@@ -29,8 +30,14 @@
 
         public static ConsoleKeyInfo UserInputStream { get; set; }
 
+        #region Graphics
+
         public static LoginGraphic LoginGraphic { get; set; } = new LoginGraphic();
+
         public static MainMenuGraphic MainMenuGraphic { get; set; } = new MainMenuGraphic();
+
+        public static TopBarGraphics TopBarGraphics { get; set; } = new TopBarGraphics();
+        #endregion
 
         public static GraphicElement? currentGraphicElement { get; set; }
         public static Button? currentActiveButton { get; set; }
@@ -38,6 +45,7 @@
         public static List<GraphicElement> MainMenuScene { get; set; } = [];
         public static List<GraphicElement> LoginScene { get; set; } = [];
         public static List<GraphicElement> CreateUserScene { get; set; } = [];
+        public static List<GraphicElement> MainScene { get; set; } = [];
 
         public static GraphicElement? GetCurrentActiveGraphicElement(List<GraphicElement> Scenes) 
         {
@@ -58,6 +66,8 @@
                     return LoginScene;
                 case ProgramScreen.CreateUser:
                     return CreateUserScene;
+                case ProgramScreen.Main:
+                    return MainScene;
                 default:
                     return MainMenuScene;
             }
@@ -82,9 +92,15 @@
             MainMenuGraphic.AbsolutePositionY = 10;
             MainMenuGraphic.IsGraphicElementActive = true;
 
+            TopBarGraphics.AbsolutePositionX = 1;
+            TopBarGraphics.AbsolutePositionY = 1;
+            TopBarGraphics.IsGraphicElementActive = false;
+
             MainMenuScene.Add(MainMenuGraphic);
 
             LoginScene.Add(LoginGraphic);
+
+            MainScene.Add(TopBarGraphics);
         }
 
         public static void ToggleAllGraphicElements(ref List<GraphicElement> graphicElements, bool toggle) 
@@ -101,10 +117,12 @@
             List<GraphicElement> mainMenuScene = MainMenuScene;
             List<GraphicElement> loginScene = LoginScene;
             List<GraphicElement> createUserScene = CreateUserScene;
+            List<GraphicElement> mainScene = MainScene;
 
             ToggleAllGraphicElements(ref mainMenuScene, false);
             ToggleAllGraphicElements(ref loginScene, false);
             ToggleAllGraphicElements(ref createUserScene, false);
+            ToggleAllGraphicElements(ref mainScene, false);
 
             // Then set the selected scene to true
             switch (programScreen)
@@ -123,6 +141,11 @@
                     ToggleAllGraphicElements(ref createUserScene, true);
                     CurrentProgramScreen = ProgramScreen.CreateUser;
                     CreateUserScene = createUserScene;
+                    break;
+                case ProgramScreen.Main:
+                    ToggleAllGraphicElements(ref mainScene, true);
+                    CurrentProgramScreen = ProgramScreen.Main;
+                    MainScene = mainScene;
                     break;
                 default:
                     ToggleAllGraphicElements(ref mainMenuScene, true);
@@ -172,7 +195,7 @@
                         {
                             foreach (InputField inputField in graphicElement.InputFields)
                             {
-                                if (inputField.InterfaceIndex == CurrentInterfaceIndexSelector && inputField.MenuInterfaceLevel == CurrentInterfaceLevel)
+                                if (inputField.InterfaceIndexY == CurrentInterfaceIndexSelectorY && inputField.MenuInterfaceLevel == CurrentInterfaceLevel)
                                 { inputField.IsInterfaceSelected = true; }
                                 else { inputField.IsInterfaceSelected = false; }
                                 inputField.RenderInputField(graphicElement.RenderPointerX, graphicElement.RenderPointerY);
@@ -185,17 +208,28 @@
                         {
                             foreach (Button buttons in graphicElement.Buttons)
                             {
-                                if (buttons.InterfaceIndex == CurrentInterfaceIndexSelector && buttons.MenuInterfaceLevel == CurrentInterfaceLevel)
+                                if (buttons.InterfaceIndexY == CurrentInterfaceIndexSelectorY && buttons.MenuInterfaceLevel == CurrentInterfaceLevel)
                                 { buttons.IsInterfaceSelected = true; }
                                 else { buttons.IsInterfaceSelected = false; }
                                 buttons.RenderButton(graphicElement.RenderPointerX, graphicElement.RenderPointerY, 
-                                    graphicElement, graphicIndex, CurrentInterfaceIndexSelector, CurrentInterfaceLevel);
+                                    graphicElement, graphicIndex, CurrentInterfaceIndexSelectorY, CurrentInterfaceIndexSelectorX, CurrentInterfaceLevel);
                             }
                         }
                     }
                     else if (graphicElement.Graphic[graphicIndex] == '.')
                     {
                         Console.Write(" ");
+                    }
+                    else if (graphicElement.Graphic[graphicIndex] == '+')
+                    {
+                        if (graphicElement.Labels != null)
+                        {
+                            foreach (VariableLabel variableLabel in graphicElement.Labels)
+                            {
+                                variableLabel.RenderLabel(graphicElement.RenderPointerX, graphicElement.RenderPointerY,
+                                        graphicElement, graphicIndex);
+                            }                      
+                        }
                     }
                     else
                     {

@@ -133,9 +133,12 @@
         {
             string LoginToken = "0";
             // Returns a string of int filled with information about the user input field
-            // 0 - first digit signifies the invoke type, 0 for login
+            // 0 - first digit signifies the invoke type, 0 for login, 1 for switch screen
+            // 0 Login
             // 000000000000000... - Next 30 chars are the user ID
             // 0000000000 - next 10 chars are the user password
+
+            // 1 Switch Screen
             LoginToken += UsernameInput.FieldText.PadRight(30, '~');
             LoginToken += PasswordInput.FieldText.PadRight(10, '~');
             return LoginToken;
@@ -169,7 +172,7 @@
             loginButton.ButtonText = "        USER LOGIN         ";
             loginButton.InterfaceIndex = 0;
             loginButton.IsInvokable = true;
-            //loginButton.SetInvokedMethod(LoginUser);
+            loginButton.SetInvokedMethod(SwitchToLoginScreen);
 
             createUserButton.HorizontalLength = 26;
             createUserButton.VerticalLength = 1;
@@ -183,6 +186,11 @@
 
             Buttons.Add(loginButton);
             Buttons.Add(createUserButton);
+        }
+
+        public string SwitchToLoginScreen()
+        {
+            return "1" + ((int)ProgramScreen.Login).ToString();
         }
     }
 }

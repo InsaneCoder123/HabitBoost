@@ -127,6 +127,12 @@ namespace UserInterface
                             }
                         }
 
+                        // Switch Screen Invoke
+                        if (ButtonInvokedInformation[0] == '1')
+                        {
+                            SwitchScreen((ProgramScreen)int.Parse(ButtonInvokedInformation[1..2]));
+                        }
+
                     }
                 }
                 #endregion

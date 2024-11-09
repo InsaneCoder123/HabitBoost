@@ -1,4 +1,6 @@
-﻿namespace UserInterface
+﻿using Habit_User_Data_Structures;
+
+namespace UserInterface
 {
     // @ = Green Color
     // . = Blank Space
@@ -10,6 +12,8 @@
     // Else = Button
     public abstract class GraphicElement 
     {
+        public string ID { get; set; } = "";
+
         public int RenderPointerX { get; set; } = 0;
         public int RenderPointerY { get; set; } = 0;
 
@@ -17,6 +21,8 @@
         public virtual int MaxHeight { get; set; } = 0;
 
         public bool IsGraphicElementActive { get; set; } = false;
+        public bool IsGraphicElementActiveDefault { get; set; } = true;
+        public bool IsDynamic { get; set; } = false;
 
         public int AbsolutePositionX { get; set; } = 0;
         public int AbsolutePositionY { get; set; } = 0;
@@ -50,6 +56,10 @@
                 }
             }
             return null;
+        }
+
+        public virtual void AdjustVariableData(ref UserData user) 
+        {
         }
     }
 
@@ -257,6 +267,8 @@
             HabitsButton.ButtonText = "HABITS";
             HabitsButton.InterfaceIndexY = 0;
             HabitsButton.InterfaceIndexX = 0;
+            HabitsButton.IsInvokable = true;
+            HabitsButton.SetInvokedMethod(SetHabitListActive);
 
             JournalButton.HorizontalLength = 7;
             JournalButton.VerticalLength = 1;
@@ -284,36 +296,92 @@
             Labels.Add(LevelLabel);
             Labels.Add(ExperienceLabel);
         }
+
+        public string SetHabitListActive()
+        {
+            return "2" + "0" + "1" + "0" + "0" + "1"; // Type - ID of the habit list - 1/0 True/False - InterfaceY index default - InterfaceX index default- Interface level default
+        }
     }
 
     public class HabitListGraphics : GraphicElement
     {
         public override string Graphic { get; set; } =
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" + // 40 Character Limit for Habit Name NAME/FINISHED/UNFINISHED
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" + // 40 Character Limit for Habit Name NAME/FINISHED/UNFINISHED
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@       &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&   ++++++++++       @" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
 
 
         public override int MaxWidth { get; set; } = 69;
-        public override int MaxHeight { get; set; } = 3;
+        public override int MaxHeight { get; set; } = 21;
+
+        public HabitListGraphics()
+        {
+            ID = "0";
+            IsGraphicElementActiveDefault = false;
+        }
+
+        public override void AdjustVariableData(ref UserData user)
+        {
+            Buttons = [];
+            Labels = [];
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (i >= user.HabitList.Count)
+                {
+                    VariableLabel habitLabels = new()
+                    {
+                        HorizontalLength = 53,
+                        VerticalLength = 1,
+                        XPosition = 8,
+                        YPosition = 1 + (i * 2),
+                        LabelText = "".PadRight(40) + "   " + "".PadRight(10)
+                    };
+                    Labels.Add(habitLabels);
+                    continue;
+                }
+                Button habitButton = new()
+                {
+                    HorizontalLength = 1,
+                    VerticalLength = 1,
+                    XPosition = 2,
+                    YPosition = 1 + (i * 2),
+                    MenuInterfaceLevel = 1,
+                    ButtonText = " ",
+                    InterfaceIndexY = i,
+                    InterfaceIndexX = 0
+                };
+                Buttons.Add(habitButton);
+
+                VariableLabel habitLabel = new()
+                {
+                    HorizontalLength = 53,
+                    VerticalLength = 1,
+                    XPosition = 8,
+                    YPosition = 1 + (i * 2),
+                    LabelText = user.HabitList[i].Name.PadRight(40) + "   " + (user.HabitList[i].Completed ? "FINISHED" : "UNFINISHED").PadRight(10)
+                };
+                Labels.Add(habitLabel);
+            }
+        }
     }
     #endregion
 }

@@ -13,7 +13,7 @@ namespace UserInterface
 
         public static string HabitBoostFolderPath { get; set; } = AppContext.BaseDirectory + @"\HabitBoostData";
         public static string UserFolderPath { get; set; } = HabitBoostFolderPath;
-        public static UserData User { get; set; } = new UserData();
+        public static UserData User = new UserData();
 
         public static string ButtonInvokedInformation { get; set; } = "";
 
@@ -136,6 +136,7 @@ namespace UserInterface
                                 ButtonInvokedInformation[31..40].Replace("~", "")))
                             {
                                 User.ReadData(UserFolderPath + @"\" + ButtonInvokedInformation[1..30].Replace("~", ""));
+                                SwitchScreen(ProgramScreen.Main);
                             }
                         }
 
@@ -143,6 +144,20 @@ namespace UserInterface
                         if (ButtonInvokedInformation[0] == '1')
                         {
                             SwitchScreen((ProgramScreen)int.Parse(ButtonInvokedInformation[1..2]));
+                        }
+
+                        // Toggle Boost Data List Invoke
+                        if (ButtonInvokedInformation[0] == '2')
+                        {
+                            switch (ButtonInvokedInformation[1])
+                            {
+                                case '0':
+                                    ToggleSpecificGraphicElement("0", ButtonInvokedInformation[2] == '1');
+                                    CurrentInterfaceIndexSelectorY = ButtonInvokedInformation[3] - '0';
+                                    CurrentInterfaceIndexSelectorX = ButtonInvokedInformation[4] - '0';
+                                    CurrentInterfaceLevel = ButtonInvokedInformation[5] - '0';
+                                    break;
+                            }
                         }
 
                     }

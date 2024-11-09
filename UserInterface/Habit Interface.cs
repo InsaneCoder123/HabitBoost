@@ -31,11 +31,6 @@ namespace UserInterface
         public required HabitBoostData Content { get; set; }
     }
 
-    public class HabitSubMenu : HabitInterface // Submenus like the habit menu, todo menu, or journal menu
-    {
-        public required string SubMenuName { get; set; }
-        public required List<HabitSelectable> Selectables { get; set; }
-    }
 
     public class VariableLabel : HabitInterface
     {

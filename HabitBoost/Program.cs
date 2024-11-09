@@ -9,12 +9,12 @@ namespace Main
         {
 
             ProgramManager.StartProgram();
-            ScreenRenderer.InitiateGraphics();
+            ScreenRenderer.InitiateGraphics(ref ProgramManager.User);
             UserData.VerifySystemFolder(ProgramManager.HabitBoostFolderPath);
 
             while (ProgramManager.isProgramRunning == true)
             {           
-                ScreenRenderer.RenderScreen();
+                ScreenRenderer.RenderScreen(ref ProgramManager.User);
                 ProgramManager.UserInput();
             }
             return 0;

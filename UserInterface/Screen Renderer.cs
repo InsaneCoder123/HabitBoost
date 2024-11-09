@@ -1,4 +1,6 @@
-﻿namespace UserInterface
+﻿using Habit_User_Data_Structures;
+
+namespace UserInterface
 {
     public enum ProgramScreen
     {
@@ -18,7 +20,7 @@
 
 
         public static int ScreenWidth { get; set; } = 100;
-        public static int ScreenHeight { get; set; } = 20;
+        public static int ScreenHeight { get; set; } = 26;
 
         public static int CurrentInterfaceLevel { get; set; } = 0;
         public static int CurrentInterfaceIndexSelectorY { get; set; } = 0;
@@ -37,15 +39,16 @@
         public static MainMenuGraphic MainMenuGraphic { get; set; } = new MainMenuGraphic();
 
         public static TopBarGraphics TopBarGraphics { get; set; } = new TopBarGraphics();
+        public static HabitListGraphics HabitListGraphics { get; set; } = new HabitListGraphics();
         #endregion
 
         public static GraphicElement? currentGraphicElement { get; set; }
         public static Button? currentActiveButton { get; set; }
 
-        public static List<GraphicElement> MainMenuScene { get; set; } = [];
-        public static List<GraphicElement> LoginScene { get; set; } = [];
-        public static List<GraphicElement> CreateUserScene { get; set; } = [];
-        public static List<GraphicElement> MainScene { get; set; } = [];
+        public static List<GraphicElement> MainMenuScene = [];
+        public static List<GraphicElement> LoginScene = [];
+        public static List<GraphicElement> CreateUserScene = [];
+        public static List<GraphicElement> MainScene = [];
 
         public static GraphicElement? GetCurrentActiveGraphicElement(List<GraphicElement> Scenes) 
         {
@@ -56,20 +59,20 @@
             return null;
         }
 
-        public static List<GraphicElement> GetCurrentActiveScene()
+        public static ref List<GraphicElement> GetCurrentActiveScene()
         {
             switch (CurrentProgramScreen)
             {
                 case ProgramScreen.MainMenu:
-                    return MainMenuScene;
+                    return ref MainMenuScene;
                 case ProgramScreen.Login:
-                    return LoginScene;
+                    return ref LoginScene;
                 case ProgramScreen.CreateUser:
-                    return CreateUserScene;
+                    return ref CreateUserScene;
                 case ProgramScreen.Main:
-                    return MainScene;
+                    return ref MainScene;
                 default:
-                    return MainMenuScene;
+                    return ref MainMenuScene;
             }
         }
 
@@ -80,7 +83,7 @@
             return true;
         }
 
-        public static void InitiateGraphics()
+        public static void InitiateGraphics(ref UserData user)
         {
             Console.CursorVisible = false;
 
@@ -96,18 +99,46 @@
             TopBarGraphics.AbsolutePositionY = 1;
             TopBarGraphics.IsGraphicElementActive = false;
 
+            HabitListGraphics.AbsolutePositionX = 1;
+            HabitListGraphics.AbsolutePositionY = 4;
+            HabitListGraphics.IsDynamic = true;
+            HabitListGraphics.AdjustVariableData(ref user);
+
             MainMenuScene.Add(MainMenuGraphic);
 
             LoginScene.Add(LoginGraphic);
 
             MainScene.Add(TopBarGraphics);
+            MainScene.Add(HabitListGraphics);
+
+        }
+
+        public static void UpdateDynamicGraphics(ref UserData user)
+        {
+            foreach (GraphicElement graphicElement in GetCurrentActiveScene())
+            {
+                if (graphicElement.IsDynamic)
+                {
+                    graphicElement.AdjustVariableData(ref user);
+                }
+            }
         }
 
         public static void ToggleAllGraphicElements(ref List<GraphicElement> graphicElements, bool toggle) 
         {
             foreach (GraphicElement graphicElement in graphicElements)
             {
+                if (graphicElement.IsGraphicElementActiveDefault)
                 graphicElement.IsGraphicElementActive = toggle;
+            }
+        }
+
+        public static void ToggleSpecificGraphicElement(string ID, bool toggle)
+        {
+            var element = GetCurrentActiveScene().Find(x => x.ID == ID);
+            if (element != null)
+            {
+                element.IsGraphicElementActive = toggle;
             }
         }
 
@@ -123,6 +154,10 @@
             ToggleAllGraphicElements(ref loginScene, false);
             ToggleAllGraphicElements(ref createUserScene, false);
             ToggleAllGraphicElements(ref mainScene, false);
+
+            CurrentInterfaceIndexSelectorX = 0;
+            CurrentInterfaceIndexSelectorY = 0;
+            CurrentInterfaceLevel = 0;
 
             // Then set the selected scene to true
             switch (programScreen)
@@ -155,9 +190,10 @@
             }
         }
 
-        public static void RenderScreen()
+        public static void RenderScreen(ref UserData user)
         {
             Console.Clear();
+            UpdateDynamicGraphics(ref user);
             for (int y = 0; y < ScreenHeight; y++)
             {
                 for (int x = 0; x < ScreenWidth; x++)

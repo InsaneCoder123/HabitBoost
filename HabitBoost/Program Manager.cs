@@ -49,13 +49,14 @@ namespace UserInterface
             return false;
         }
 
-        public static void CreatePassword()
+        public static void CreateUser(string Username, string Password)
         {
-            // Create password
-            // - Check if password is strong
-            // - If password is weak, prompt user to re-enter password
-            // If password is strong, create a new user
-            // Then store user data to a file contained in a folder named "UserData" in the User's folder
+            // When the new user is a unique user, create its data folder
+            string[] dummyData = ["1", "10"];
+            Directory.CreateDirectory(HabitBoostFolderPath + @"\" + Username + @"\UserData");
+            File.WriteAllText(HabitBoostFolderPath + @"\" + Username + @"\UserData\password.txt", Password);
+            File.WriteAllLines(HabitBoostFolderPath + @"\" + Username + @"\UserData\datas.txt", dummyData);
+
         }
 
         public static bool DoesUserExists(string userName)
@@ -137,8 +138,8 @@ namespace UserInterface
                     {
                         ButtonInvokedInformation = currentActiveButton.InvokeButton();
 
-                        
-                        if (ButtonInvokedInformation[0..2] == "-1") 
+
+                        if (ButtonInvokedInformation[0..2] == "-1")
                         {
                             ToggleSpecificGraphicElement("000", true,
                                     CurrentInterfaceIndexSelectorY.ToString(), true);
@@ -158,7 +159,7 @@ namespace UserInterface
                         }
 
                         // Switch Screen Invoke
-                       else if (ButtonInvokedInformation[0] == '1')
+                        else if (ButtonInvokedInformation[0] == '1')
                         {
                             SwitchScreen((ProgramScreen)int.Parse(ButtonInvokedInformation[1..2]));
                         }
@@ -166,7 +167,7 @@ namespace UserInterface
                         // Toggle Invoke
                         else if (ButtonInvokedInformation[0] == '2')
                         {
-                            ToggleSpecificGraphicElement(ButtonInvokedInformation[1..4], ButtonInvokedInformation[4] == '1', 
+                            ToggleSpecificGraphicElement(ButtonInvokedInformation[1..4], ButtonInvokedInformation[4] == '1',
                                 CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[8] == '1');
                             CurrentInterfaceIndexSelectorY = ButtonInvokedInformation[5] - '0';
                             CurrentInterfaceIndexSelectorX = ButtonInvokedInformation[6] - '0';
@@ -179,8 +180,8 @@ namespace UserInterface
                             // Add Operation
                             if (ButtonInvokedInformation[1] == '1')
                             {
-                               ToggleSpecificGraphicElement("002", true,
-                                   CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                ToggleSpecificGraphicElement("002", true,
+                                    CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
                                 CurrentInterfaceIndexSelectorY = 0;
                                 CurrentInterfaceIndexSelectorX = 0;
                                 CurrentInterfaceLevel = 4;
@@ -199,7 +200,8 @@ namespace UserInterface
                                     CurrentInterfaceIndexSelectorX = 0;
                                     CurrentInterfaceLevel = 0;
                                 }
-                                else { 
+                                else
+                                {
                                     ToggleSpecificGraphicElement("000", true,
                                         CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
                                     CurrentInterfaceIndexSelectorY = 0;
@@ -301,6 +303,10 @@ namespace UserInterface
                         }
                     }
                 }
+            }
+            else if (UserInputStream.Key == ConsoleKey.K)
+            {
+                CreateUser("Zoro", "lost");
             }
         }
     }

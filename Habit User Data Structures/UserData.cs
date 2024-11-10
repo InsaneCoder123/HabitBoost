@@ -443,6 +443,55 @@ namespace Habit_User_Data_Structures
                 WriteHabitData(DataFolder, habit.ID);
             }
         }
+
+        public void EditJournalEntry(string DataFolder, string journalID, string name, string entry)
+        {
+            JournalEntry? journal = JournalList.Find(journal => journal.ID == journalID);
+            if (journal != null)
+            {
+                journal.Name = name;
+                journal.Entry = entry;
+                WriteJournalData(DataFolder, journal.ID);
+            }
+        }
+        public void EditJournalEntry(string DataFolder, int index, string name, string entry)
+        {
+            JournalEntry journal = JournalList[index];
+            if (journal != null)
+            {
+                journal.Name = name;
+                journal.Entry = entry;
+                WriteJournalData(DataFolder, journal.ID);
+            }
+        }
+
+        public void EditTask(string DataFolder, string taskID, string name, HabitBoostDifficulty difficulty, int experience, bool completed, DateTime dateDue)
+        {
+            Task? task = TaskList.Find(task => task.ID == taskID);
+            if (task != null)
+            {
+                task.Name = name;
+                task.Difficulty = difficulty;
+                task.Experience = experience;
+                task.Completed = completed;
+                task.DateDue = dateDue;
+                WriteTaskData(DataFolder, task.ID);
+            }
+        }
+        public void EditTask(string DataFolder, int index, string name, HabitBoostDifficulty difficulty, int experience, bool completed, DateTime dateDue)
+        {
+            Task task = TaskList[index];
+            if (task != null)
+            {
+                task.Name = name;
+                task.Difficulty = difficulty;
+                task.Experience = experience;
+                task.Completed = completed;
+                task.DateDue = dateDue;
+                WriteTaskData(DataFolder, task.ID);
+            }
+        }
+
         #endregion
         #endregion
     }

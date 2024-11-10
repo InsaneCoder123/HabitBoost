@@ -138,6 +138,7 @@ namespace UserInterface
         public bool IsPrivate { get; set; } = false;
         public bool IsHorizontalExpandable { get; set; } = false;
         public int MaxFieldTextLength { get; set; } = -1;
+        public List<string> TextRestrictedTo { get; set; } = [];
 
         public void RenderInputField(int RelativeX, int RelativeY) 
         { 

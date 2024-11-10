@@ -23,6 +23,13 @@ namespace UserInterface
             currentDate = DateTime.Today;
         }
 
+        public static void UpdateInformation()
+        {
+            HabitEditInterfaceGraphics.IsHabitListEmpty = User.HabitList.Count == 0;
+            HabitEditInterfaceGraphics.IsJournalListEmpty = User.JournalList.Count == 0;
+            HabitEditInterfaceGraphics.IsToDoListEmpty = User.TaskList.Count == 0;
+        }
+
         public static bool AttemptLogin(string UserName, string Password) 
         {
             if (DoesUserExists(UserName))
@@ -71,6 +78,7 @@ namespace UserInterface
             UserInputStreamString = "";
             UserInputStream = Console.ReadKey(intercept: true);
             UserInputStreamString = UserInputStream.KeyChar.ToString();
+
 
             if (UserInputStream.Key == ConsoleKey.UpArrow && CurrentInterfaceIndexSelectorY != 0)
             {
@@ -129,8 +137,17 @@ namespace UserInterface
                     {
                         ButtonInvokedInformation = currentActiveButton.InvokeButton();
 
+                        
+                        if (ButtonInvokedInformation[0..2] == "-1") 
+                        {
+                            ToggleSpecificGraphicElement("000", true,
+                                    CurrentInterfaceIndexSelectorY.ToString(), true);
+                            CurrentInterfaceIndexSelectorY = 0;
+                            CurrentInterfaceIndexSelectorX = 0;
+                            CurrentInterfaceLevel = 1;
+                        }
                         // Login Invoke
-                        if (ButtonInvokedInformation[0] == '0')
+                        else if (ButtonInvokedInformation[0] == '0')
                         {
                             if (AttemptLogin(ButtonInvokedInformation[1..30].Replace("~", ""),
                                 ButtonInvokedInformation[31..40].Replace("~", "")))
@@ -141,29 +158,29 @@ namespace UserInterface
                         }
 
                         // Switch Screen Invoke
-                        if (ButtonInvokedInformation[0] == '1')
+                       else if (ButtonInvokedInformation[0] == '1')
                         {
                             SwitchScreen((ProgramScreen)int.Parse(ButtonInvokedInformation[1..2]));
                         }
 
-                        // Toggle Boost Data List Invoke
-                        if (ButtonInvokedInformation[0] == '2')
+                        // Toggle Invoke
+                        else if (ButtonInvokedInformation[0] == '2')
                         {
                             ToggleSpecificGraphicElement(ButtonInvokedInformation[1..4], ButtonInvokedInformation[4] == '1', 
-                                CurrentInterfaceIndexSelectorY.ToString());
+                                CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[8] == '1');
                             CurrentInterfaceIndexSelectorY = ButtonInvokedInformation[5] - '0';
                             CurrentInterfaceIndexSelectorX = ButtonInvokedInformation[6] - '0';
                             CurrentInterfaceLevel = ButtonInvokedInformation[7] - '0';
                         }
 
                         // Habit Operation Invoke
-                        if (ButtonInvokedInformation[0] == '3')
+                        else if (ButtonInvokedInformation[0] == '3')
                         {
                             // Add Operation
                             if (ButtonInvokedInformation[1] == '1')
                             {
                                ToggleSpecificGraphicElement("002", true,
-                                   CurrentInterfaceIndexSelectorY.ToString(), true);
+                                   CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
                                 CurrentInterfaceIndexSelectorY = 0;
                                 CurrentInterfaceIndexSelectorX = 0;
                                 CurrentInterfaceLevel = 4;
@@ -172,13 +189,53 @@ namespace UserInterface
                             // Delete Operation
                             if (ButtonInvokedInformation[1] == '2')
                             {
-                                User.DeleteHabit(UserFolderPath, ButtonInvokedInformation[2] - '0');
+                                User.DeleteHabit(UserFolderPath, int.Parse(ButtonInvokedInformation[3..]));
+                                UpdateInformation();
+                                if (HabitEditInterfaceGraphics.IsHabitListEmpty)
+                                {
+                                    ToggleSpecificGraphicElement("003", true,
+                                        CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                    CurrentInterfaceIndexSelectorY = 0;
+                                    CurrentInterfaceIndexSelectorX = 0;
+                                    CurrentInterfaceLevel = 0;
+                                }
+                                else { 
+                                    ToggleSpecificGraphicElement("000", true,
+                                        CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                    CurrentInterfaceIndexSelectorY = 0;
+                                    CurrentInterfaceIndexSelectorX = 0;
+                                    CurrentInterfaceLevel = 1;
+                                }
                             }
 
                             // Edit Operation
                             if (ButtonInvokedInformation[1] == '3')
                             {
-                                //User.EditHabit(UserFolderPath, ButtonInvokedInformation[2] - '0');
+                                ToggleSpecificGraphicElement("002", true,
+                                   CurrentInterfaceIndexSelectorY.ToString() + '2', ButtonInvokedInformation[2] == '1', false);
+                                CurrentInterfaceIndexSelectorY = 0;
+                                CurrentInterfaceIndexSelectorX = 0;
+                                CurrentInterfaceLevel = 4;
+                            }
+                        }
+                        else if (ButtonInvokedInformation[0] == '4')
+                        {
+                            string difficultyString = ButtonInvokedInformation[41..49].Replace("~", "");
+                            if (Enum.TryParse(difficultyString, out HabitBoostDifficulty difficulty))
+                            {
+                                if (ButtonInvokedInformation[49] == '0')
+                                {
+                                    User.EditHabit(UserFolderPath, int.Parse(ButtonInvokedInformation[50..]), ButtonInvokedInformation[1..41].Replace("~", ""), difficulty);
+                                }
+                                else
+                                {
+                                    User.AddHabit(HabitBoostFolderPath, ButtonInvokedInformation[1..41].Replace("~", ""), difficulty);
+                                }
+                                ToggleSpecificGraphicElement("000", true,
+                                    CurrentInterfaceIndexSelectorY.ToString(), true);
+                                CurrentInterfaceIndexSelectorY = 0;
+                                CurrentInterfaceIndexSelectorX = 0;
+                                CurrentInterfaceLevel = 1;
                             }
                         }
 
@@ -202,17 +259,16 @@ namespace UserInterface
                 {
                     string currentActiveGraphicInfoToken = GetCurrentActiveGraphicElement(GetCurrentActiveScene())?.InfoToken ?? "";
                     bool isEscapeInfoPresent =
-                        currentActiveGraphicInfoToken.Length >= 3 &&
-                        !char.IsWhiteSpace(currentActiveGraphicInfoToken[1]) &&
                         !char.IsWhiteSpace(currentActiveGraphicInfoToken[2]) &&
-                        !char.IsWhiteSpace(currentActiveGraphicInfoToken[3]);
+                        !char.IsWhiteSpace(currentActiveGraphicInfoToken[3]) &&
+                        !char.IsWhiteSpace(currentActiveGraphicInfoToken[4]);
                     if (isEscapeInfoPresent)
                     {
-                        ToggleSpecificGraphicElement(currentActiveGraphicInfoToken[1..4], true,
+                        ToggleSpecificGraphicElement(currentActiveGraphicInfoToken[2..5], true,
                             CurrentInterfaceIndexSelectorY.ToString(), true);
-                        CurrentInterfaceIndexSelectorY = currentActiveGraphicInfoToken[4] - '0';
-                        CurrentInterfaceIndexSelectorX = currentActiveGraphicInfoToken[5] - '0';
-                        CurrentInterfaceLevel = currentActiveGraphicInfoToken[6] - '0';
+                        CurrentInterfaceIndexSelectorY = currentActiveGraphicInfoToken[5] - '0';
+                        CurrentInterfaceIndexSelectorX = currentActiveGraphicInfoToken[6] - '0';
+                        CurrentInterfaceLevel = currentActiveGraphicInfoToken[7] - '0';
                     }
                 }
             }
@@ -245,20 +301,6 @@ namespace UserInterface
                         }
                     }
                 }
-            }
-            else if (UserInputStream.Key == ConsoleKey.W)
-            {
-                User.ReadData(UserFolderPath + @"\" + User.Username);
-            }
-            else if (UserInputStream.Key == ConsoleKey.Q)
-            {
-                User.AddHabit(HabitBoostFolderPath);
-                //User.AddJournalEntry();
-                //User.AddTask();
-            }
-            else if (UserInputStream.Key == ConsoleKey.R)
-            {
-                SwitchScreen(ProgramScreen.Main);
             }
         }
     }

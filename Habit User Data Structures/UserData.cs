@@ -22,6 +22,18 @@ namespace Habit_User_Data_Structures
 
         #region File Handling
 
+        public void DoesFolderExist(string FolderName)
+        {
+            if (Directory.Exists(FolderName))
+            {
+                return;
+            }
+            else
+            {
+                Directory.CreateDirectory(FolderName);
+            }
+        }
+
         public void ReadData(string DataFolder)
         {
             try
@@ -31,12 +43,18 @@ namespace Habit_User_Data_Structures
 
                 foreach (string userFolder in userFolders)
                 {
+                    DoesFolderExist(Path.Combine(userFolder, "UserContents"));
                     string userFolderName = Path.GetFileName(userFolder);
                     if (userFolderName == "UserContents")
                     {
+                        DoesFolderExist(Path.Combine(userFolder, "Habit"));
+                        DoesFolderExist(Path.Combine(userFolder, "Journal"));
+                        DoesFolderExist(Path.Combine(userFolder, "TODO"));
+
                         foreach (string userContentFolder in Directory.GetDirectories(userFolder))
                         {
                             string userContentFolderName = Path.GetFileName(userContentFolder);
+                            
                             if (userContentFolderName == "Habit")
                             {
                                 foreach (string habitFile in Directory.GetFiles(userContentFolder))
@@ -61,6 +79,7 @@ namespace Habit_User_Data_Structures
                                     catch (Exception ex)
                                     {
                                         Console.WriteLine($"Error reading habit file '{habitFile}': {ex.Message}");
+                                        Console.ReadKey(intercept: true);
                                     }
                                 }
                             }
@@ -86,6 +105,7 @@ namespace Habit_User_Data_Structures
                                     catch (Exception ex)
                                     {
                                         Console.WriteLine($"Error reading journal file '{journalFile}': {ex.Message}");
+                                        Console.ReadKey(intercept: true);
                                     }
                                 }
                             }
@@ -114,12 +134,9 @@ namespace Habit_User_Data_Structures
                                     catch (Exception ex)
                                     {
                                         Console.WriteLine($"Error reading task file '{taskFile}': {ex.Message}");
+                                        Console.ReadKey(intercept: true);
                                     }
                                 }
-                            }
-                            else if (userContentFolderName == "Achievements")
-                            {
-                                //Handle "Achievements" folder when implemented
                             }
                         }
                     }
@@ -136,6 +153,7 @@ namespace Habit_User_Data_Structures
                         catch (Exception ex)
                         {
                             Console.WriteLine($"Error reading UserData file in '{userFolder}': {ex.Message}");
+                            Console.ReadKey(intercept: true);
                         }
                     }
                 }
@@ -143,14 +161,17 @@ namespace Habit_User_Data_Structures
             catch (DirectoryNotFoundException ex)
             {
                 Console.WriteLine($"Directory not found: {ex.Message}");
+                Console.ReadKey(intercept: true);
             }
             catch (UnauthorizedAccessException ex)
             {
                 Console.WriteLine($"Access denied: {ex.Message}");
+                Console.ReadKey(intercept: true);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+                Console.ReadKey(intercept: true);
             }
         }
 
@@ -296,15 +317,16 @@ namespace Habit_User_Data_Structures
             return "ERROR";
         }
 
-        public void AddHabit(string DataFolder)
+        #region Add Methods
+        public void AddHabit(string DataFolder, string name, HabitBoostDifficulty difficulty)
         {
             Habit habit = new()
             {
                 ID = FindFreeID(HabitList.Cast<IIdentifiable>().ToList()),
-                Name = "New Habit",
-                Experience = 3,
+                Name = name,
+                Experience = 0,
                 Completed = false,
-                Difficulty = HabitBoostDifficulty.Easy,
+                Difficulty = difficulty,
                 DateCreated = DateTime.Now
             };
             HabitList.Add(habit);
@@ -339,7 +361,9 @@ namespace Habit_User_Data_Structures
             TaskList.Add(task);
             WriteTaskData(DataFolder, task.ID);
         }
+        #endregion
 
+        #region Delete Methods
         public void DeleteHabit(string DataFolder, string habitID)
         {
             Habit? habit = HabitList.Find(habit => habit.ID == habitID);
@@ -396,6 +420,30 @@ namespace Habit_User_Data_Structures
             if (Username != null)
                 DeleteBoostDataFile(Path.Combine(DataFolder, Username, "UserContents", "TODO", task.DateCreated.ToString("ddMMyyyy") + task.ID + ".txt"));
         }
+        #endregion
+
+        #region Edit Methods
+        public void EditHabit(string DataFolder, string habitID, string name, HabitBoostDifficulty difficulty)
+        {
+            Habit? habit = HabitList.Find(habit => habit.ID == habitID);
+            if (habit != null)
+            {
+                habit.Name = name;
+                habit.Difficulty = difficulty;
+                WriteHabitData(DataFolder, habit.ID);
+            }
+        }
+        public void EditHabit(string DataFolder, int index, string name, HabitBoostDifficulty difficulty)
+        {
+            Habit habit = HabitList[index];
+            if (habit != null)
+            {
+                habit.Name = name;
+                habit.Difficulty = difficulty;
+                WriteHabitData(DataFolder, habit.ID);
+            }
+        }
+        #endregion
         #endregion
     }
 }

@@ -13,7 +13,8 @@ namespace Main
             UserData.VerifySystemFolder(ProgramManager.HabitBoostFolderPath);
 
             while (ProgramManager.isProgramRunning == true)
-            {           
+            {
+                ProgramManager.UpdateInformation();
                 ScreenRenderer.RenderScreen(ref ProgramManager.User);
                 ProgramManager.UserInput();
             }

@@ -147,7 +147,7 @@ namespace UserInterface
             }
         }
 
-        public static void ToggleSpecificGraphicElement(string ID, bool toggle, string token, bool disableCurrentElement = false)
+        public static void ToggleSpecificGraphicElement(string ID, bool toggle, string token, bool disableCurrentElement = false, bool overwritePreviousInterfaceToken = true)
         {
             var nextGraphicElement = GetCurrentActiveScene().Find(x => x.ID == ID);
             var currentActiveGraphicElement = GetCurrentActiveGraphicElement(GetCurrentActiveScene());
@@ -160,13 +160,21 @@ namespace UserInterface
                     {
                         scene.IsGraphicElementActive = false;
                         scene.IsGraphicElementVisible = !disableCurrentElement;
+
+                        nextGraphicElement.IsGraphicElementActive = toggle;
+                        nextGraphicElement.IsGraphicElementVisible = toggle;
+
+
+                        string infoToken = nextGraphicElement.InfoToken;
+                        if (overwritePreviousInterfaceToken)
+                        {
+                            nextGraphicElement.InfoToken = token.PadRight(2, ' ') + infoToken[2..];
+                        }
+                        else
+                        {
+                            nextGraphicElement.InfoToken = currentActiveGraphicElement.InfoToken[0].ToString() + token[1].ToString() + infoToken[2..];
+                        }
                     }
-                    nextGraphicElement.IsGraphicElementActive = toggle;
-                    nextGraphicElement.IsGraphicElementVisible = toggle;
-
-
-                    string infoToken = nextGraphicElement.InfoToken;
-                    nextGraphicElement.InfoToken = token + infoToken[1..];
                 }
             }
         }
@@ -265,7 +273,8 @@ namespace UserInterface
                         {
                             foreach (InputField inputField in graphicElement.InputFields)
                             {
-                                if (inputField.InterfaceIndexY == CurrentInterfaceIndexSelectorY && inputField.MenuInterfaceLevel == CurrentInterfaceLevel)
+                                if (inputField.InterfaceIndexY == CurrentInterfaceIndexSelectorY && inputField.MenuInterfaceLevel == CurrentInterfaceLevel &&
+                                    inputField.InterfaceIndexX == CurrentInterfaceIndexSelectorX)
                                 { inputField.IsInterfaceSelected = true; }
                                 else { inputField.IsInterfaceSelected = false; }
                                 inputField.RenderInputField(graphicElement.RenderPointerX, graphicElement.RenderPointerY);
@@ -278,7 +287,8 @@ namespace UserInterface
                         {
                             foreach (Button buttons in graphicElement.Buttons)
                             {
-                                if (buttons.InterfaceIndexY == CurrentInterfaceIndexSelectorY && buttons.MenuInterfaceLevel == CurrentInterfaceLevel)
+                                if (buttons.InterfaceIndexY == CurrentInterfaceIndexSelectorY && buttons.MenuInterfaceLevel == CurrentInterfaceLevel
+                                    && buttons.InterfaceIndexX == CurrentInterfaceIndexSelectorX)
                                 { buttons.IsInterfaceSelected = true; }
                                 else { buttons.IsInterfaceSelected = false; }
                                 buttons.RenderButton(graphicElement.RenderPointerX, graphicElement.RenderPointerY, 

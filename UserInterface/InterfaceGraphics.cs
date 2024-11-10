@@ -25,15 +25,21 @@ namespace UserInterface
         public bool IsGraphicElementActive { get; set; } = false;
         public bool IsDynamic { get; set; } = false;
 
+        public static bool IsHabitListEmpty { get; set; } = false;
+        public static bool IsJournalListEmpty { get; set; } = false;
+        public static bool IsToDoListEmpty { get; set; } = false;
+
+
         public int AbsolutePositionX { get; set; } = 0;
         public int AbsolutePositionY { get; set; } = 0;
 
         public string InfoToken { get; set; } = "       "; // Token to be used to pass information from previus graphic to the next graphic
-                                                          // 0 - Previous Interface Index Y
-                                                          // 1-3 - Escape Key Graphic Element Linked to this graphic element
-                                                          // 4 - Escape Graphic Starting Interface Index Y
-                                                          // 5 - Escape Graphic Starting Interface Index X
-                                                          // 6 - Escape Graphic Starting Interface Level
+                                                           // 0 - Previous Interface Index Y 
+                                                           // 1 - Add Mode/Edit Mode (1/2)
+                                                           // 2-4 - Escape Key Graphic Element Linked to this graphic element
+                                                           // 5 - Escape Graphic Starting Interface Index Y
+                                                           // 6 - Escape Graphic Starting Interface Index X
+                                                           // 7 - Escape Graphic Starting Interface Level
 
         public virtual string Graphic { get; set; } = "";
         public List<InputField>? InputFields { get; set; }
@@ -247,6 +253,7 @@ namespace UserInterface
 
         public TopBarGraphics()
         {
+            ID = "003";
             Buttons = [];
             Labels = [];
             UsernameLabel.LabelText = "USERNAME11";
@@ -307,7 +314,16 @@ namespace UserInterface
 
         public string SetHabitListActive()
         {
-            return "2" + "000" + "1" + "0" + "0" + "1"; // Type - ID of the habit list - 1/0 True/False - InterfaceY index default - InterfaceX index default- Interface level default
+            if (IsHabitListEmpty)
+            {
+                return "3" + "1" + "0" + InfoToken[0]; 
+            }
+            return "2" + "000" + "1" + "0" + "0" + "1" + "0"; // Type - ID to toggle-
+                                                            // 1/0 True/False -
+                                                            // InterfaceY index default -
+                                                            // InterfaceX index default-
+                                                            // Interface level default
+                                                            // 0 false 1 true, if turn off current active graphic
         }
     }
 
@@ -407,12 +423,13 @@ namespace UserInterface
 
         public string SetHabitOptionActive()
         {
-            return "2" + "001" + "1" + "0" + "0" + "3"; // Type -
+            return "2" + "001" + "1" + "0" + "0" + "3" + "0"; // Type -
                                                         // ID of the habit list -
                                                         // 1/0 True/False -
                                                         // InterfaceY index default -
                                                         // InterfaceX index default-
                                                         // Interface level default -
+                                                        // 0 false 1 true, if turn off current active graphic
 
         }
     }
@@ -441,7 +458,7 @@ namespace UserInterface
         public HabitOptionGraphics()
         {
             ID = "001";
-            InfoToken = " 000001";
+            InfoToken = "  000001";
             IsGraphicElementVisibleDefault = false;
             Buttons = [];
 
@@ -476,7 +493,7 @@ namespace UserInterface
             EditButton.InterfaceIndexY = 2;
             EditButton.InterfaceIndexX = 0;
             EditButton.IsInvokable = true;
-            // FinishButton.SetInvokedMethod(SwitchToLoginScreen);
+            EditButton.SetInvokedMethod(EditHabit);
 
             DeleteButton.HorizontalLength = 16;
             DeleteButton.VerticalLength = 1;
@@ -497,14 +514,23 @@ namespace UserInterface
         
         public string DeleteSelectedHabit()
         {
-            return "3" + "2" + InfoToken[0]; // Type 3 (Operation) -
+            return "3" + "2" + "1" + InfoToken[0]; // Type 3 (Operation) -
+                                            // Disable Current Element
                                              // Add, Delete, Edit
                                              // Habit Index
         }
 
         public string AddHabit()
         {
-            return "3" + "1" + InfoToken[0]; // Type 3 (Operation) -
+            return "3" + "1" + "1" + InfoToken[0]; // Type 3 (Operation) -
+                                             // Disable Current Element
+                                             // Add, Delete, Edit
+                                             // Habit Index
+        }
+        public string EditHabit()
+        {
+            return "3" + "3" + "1" + InfoToken[0]; // Type 3 (Operation) -
+                                             // Disable Current Element
                                              // Add, Delete, Edit
                                              // Habit Index
         }
@@ -540,7 +566,7 @@ namespace UserInterface
         public HabitEditInterfaceGraphics()
         {
             ID = "002";
-            InfoToken = " 000102";
+            InfoToken = " 1000102";
             IsGraphicElementVisibleDefault = false;
             Buttons = [];
             InputFields = [];
@@ -573,6 +599,8 @@ namespace UserInterface
             ConfirmButton.ButtonText = "  CONFIRM   ";
             ConfirmButton.InterfaceIndexY = 2;
             ConfirmButton.InterfaceIndexX = 0;
+            ConfirmButton.IsInvokable = true;
+            ConfirmButton.SetInvokedMethod(ConfirmAddHabit);
 
             CancelButton.HorizontalLength = 12;
             CancelButton.VerticalLength = 1;
@@ -582,6 +610,8 @@ namespace UserInterface
             CancelButton.ButtonText = "   CANCEL   ";
             CancelButton.InterfaceIndexY = 2;
             CancelButton.InterfaceIndexX = 1;
+            CancelButton.IsInvokable = true;
+            CancelButton.SetInvokedMethod(CancelAddHabit);
 
             HabitNameInput.HorizontalLength = 28;
             HabitNameInput.VerticalLength = 1;
@@ -612,6 +642,43 @@ namespace UserInterface
 
             InputFields.Add(HabitNameInput);
             InputFields.Add(HabitDifficultyInput);
+        }
+
+        public string ConfirmAddHabit()
+        {
+            string HabitToken = "4";
+
+
+
+            // The next 40 characters are the habit name
+            // The next 8 characters are the habit difficulty
+
+            //TODO check if difficulty input text is valid
+            HabitToken += HabitNameInput.FieldText.PadRight(40, '~');
+            HabitToken += HabitDifficultyInput.FieldText.PadRight(8, '~');
+
+            foreach (InputField inputField in InputFields)
+            {
+                inputField.FieldText = "";
+            }
+
+            if (InfoToken[1] == '2')
+            {
+                HabitToken += "0" + InfoToken[0];
+            }
+            else
+            {
+                HabitToken += " ";
+            }
+            return HabitToken;
+        }
+
+        public string CancelAddHabit() {
+            foreach (InputField inputField in InputFields)
+            {
+                inputField.FieldText = "";
+            }
+            return "-1";
         }
     }
     #endregion

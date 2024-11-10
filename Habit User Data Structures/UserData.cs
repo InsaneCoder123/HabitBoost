@@ -443,6 +443,15 @@ namespace Habit_User_Data_Structures
                 WriteHabitData(DataFolder, habit.ID);
             }
         }
+        public void EditHabit(string DataFolder, int index, bool completed)
+        {
+            Habit habit = HabitList[index];
+            if (habit != null)
+            {
+                habit.Completed = completed;
+                WriteHabitData(DataFolder, habit.ID);
+            }
+        }
 
         public void EditJournalEntry(string DataFolder, string journalID, string name, string entry)
         {

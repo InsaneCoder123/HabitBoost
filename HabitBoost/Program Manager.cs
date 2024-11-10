@@ -219,6 +219,18 @@ namespace UserInterface
                                 CurrentInterfaceIndexSelectorX = 0;
                                 CurrentInterfaceLevel = 4;
                             }
+
+                            // Finish Operation
+                            if (ButtonInvokedInformation[1] == '4')
+                            {
+                                User.EditHabit(UserFolderPath, int.Parse(ButtonInvokedInformation[3..]), true);
+                                UpdateInformation();
+                                ToggleSpecificGraphicElement("000", true,
+                                   CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                CurrentInterfaceIndexSelectorY = 0;
+                                CurrentInterfaceIndexSelectorX = 0;
+                                CurrentInterfaceLevel = 1;
+                            }
                         }
                         else if (ButtonInvokedInformation[0] == '4')
                         {

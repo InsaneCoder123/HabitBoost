@@ -471,7 +471,7 @@ namespace UserInterface
             FinishButton.InterfaceIndexY = 0;
             FinishButton.InterfaceIndexX = 0;
             FinishButton.IsInvokable = true;
-            // FinishButton.SetInvokedMethod(SwitchToLoginScreen);
+            FinishButton.SetInvokedMethod(FinishSelectedHabit);
 
             AddButton.HorizontalLength = 16;
             AddButton.VerticalLength = 1;
@@ -511,28 +511,36 @@ namespace UserInterface
             Buttons.Add(EditButton);
             Buttons.Add(DeleteButton);
         }
-        
+
+        public string FinishSelectedHabit()
+        {
+            return "3" + "4" + "1" + InfoToken[0]; // Type 3 (Operation) - 
+                                                   // Add, Delete, Edit, Finish
+                                                   // Disable Current Element
+                                                   // Habit Index
+        }
+
         public string DeleteSelectedHabit()
         {
             return "3" + "2" + "1" + InfoToken[0]; // Type 3 (Operation) -
-                                            // Disable Current Element
-                                             // Add, Delete, Edit
-                                             // Habit Index
+                                                   // Add, Delete, Edit, Finish
+                                                   // Disable Current Element
+                                                   // Habit Index
         }
 
         public string AddHabit()
         {
             return "3" + "1" + "1" + InfoToken[0]; // Type 3 (Operation) -
-                                             // Disable Current Element
-                                             // Add, Delete, Edit
-                                             // Habit Index
+                                                   // Add, Delete, Edit, Finish
+                                                   // Disable Current Element
+                                                   // Habit Index
         }
         public string EditHabit()
         {
             return "3" + "3" + "1" + InfoToken[0]; // Type 3 (Operation) -
-                                             // Disable Current Element
-                                             // Add, Delete, Edit
-                                             // Habit Index
+                                                   // Add, Delete, Edit, Finish
+                                                   // Disable Current Element
+                                                   // Habit Index
         }
     }
 

@@ -19,7 +19,7 @@ namespace UserInterface
         }
 
 
-        public static int ScreenWidth { get; set; } = 100;
+        public static int ScreenWidth { get; set; } = 101;
         public static int ScreenHeight { get; set; } = 26;
 
         public static int CurrentInterfaceLevel { get; set; } = 0;
@@ -41,6 +41,7 @@ namespace UserInterface
         public static TopBarGraphics TopBarGraphics { get; set; } = new TopBarGraphics();
         public static HabitListGraphics HabitListGraphics { get; set; } = new HabitListGraphics();
         public static HabitOptionGraphics HabitOptionGraphics { get; set; } = new HabitOptionGraphics();
+        public static HabitEditInterfaceGraphics HabitEditInterfaceGraphics { get; set; } = new HabitEditInterfaceGraphics();
         #endregion
 
         public static GraphicElement? currentGraphicElement { get; set; }
@@ -106,6 +107,10 @@ namespace UserInterface
             HabitListGraphics.IsDynamic = true;
             HabitListGraphics.AdjustVariableData(ref user);
 
+            HabitEditInterfaceGraphics.AbsolutePositionX = 70;
+            HabitEditInterfaceGraphics.AbsolutePositionY = 4;
+            HabitEditInterfaceGraphics.IsGraphicElementVisible = false;
+
             HabitOptionGraphics.AbsolutePositionX = 75;
             HabitOptionGraphics.AbsolutePositionY = 4;
 
@@ -117,6 +122,7 @@ namespace UserInterface
             MainScene.Add(TopBarGraphics);
             MainScene.Add(HabitListGraphics);
             MainScene.Add(HabitOptionGraphics);
+            MainScene.Add(HabitEditInterfaceGraphics);
 
         }
 

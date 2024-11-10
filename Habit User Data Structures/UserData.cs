@@ -370,6 +370,14 @@ namespace Habit_User_Data_Structures
             }
         }
 
+        public void DeleteJournalEntry(string DataFolder, int index)
+        {
+            JournalEntry journal = JournalList[index];
+            JournalList.RemoveAt(index);
+            if (Username != null)
+                DeleteBoostDataFile(Path.Combine(DataFolder, Username, "UserContents", "Journal", journal.DateCreated.ToString("ddMMyyyy") + journal.ID + ".txt"));
+        }
+
         public void DeleteTask(string DataFolder, string taskID)
         {
             Task? task = TaskList.Find(task => task.ID == taskID);
@@ -379,6 +387,14 @@ namespace Habit_User_Data_Structures
                 if (Username != null)
                     DeleteBoostDataFile(Path.Combine(DataFolder, Username, "UserContents", "TODO", task.DateCreated.ToString("ddMMyyyy") + task.ID + ".txt"));
             }
+        }
+
+        public void DeleteTask(string DataFolder, int index)
+        {
+            Task task = TaskList[index];
+            TaskList.RemoveAt(index);
+            if (Username != null)
+                DeleteBoostDataFile(Path.Combine(DataFolder, Username, "UserContents", "TODO", task.DateCreated.ToString("ddMMyyyy") + task.ID + ".txt"));
         }
         #endregion
     }

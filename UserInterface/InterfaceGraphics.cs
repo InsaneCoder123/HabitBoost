@@ -465,7 +465,7 @@ namespace UserInterface
             AddButton.InterfaceIndexY = 1;
             AddButton.InterfaceIndexX = 0;
             AddButton.IsInvokable = true;
-            // FinishButton.SetInvokedMethod(SwitchToLoginScreen);
+            AddButton.SetInvokedMethod(AddHabit);
 
             EditButton.HorizontalLength = 16;
             EditButton.VerticalLength = 1;
@@ -500,6 +500,118 @@ namespace UserInterface
             return "3" + "2" + InfoToken[0]; // Type 3 (Operation) -
                                              // Add, Delete, Edit
                                              // Habit Index
+        }
+
+        public string AddHabit()
+        {
+            return "3" + "1" + InfoToken[0]; // Type 3 (Operation) -
+                                             // Add, Delete, Edit
+                                             // Habit Index
+        }
+    }
+
+    public class HabitEditInterfaceGraphics : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&&&&&&&&&&&&&@" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@%%%%%%%%%%%%%%%%%%%%%%%%%%%%@" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&&&&&&&&&&&&&@" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@%%%%%%%%%%%%%%%%%%%%%%%%%%%%@" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@@&&&&&&&&&&&&@@&&&&&&&&&&&&@@" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+
+        public override int MaxWidth { get; set; } = 30;
+        public override int MaxHeight { get; set; } = 12;
+
+        public Button HabitUserName { get; set; } = new Button();
+        public Button HabitDifficulty { get; set; } = new Button();
+        public Button ConfirmButton { get; set; } = new Button();
+        public Button CancelButton { get; set; } = new Button();
+
+        public InputField HabitNameInput { get; set; } = new InputField();
+        public InputField HabitDifficultyInput { get; set; } = new InputField();
+
+        public HabitEditInterfaceGraphics()
+        {
+            ID = "002";
+            InfoToken = " 000102";
+            IsGraphicElementVisibleDefault = false;
+            Buttons = [];
+            InputFields = [];
+
+            HabitUserName.HorizontalLength = 28;
+            HabitUserName.VerticalLength = 1;
+            HabitUserName.XPosition = 1;
+            HabitUserName.YPosition = 1;
+            HabitUserName.MenuInterfaceLevel = 4;
+            HabitUserName.ButtonText = "          HABIT NAME          ";
+            HabitUserName.InterfaceIndexY = 0;
+            HabitUserName.InterfaceIndexX = 0;
+            HabitUserName.BindedInterface = HabitNameInput;
+
+            HabitDifficulty.HorizontalLength = 28;
+            HabitDifficulty.VerticalLength = 1;
+            HabitDifficulty.XPosition = 1;
+            HabitDifficulty.YPosition = 6;
+            HabitDifficulty.MenuInterfaceLevel = 4;
+            HabitDifficulty.ButtonText = "       HABIT DIFFICULTY       ";
+            HabitDifficulty.InterfaceIndexY = 1;
+            HabitDifficulty.InterfaceIndexX = 0;
+            HabitDifficulty.BindedInterface = HabitDifficultyInput;
+
+            ConfirmButton.HorizontalLength = 12;
+            ConfirmButton.VerticalLength = 1;
+            ConfirmButton.XPosition = 2;
+            ConfirmButton.YPosition = 10;
+            ConfirmButton.MenuInterfaceLevel = 4;
+            ConfirmButton.ButtonText = "  CONFIRM   ";
+            ConfirmButton.InterfaceIndexY = 2;
+            ConfirmButton.InterfaceIndexX = 0;
+
+            CancelButton.HorizontalLength = 12;
+            CancelButton.VerticalLength = 1;
+            CancelButton.XPosition = 16;
+            CancelButton.YPosition = 10;
+            CancelButton.MenuInterfaceLevel = 4;
+            CancelButton.ButtonText = "   CANCEL   ";
+            CancelButton.InterfaceIndexY = 2;
+            CancelButton.InterfaceIndexX = 1;
+
+            HabitNameInput.HorizontalLength = 28;
+            HabitNameInput.VerticalLength = 1;
+            HabitNameInput.XPosition = 1;
+            HabitNameInput.YPosition = 3;
+            HabitNameInput.MenuInterfaceLevel = 5;
+            HabitNameInput.FieldText = "";
+            HabitNameInput.IsHorizontalExpandable = true;
+            HabitNameInput.InterfaceIndexY = 0;
+            HabitNameInput.InterfaceIndexX = 0;
+            HabitNameInput.MaxFieldTextLength = 40;
+
+            HabitDifficultyInput.HorizontalLength = 28;
+            HabitDifficultyInput.VerticalLength = 1;
+            HabitDifficultyInput.XPosition = 1;
+            HabitDifficultyInput.YPosition = 8;
+            HabitDifficultyInput.MenuInterfaceLevel = 5;
+            HabitDifficultyInput.FieldText = "";
+            HabitDifficultyInput.IsHorizontalExpandable = true;
+            HabitDifficultyInput.InterfaceIndexY = 1;
+            HabitDifficultyInput.InterfaceIndexX = 0;
+            HabitDifficultyInput.MaxFieldTextLength = 10;
+
+            Buttons.Add(HabitUserName);
+            Buttons.Add(HabitDifficulty);
+            Buttons.Add(ConfirmButton);
+            Buttons.Add(CancelButton);
+
+            InputFields.Add(HabitNameInput);
+            InputFields.Add(HabitDifficultyInput);
         }
     }
     #endregion

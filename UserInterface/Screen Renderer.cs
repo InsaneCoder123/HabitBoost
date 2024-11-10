@@ -40,6 +40,7 @@ namespace UserInterface
 
         public static TopBarGraphics TopBarGraphics { get; set; } = new TopBarGraphics();
         public static HabitListGraphics HabitListGraphics { get; set; } = new HabitListGraphics();
+        public static HabitOptionGraphics HabitOptionGraphics { get; set; } = new HabitOptionGraphics();
         #endregion
 
         public static GraphicElement? currentGraphicElement { get; set; }
@@ -89,20 +90,25 @@ namespace UserInterface
 
             LoginGraphic.AbsolutePositionX = 4;
             LoginGraphic.AbsolutePositionY = 2;
-            LoginGraphic.IsGraphicElementActive = false;
+            LoginGraphic.IsGraphicElementVisible = false;
 
             MainMenuGraphic.AbsolutePositionX = 4;
             MainMenuGraphic.AbsolutePositionY = 10;
             MainMenuGraphic.IsGraphicElementActive = true;
+            MainMenuGraphic.IsGraphicElementVisible = true;
 
             TopBarGraphics.AbsolutePositionX = 1;
             TopBarGraphics.AbsolutePositionY = 1;
-            TopBarGraphics.IsGraphicElementActive = false;
+            TopBarGraphics.IsGraphicElementVisible = false;
 
             HabitListGraphics.AbsolutePositionX = 1;
             HabitListGraphics.AbsolutePositionY = 4;
             HabitListGraphics.IsDynamic = true;
             HabitListGraphics.AdjustVariableData(ref user);
+
+            HabitOptionGraphics.AbsolutePositionX = 75;
+            HabitOptionGraphics.AbsolutePositionY = 4;
+
 
             MainMenuScene.Add(MainMenuGraphic);
 
@@ -110,6 +116,7 @@ namespace UserInterface
 
             MainScene.Add(TopBarGraphics);
             MainScene.Add(HabitListGraphics);
+            MainScene.Add(HabitOptionGraphics);
 
         }
 
@@ -128,17 +135,28 @@ namespace UserInterface
         {
             foreach (GraphicElement graphicElement in graphicElements)
             {
-                if (graphicElement.IsGraphicElementActiveDefault)
-                graphicElement.IsGraphicElementActive = toggle;
+                if (graphicElement.IsGraphicElementVisibleDefault)
+                graphicElement.IsGraphicElementVisible = toggle;
+                if (!toggle) { graphicElement.IsGraphicElementActive = false; }
             }
         }
 
         public static void ToggleSpecificGraphicElement(string ID, bool toggle)
         {
-            var element = GetCurrentActiveScene().Find(x => x.ID == ID);
-            if (element != null)
+            var nextGraphicElement = GetCurrentActiveScene().Find(x => x.ID == ID);
+            var currentActiveGraphicElement = GetCurrentActiveGraphicElement(GetCurrentActiveScene());
+            if (currentActiveGraphicElement != null)
             {
-                element.IsGraphicElementActive = toggle;
+                var scene = GetCurrentActiveScene()?.Find(x => x.ID == currentActiveGraphicElement.ID);
+                if (nextGraphicElement != null && scene != null)
+                {
+                    if (currentActiveGraphicElement != null)
+                    {
+                        scene.IsGraphicElementActive = false;
+                    }
+                    nextGraphicElement.IsGraphicElementActive = toggle;
+                    nextGraphicElement.IsGraphicElementVisible = toggle;
+                }
             }
         }
 
@@ -165,26 +183,31 @@ namespace UserInterface
                 case ProgramScreen.MainMenu:
                     ToggleAllGraphicElements(ref mainMenuScene, true);
                     CurrentProgramScreen = ProgramScreen.MainMenu; // Update the property if modified
+                    mainMenuScene[0].IsGraphicElementActive = true;
                     MainMenuScene = mainMenuScene; // Update the property if modified
                     break;
                 case ProgramScreen.Login:
                     ToggleAllGraphicElements(ref loginScene, true);
                     CurrentProgramScreen = ProgramScreen.Login;
+                    loginScene[0].IsGraphicElementActive = true;
                     LoginScene = loginScene;
                     break;
                 case ProgramScreen.CreateUser:
                     ToggleAllGraphicElements(ref createUserScene, true);
                     CurrentProgramScreen = ProgramScreen.CreateUser;
+                    createUserScene[0].IsGraphicElementActive = true;
                     CreateUserScene = createUserScene;
                     break;
                 case ProgramScreen.Main:
                     ToggleAllGraphicElements(ref mainScene, true);
                     CurrentProgramScreen = ProgramScreen.Main;
+                    mainScene[0].IsGraphicElementActive = true;
                     MainScene = mainScene;
                     break;
                 default:
                     ToggleAllGraphicElements(ref mainMenuScene, true);
                     CurrentProgramScreen = ProgramScreen.MainMenu;
+                    mainMenuScene[0].IsGraphicElementActive = true;
                     MainMenuScene = mainMenuScene;
                     break;
             }
@@ -219,12 +242,12 @@ namespace UserInterface
             foreach (GraphicElement graphicElement in CurrentActiveScene)
             {
                 if (x == graphicElement.AbsolutePositionX + graphicElement.RenderPointerX &&
-                    y == graphicElement.AbsolutePositionY + graphicElement.RenderPointerY && graphicElement.IsGraphicElementActive == true)
+                    y == graphicElement.AbsolutePositionY + graphicElement.RenderPointerY && graphicElement.IsGraphicElementVisible == true)
                 {
                     int graphicIndex = (graphicElement.RenderPointerY * graphicElement.MaxWidth) + graphicElement.RenderPointerX;
 
                     if (graphicElement.Graphic[graphicIndex] == '@')
-                    { CustomDisplay.DisplayColoredText("+", ConsoleColor.Green); }
+                    { CustomDisplay.DisplayColoredText(" ", ConsoleColor.Green); }
                     else if (graphicElement.Graphic[graphicIndex] == '%') 
                     {
                         if (graphicElement.InputFields != null)

@@ -2,7 +2,7 @@
 
 namespace UserInterface
 {
-    // @ = Green Color
+    // @ = Green Color - Blank temporarily
     // . = Blank Space
     // % = Input Field
     // # = Next Line
@@ -20,8 +20,9 @@ namespace UserInterface
         public virtual int MaxWidth { get; set; } = 0;
         public virtual int MaxHeight { get; set; } = 0;
 
+        public bool IsGraphicElementVisible { get; set; } = false;
+        public bool IsGraphicElementVisibleDefault { get; set; } = true;
         public bool IsGraphicElementActive { get; set; } = false;
-        public bool IsGraphicElementActiveDefault { get; set; } = true;
         public bool IsDynamic { get; set; } = false;
 
         public int AbsolutePositionX { get; set; } = 0;
@@ -299,7 +300,7 @@ namespace UserInterface
 
         public string SetHabitListActive()
         {
-            return "2" + "0" + "1" + "0" + "0" + "1"; // Type - ID of the habit list - 1/0 True/False - InterfaceY index default - InterfaceX index default- Interface level default
+            return "2" + "000" + "1" + "0" + "0" + "1"; // Type - ID of the habit list - 1/0 True/False - InterfaceY index default - InterfaceX index default- Interface level default
         }
     }
 
@@ -334,8 +335,8 @@ namespace UserInterface
 
         public HabitListGraphics()
         {
-            ID = "0";
-            IsGraphicElementActiveDefault = false;
+            ID = "000";
+            IsGraphicElementVisibleDefault = false;
         }
 
         public override void AdjustVariableData(ref UserData user)
@@ -356,6 +357,18 @@ namespace UserInterface
                         LabelText = "".PadRight(40) + "   " + "".PadRight(10)
                     };
                     Labels.Add(habitLabels);
+                    Button habitButtons = new()
+                    {
+                        HorizontalLength = 1,
+                        VerticalLength = 1,
+                        XPosition = 2,
+                        YPosition = 1 + (i * 2),
+                        MenuInterfaceLevel = -1,
+                        ButtonText = " ",
+                        InterfaceIndexY = i,
+                        InterfaceIndexX = 0
+                    };
+                    Buttons.Add(habitButtons);
                     continue;
                 }
                 Button habitButton = new()
@@ -367,8 +380,10 @@ namespace UserInterface
                     MenuInterfaceLevel = 1,
                     ButtonText = " ",
                     InterfaceIndexY = i,
-                    InterfaceIndexX = 0
+                    InterfaceIndexX = 0,
+                    IsInvokable = true,
                 };
+                habitButton.SetInvokedMethod(SetHabitListActive);
                 Buttons.Add(habitButton);
 
                 VariableLabel habitLabel = new()
@@ -382,6 +397,90 @@ namespace UserInterface
                 Labels.Add(habitLabel);
             }
         }
+
+        public string SetHabitListActive()
+        {
+            return "2" + "001" + "1" + "0" + "0" + "3"; // Type - ID of the habit list - 1/0 True/False - InterfaceY index default - InterfaceX index default- Interface level default
+        }
+    }
+
+    public class HabitOptionGraphics : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&@" + //FINISH
+            "@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&@" + //ADD
+            "@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&@" + //EDIT
+            "@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&@" + //DELETE
+            "@@@@@@@@@@@@@@@@@@";
+
+        public override int MaxWidth { get; set; } = 18;
+        public override int MaxHeight { get; set; } = 9;
+
+        public Button FinishButton { get; set; } = new Button();
+        public Button AddButton { get; set; } = new Button();
+        public Button EditButton { get; set; } = new Button();
+        public Button DeleteButton { get; set; } = new Button();
+
+        public HabitOptionGraphics()
+        {
+            ID = "001";
+            IsGraphicElementVisibleDefault = false;
+            Buttons = [];
+
+            FinishButton.HorizontalLength = 16;
+            FinishButton.VerticalLength = 1;
+            FinishButton.XPosition = 1;
+            FinishButton.YPosition = 1;
+            FinishButton.MenuInterfaceLevel = 3;
+            FinishButton.ButtonText = "     FINISH     ";
+            FinishButton.InterfaceIndexY = 0;
+            FinishButton.InterfaceIndexX = 0;
+            FinishButton.IsInvokable = true;
+            // FinishButton.SetInvokedMethod(SwitchToLoginScreen);
+
+            AddButton.HorizontalLength = 16;
+            AddButton.VerticalLength = 1;
+            AddButton.XPosition = 1;
+            AddButton.YPosition = 3;
+            AddButton.MenuInterfaceLevel = 3;
+            AddButton.ButtonText = "      ADD       ";
+            AddButton.InterfaceIndexY = 1;
+            AddButton.InterfaceIndexX = 0;
+            AddButton.IsInvokable = true;
+            // FinishButton.SetInvokedMethod(SwitchToLoginScreen);
+
+            EditButton.HorizontalLength = 16;
+            EditButton.VerticalLength = 1;
+            EditButton.XPosition = 1;
+            EditButton.YPosition = 5;
+            EditButton.MenuInterfaceLevel = 3;
+            EditButton.ButtonText = "      EDIT      ";
+            EditButton.InterfaceIndexY = 2;
+            EditButton.InterfaceIndexX = 0;
+            EditButton.IsInvokable = true;
+            // FinishButton.SetInvokedMethod(SwitchToLoginScreen);
+
+            DeleteButton.HorizontalLength = 16;
+            DeleteButton.VerticalLength = 1;
+            DeleteButton.XPosition = 1;
+            DeleteButton.YPosition = 7;
+            DeleteButton.MenuInterfaceLevel = 3;
+            DeleteButton.ButtonText = "     DELETE     ";
+            DeleteButton.InterfaceIndexY = 3;
+            DeleteButton.InterfaceIndexX = 0;
+            DeleteButton.IsInvokable = true;
+            // FinishButton.SetInvokedMethod(SwitchToLoginScreen);
+
+            Buttons.Add(FinishButton);
+            Buttons.Add(AddButton);
+            Buttons.Add(EditButton);
+            Buttons.Add(DeleteButton);
+        }
+
     }
     #endregion
 }

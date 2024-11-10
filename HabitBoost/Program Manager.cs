@@ -149,15 +149,10 @@ namespace UserInterface
                         // Toggle Boost Data List Invoke
                         if (ButtonInvokedInformation[0] == '2')
                         {
-                            switch (ButtonInvokedInformation[1])
-                            {
-                                case '0':
-                                    ToggleSpecificGraphicElement("0", ButtonInvokedInformation[2] == '1');
-                                    CurrentInterfaceIndexSelectorY = ButtonInvokedInformation[3] - '0';
-                                    CurrentInterfaceIndexSelectorX = ButtonInvokedInformation[4] - '0';
-                                    CurrentInterfaceLevel = ButtonInvokedInformation[5] - '0';
-                                    break;
-                            }
+                            ToggleSpecificGraphicElement(ButtonInvokedInformation[1..4], ButtonInvokedInformation[4] == '1');
+                            CurrentInterfaceIndexSelectorY = ButtonInvokedInformation[5] - '0';
+                            CurrentInterfaceIndexSelectorX = ButtonInvokedInformation[6] - '0';
+                            CurrentInterfaceLevel = ButtonInvokedInformation[7] - '0';
                         }
 
                     }
@@ -181,7 +176,7 @@ namespace UserInterface
             {
                 foreach (GraphicElement graphicElement in GetCurrentActiveScene())
                 {
-                    if (graphicElement.InputFields != null && graphicElement.IsGraphicElementActive == true)
+                    if (graphicElement.InputFields != null && graphicElement.IsGraphicElementVisible == true)
                     {
                         foreach (InputField inputField in graphicElement.InputFields)
                         {

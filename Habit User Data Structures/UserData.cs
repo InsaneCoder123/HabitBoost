@@ -351,6 +351,14 @@ namespace Habit_User_Data_Structures
             }
         }
 
+        public void DeleteHabit(string DataFolder, int index)
+        {
+            Habit habit = HabitList[index];
+            HabitList.RemoveAt(index);
+            if (Username != null)
+                DeleteBoostDataFile(Path.Combine(DataFolder, Username, "UserContents", "Habit", habit.DateCreated.ToString("ddMMyyyy") + habit.ID + ".txt"));
+        }
+
         public void DeleteJournalEntry(string DataFolder, string journalID)
         {
             JournalEntry? journal = JournalList.Find(journal => journal.ID == journalID);

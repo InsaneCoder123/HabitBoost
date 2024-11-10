@@ -28,6 +28,13 @@ namespace UserInterface
         public int AbsolutePositionX { get; set; } = 0;
         public int AbsolutePositionY { get; set; } = 0;
 
+        public string InfoToken { get; set; } = "       "; // Token to be used to pass information from previus graphic to the next graphic
+                                                          // 0 - Previous Interface Index Y
+                                                          // 1-3 - Escape Key Graphic Element Linked to this graphic element
+                                                          // 4 - Escape Graphic Starting Interface Index Y
+                                                          // 5 - Escape Graphic Starting Interface Index X
+                                                          // 6 - Escape Graphic Starting Interface Level
+
         public virtual string Graphic { get; set; } = "";
         public List<InputField>? InputFields { get; set; }
         public List<Button>? Buttons { get; set; }
@@ -383,7 +390,7 @@ namespace UserInterface
                     InterfaceIndexX = 0,
                     IsInvokable = true,
                 };
-                habitButton.SetInvokedMethod(SetHabitListActive);
+                habitButton.SetInvokedMethod(SetHabitOptionActive);
                 Buttons.Add(habitButton);
 
                 VariableLabel habitLabel = new()
@@ -398,9 +405,15 @@ namespace UserInterface
             }
         }
 
-        public string SetHabitListActive()
+        public string SetHabitOptionActive()
         {
-            return "2" + "001" + "1" + "0" + "0" + "3"; // Type - ID of the habit list - 1/0 True/False - InterfaceY index default - InterfaceX index default- Interface level default
+            return "2" + "001" + "1" + "0" + "0" + "3"; // Type -
+                                                        // ID of the habit list -
+                                                        // 1/0 True/False -
+                                                        // InterfaceY index default -
+                                                        // InterfaceX index default-
+                                                        // Interface level default -
+
         }
     }
 
@@ -428,6 +441,7 @@ namespace UserInterface
         public HabitOptionGraphics()
         {
             ID = "001";
+            InfoToken = " 000001";
             IsGraphicElementVisibleDefault = false;
             Buttons = [];
 
@@ -473,14 +487,20 @@ namespace UserInterface
             DeleteButton.InterfaceIndexY = 3;
             DeleteButton.InterfaceIndexX = 0;
             DeleteButton.IsInvokable = true;
-            // FinishButton.SetInvokedMethod(SwitchToLoginScreen);
+            DeleteButton.SetInvokedMethod(DeleteSelectedHabit);
 
             Buttons.Add(FinishButton);
             Buttons.Add(AddButton);
             Buttons.Add(EditButton);
             Buttons.Add(DeleteButton);
         }
-
+        
+        public string DeleteSelectedHabit()
+        {
+            return "3" + "2" + InfoToken[0]; // Type 3 (Operation) -
+                                             // Add, Delete, Edit
+                                             // Habit Index
+        }
     }
     #endregion
 }

@@ -149,10 +149,21 @@ namespace UserInterface
                         // Toggle Boost Data List Invoke
                         if (ButtonInvokedInformation[0] == '2')
                         {
-                            ToggleSpecificGraphicElement(ButtonInvokedInformation[1..4], ButtonInvokedInformation[4] == '1');
+                            ToggleSpecificGraphicElement(ButtonInvokedInformation[1..4], ButtonInvokedInformation[4] == '1', 
+                                CurrentInterfaceIndexSelectorY.ToString());
                             CurrentInterfaceIndexSelectorY = ButtonInvokedInformation[5] - '0';
                             CurrentInterfaceIndexSelectorX = ButtonInvokedInformation[6] - '0';
                             CurrentInterfaceLevel = ButtonInvokedInformation[7] - '0';
+                        }
+
+                        // Operation Invoke
+                        if (ButtonInvokedInformation[0] == '3')
+                        {
+                            // Delete Operation
+                            if (ButtonInvokedInformation[1] == '2')
+                            {
+                                User.DeleteHabit(UserFolderPath, ButtonInvokedInformation[2] - '0');
+                            }    
                         }
 
                     }
@@ -170,6 +181,21 @@ namespace UserInterface
                         CurrentInterfaceLevel = currentActiveButton.MenuInterfaceLevel;
                         CurrentInterfaceIndexSelectorY = currentActiveButton.InterfaceIndexY;
                     }
+                }
+
+                string currentActiveGraphicInfoToken = GetCurrentActiveGraphicElement(GetCurrentActiveScene())?.InfoToken ?? "";
+                bool isEscapeInfoPresent =
+                    currentActiveGraphicInfoToken.Length >= 3 &&
+                    !char.IsWhiteSpace(currentActiveGraphicInfoToken[1]) &&
+                    !char.IsWhiteSpace(currentActiveGraphicInfoToken[2]) &&
+                    !char.IsWhiteSpace(currentActiveGraphicInfoToken[3]);
+                if (isEscapeInfoPresent)
+                {
+                    ToggleSpecificGraphicElement(currentActiveGraphicInfoToken[1..4], true,
+                        CurrentInterfaceIndexSelectorY.ToString(), true);
+                    CurrentInterfaceIndexSelectorY = currentActiveGraphicInfoToken[4] - '0';
+                    CurrentInterfaceIndexSelectorX = currentActiveGraphicInfoToken[5] - '0';
+                    CurrentInterfaceLevel = currentActiveGraphicInfoToken[6] - '0';
                 }
             }
             else if (CurrentProgramState == ProgramState.Edit)

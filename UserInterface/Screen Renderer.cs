@@ -141,7 +141,7 @@ namespace UserInterface
             }
         }
 
-        public static void ToggleSpecificGraphicElement(string ID, bool toggle)
+        public static void ToggleSpecificGraphicElement(string ID, bool toggle, string token, bool disableCurrentElement = false)
         {
             var nextGraphicElement = GetCurrentActiveScene().Find(x => x.ID == ID);
             var currentActiveGraphicElement = GetCurrentActiveGraphicElement(GetCurrentActiveScene());
@@ -153,9 +153,14 @@ namespace UserInterface
                     if (currentActiveGraphicElement != null)
                     {
                         scene.IsGraphicElementActive = false;
+                        scene.IsGraphicElementVisible = !disableCurrentElement;
                     }
                     nextGraphicElement.IsGraphicElementActive = toggle;
                     nextGraphicElement.IsGraphicElementVisible = toggle;
+
+
+                    string infoToken = nextGraphicElement.InfoToken;
+                    nextGraphicElement.InfoToken = token + infoToken[1..];
                 }
             }
         }

@@ -1,4 +1,5 @@
 ﻿using Habit_User_Data_Structures;
+using System.ComponentModel.Design;
 using static UserInterface.ScreenRenderer;
 
 namespace UserInterface
@@ -55,6 +56,21 @@ namespace UserInterface
             Directory.CreateDirectory(HabitBoostFolderPath + @"\" + Username + @"\UserData");
             File.WriteAllText(HabitBoostFolderPath + @"\" + Username + @"\UserData\password.txt", Password);
             File.WriteAllLines(HabitBoostFolderPath + @"\" + Username + @"\UserData\datas.txt", dummyData);
+        }
+
+        public static void AddBottomMessage(string message, bool isError) 
+        {
+            // If $ at end, then error
+            // if # at end, then message
+            if (isError)
+            {
+                ProgramMessage.Add(message + "$");
+            }
+            else
+            {
+                ProgramMessage.Add(message + "#");
+            }
+            ++ScreenHeight;
         }
 
         public static bool DoesUserExists(string userName)
@@ -129,6 +145,16 @@ namespace UserInterface
                 #endregion
 
                 #region Button Invokable
+
+                void ClearInputFields()
+                {
+                    List<GraphicElement> currentScene = GetCurrentActiveScene();
+                    foreach (InputField inputField in currentScene[0]?.InputFields ?? Enumerable.Empty<InputField>())
+                    {
+                        inputField.ClearFieldText();
+                    }
+                }
+
                 if (CurrentGraphicElement != null)
                 {
                     CurrentActiveButton = CurrentGraphicElement.GetCurrentActiveButton();
@@ -148,7 +174,16 @@ namespace UserInterface
                         // Login Invoke
                         else if (ButtonInvokedInformation[0] == '0')
                         {
-                            if (AttemptLogin(ButtonInvokedInformation[1..30].Replace("~", ""),
+                            string username = ButtonInvokedInformation[1..30].Replace("~", "");
+                            string password = ButtonInvokedInformation[31..40].Replace("~", "");
+
+                            if (username == "" || password == "")
+                            {
+                                if (username == "") { AddBottomMessage("Empty Username!", true); }
+                                if (password == "") { AddBottomMessage("Empty Password!", true); }
+                                ClearInputFields();
+                            }
+                            else if (AttemptLogin(ButtonInvokedInformation[1..30].Replace("~", ""),
                                 ButtonInvokedInformation[31..40].Replace("~", "")))
                             {
                                 User.ReadData(UserFolderPath + @"\" + ButtonInvokedInformation[1..30].Replace("~", ""));
@@ -235,7 +270,21 @@ namespace UserInterface
                         else if (ButtonInvokedInformation[0] == '4')
                         {
                             string difficultyString = ButtonInvokedInformation[41..49].Replace("~", "");
-                            if (Enum.TryParse(difficultyString, out HabitBoostDifficulty difficulty))
+                            string habitName = ButtonInvokedInformation[1..41].Replace("~", "");
+                            if (!Enum.TryParse(difficultyString, out HabitBoostDifficulty difficulty) || habitName == "")
+                            {
+                                if (habitName == "")
+                                {
+                                    AddBottomMessage("Empty Habit Name!", true);
+                                }
+
+                                if (!Enum.TryParse(difficultyString, out HabitBoostDifficulty _))
+                                {
+                                    AddBottomMessage("Invalid Difficulty! (Easy/Medium/Hard/VeryHard) Only!", true);
+                                }
+                                ClearInputFields();
+                            }
+                            else
                             {
                                 if (ButtonInvokedInformation[49] == '0')
                                 {
@@ -243,7 +292,7 @@ namespace UserInterface
                                 }
                                 else
                                 {
-                                    User.AddHabit(HabitBoostFolderPath, ButtonInvokedInformation[1..41].Replace("~", ""), difficulty);
+                                    User.AddHabit(HabitBoostFolderPath, habitName, difficulty);
                                 }
                                 ToggleSpecificGraphicElement("000", true,
                                     CurrentInterfaceIndexSelectorY.ToString(), true);
@@ -258,27 +307,15 @@ namespace UserInterface
                         {
                             string username = ButtonInvokedInformation[1..30].Replace("~", "");
                             string password = ButtonInvokedInformation[31..40].Replace("~", "");
-                            void ClearInputFields()
-                            {
-                                List<GraphicElement> currentScene = GetCurrentActiveScene();
-                                foreach (InputField inputField in currentScene[0]?.InputFields ?? Enumerable.Empty<InputField>())
-                                {
-                                    inputField.ClearFieldText();
-                                }
-                            }
                             if (DoesUserExists(username))
                             {
-                                // User already exists message
+                                AddBottomMessage("User Already Exists!", true);
                                 ClearInputFields();
                             }
-                            else if (password == "")
+                            else if (password == "" || username == "")
                             {
-                                // Password is empty message
-                                ClearInputFields();
-                            }
-                            else if (username == "")
-                            {
-                                // Username is empty message
+                                if (username == "") { AddBottomMessage("Empty Username!", true); }
+                                if (password == "") { AddBottomMessage("Empty Password!", true); }
                                 ClearInputFields();
                             }
                             else
@@ -351,10 +388,6 @@ namespace UserInterface
                         }
                     }
                 }
-            }
-            else if (UserInputStream.Key == ConsoleKey.K)
-            {
-                CreateUser("Zoro", "lost");
             }
         }
     }

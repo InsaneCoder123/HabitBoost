@@ -21,11 +21,13 @@ namespace UserInterface
 
         public static int ScreenWidth { get; set; } = 101;
         public static int ScreenHeight { get; set; } = 26;
+        public static int OriginalScreenHeight { get; set; } = 26;
 
         public static int CurrentInterfaceLevel { get; set; } = 0;
         public static int CurrentInterfaceIndexSelectorY { get; set; } = 0;
         public static int CurrentInterfaceIndexSelectorX { get; set; } = 0;
         public static string UserInputStreamString { get; set; } = "";
+        public static List<string> ProgramMessage { get; set; } = [];
 
         public static ProgramState CurrentProgramState { get; set; } = ProgramState.Browse;
         public static ProgramScreen CurrentProgramScreen { get; set; } = ProgramScreen.MainMenu;
@@ -81,32 +83,41 @@ namespace UserInterface
             #region Main Menu Graphics
             MainMenuGraphic MainMenuGraphic = new()
             {
-                AbsolutePositionX = 4,
+                AbsolutePositionX = 35,
                 AbsolutePositionY = 10,
                 IsGraphicElementActive = true,
                 IsGraphicElementVisible = true
             };
+            TitleGraphic TitleGraphic = new()
+            {
+                AbsolutePositionX = 9,
+                AbsolutePositionY = 2,
+                IsGraphicElementVisible = true
+            };
             MainMenuScene.Add(MainMenuGraphic);
+            MainMenuScene.Add(TitleGraphic);
             #endregion
 
             #region Login Graphics
             LoginGraphic LoginGraphic = new()
             {
-                AbsolutePositionX = 4,
-                AbsolutePositionY = 2,
+                AbsolutePositionX = 35,
+                AbsolutePositionY = 10,
                 IsGraphicElementVisible = false
             };
             LoginScene.Add(LoginGraphic);
+            LoginScene.Add(TitleGraphic);
             #endregion
 
             #region Create User Graphics
             CreateAccountGraphic CreateAccountGraphic = new()
             {
-                AbsolutePositionX = 4,
-                AbsolutePositionY = 2,
+                AbsolutePositionX = 35,
+                AbsolutePositionY = 10,
                 IsGraphicElementVisible = false
             };
             CreateUserScene.Add(CreateAccountGraphic);
+            CreateUserScene.Add(TitleGraphic);
             #endregion
 
             #region Main Graphics
@@ -256,23 +267,74 @@ namespace UserInterface
         {
             Console.Clear();
             UpdateDynamicGraphics(ref user);
+            int modifier = 1;
             for (int y = 0; y < ScreenHeight; y++)
             {
                 for (int x = 0; x < ScreenWidth; x++)
                 {
-                    if (y == 0 || y == ScreenHeight - 1 || x == 0 || x == ScreenWidth - 1)
+
+                    if (x == 0 && y == 0)
                     {
-                        CustomDisplay.DisplayColor(ConsoleColor.Green);
+                        CustomDisplay.DisplayColoredText("┌", ConsoleColor.Green);
+                        continue;
+                    }
+
+                    else if (x == ScreenWidth - 1 && y == 0)
+                    {
+                        CustomDisplay.DisplayColoredText("┐", ConsoleColor.Green);
+                        continue;
+                    }
+                    else if (x == 0 && y == ScreenHeight - 1)
+                    {
+                        CustomDisplay.DisplayColoredText("└", ConsoleColor.Green);
+                        continue;
+                    }
+                    else if (x == ScreenWidth - 1 && y == ScreenHeight - 1)
+                    {
+                        CustomDisplay.DisplayColoredText("┘", ConsoleColor.Green);
+                        continue;
+                    }
+                    else if (x == 0 || x == ScreenWidth - 1)
+                    {
+                        CustomDisplay.DisplayColoredText("│", ConsoleColor.Green);
+                        continue;
+                    }
+                    else if (y == 0 || y == ScreenHeight - 1)
+                    {
+                        CustomDisplay.DisplayColoredText("─", ConsoleColor.Green);
                         continue;
                     }
                     else if (AtGraphicElement(x, y, GetCurrentActiveScene()))
                     {
                         continue;
+                    }                   
+                    else if (x == 2 && y == ScreenHeight - ((ScreenHeight - OriginalScreenHeight) + modifier))
+                    {
+                        if (ProgramMessage.Count != 0)
+                        {
+                            if (ProgramMessage[0][^1] == '$')
+                            {
+                                CustomDisplay.DisplayColoredText(ProgramMessage[0][..^1], ConsoleColor.Red);
+                            }
+                            else if (ProgramMessage[0][^1] == '#')
+                            {
+                                CustomDisplay.DisplayColoredText(ProgramMessage[0][..^1], ConsoleColor.White);
+                            }
+                            x += ProgramMessage[0].Length - 2;
+                            ProgramMessage.RemoveAt(0);
+                            --modifier;
+                            continue;
+                        }
+                        Console.Write(" ");
                     }
-                    else { Console.Write(" "); }
+                    else 
+                    { 
+                        Console.Write(" "); 
+                    }
                 }
                 Console.WriteLine();
             }
+            ScreenHeight = OriginalScreenHeight;
         }
 
 

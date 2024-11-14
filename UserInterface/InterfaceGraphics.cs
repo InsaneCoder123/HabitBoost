@@ -133,6 +133,19 @@ namespace UserInterface
             return "1" + ((int)ProgramScreen.CreateUser).ToString();
         }
     }
+
+    public class TitleGraphic : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "HH   HH     AAAAA    BBBBB   III  TTTTT      BBBBB   OOOOO   OOOOO  SSSSS  TTTTTTT" +
+            "HH   HH    AA   AA   BB   B   II    T        BB   B  OO   OO OO   OO SS       T   " +
+            "HHHHHHH   AAAAAAAAA  BBBBBB   II    T        BBBBBB  OO   OO OO   OO  SSSS    T   " +
+            "HH   HH   AA     AA  BB   BB  II    T        BB   BB OO   OO OO   OO     SS   T   " +
+            "HH   HH   AA     AA  BBBBBB  IIII   T        BBBBBB   OOOOO   OOOOO  SSSSS    T   ";
+
+        public override int MaxWidth { get; set; } = 82;
+        public override int MaxHeight { get; set; } = 5;
+    }
     #endregion
     #region Login Scene Graphics
     public class LoginGraphic : GraphicElement
@@ -342,11 +355,11 @@ namespace UserInterface
     public class TopBarGraphics : GraphicElement
     {
         public override string Graphic { get; set; } =
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@USERNAME ++++++++++     LVL +++     EXP +++++++@&&&&&&@&&&&&&&@&&&&@" + //HABITS + JOURNAL + TODO
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@USERNAME ++++++++++     LVL +++     EXP +++++++@  &&&&&&&&&&   @   &&&&&&&&&&   @   &&&&&&&&&&   @" + //HABITS + JOURNAL + TODO
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
 
-        public override int MaxWidth { get; set; } = 69;
+        public override int MaxWidth { get; set; } = 99;
         public override int MaxHeight { get; set; } = 3;
 
         public Button HabitsButton { get; set; } = new Button();
@@ -362,6 +375,7 @@ namespace UserInterface
             ID = "003";
             Buttons = [];
             Labels = [];
+            IsDynamic = true;
             UsernameLabel.LabelText = "USERNAME11";
             UsernameLabel.XPosition = 10;
             UsernameLabel.YPosition = 1;
@@ -380,32 +394,32 @@ namespace UserInterface
             ExperienceLabel.HorizontalLength = 7;
             ExperienceLabel.VerticalLength = 1;
 
-            HabitsButton.HorizontalLength = 6;
+            HabitsButton.HorizontalLength = 10;
             HabitsButton.VerticalLength = 1;
-            HabitsButton.XPosition = 49;
+            HabitsButton.XPosition = 51;
             HabitsButton.YPosition = 1;
             HabitsButton.MenuInterfaceLevel = 0;
-            HabitsButton.ButtonText = "HABITS";
+            HabitsButton.ButtonText = "  HABITS  ";
             HabitsButton.InterfaceIndexY = 0;
             HabitsButton.InterfaceIndexX = 0;
             HabitsButton.IsInvokable = true;
             HabitsButton.SetInvokedMethod(SetHabitListActive);
 
-            JournalButton.HorizontalLength = 7;
+            JournalButton.HorizontalLength = 10;
             JournalButton.VerticalLength = 1;
-            JournalButton.XPosition = 56;
+            JournalButton.XPosition = 68;
             JournalButton.YPosition = 1;
             JournalButton.MenuInterfaceLevel = 0;
-            JournalButton.ButtonText = "JOURNAL";
+            JournalButton.ButtonText = "  JOURNAL ";
             JournalButton.InterfaceIndexY = 0;
             JournalButton.InterfaceIndexX = 1;
 
-            ToDoButton.HorizontalLength = 4;
+            ToDoButton.HorizontalLength = 10;
             ToDoButton.VerticalLength = 1;
-            ToDoButton.XPosition = 64;
+            ToDoButton.XPosition = 85;
             ToDoButton.YPosition = 1;
             ToDoButton.MenuInterfaceLevel = 0;
-            ToDoButton.ButtonText = "TODO";
+            ToDoButton.ButtonText = "   TODO   ";
             ToDoButton.InterfaceIndexY = 0;
             ToDoButton.InterfaceIndexX = 2;
 
@@ -416,6 +430,12 @@ namespace UserInterface
             Labels.Add(UsernameLabel);
             Labels.Add(LevelLabel);
             Labels.Add(ExperienceLabel);
+        }
+
+        public override void AdjustVariableData(ref UserData user)
+        {
+            UsernameLabel.LabelText = user?.Username?.PadRight(10) ?? "";
+            LevelLabel.LabelText = user?.Level.ToString().PadRight(3) ?? "";
         }
 
         public string SetHabitListActive()

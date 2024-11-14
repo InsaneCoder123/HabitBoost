@@ -51,12 +51,10 @@ namespace UserInterface
 
         public static void CreateUser(string Username, string Password)
         {
-            // When the new user is a unique user, create its data folder
             string[] dummyData = ["1", "10"];
             Directory.CreateDirectory(HabitBoostFolderPath + @"\" + Username + @"\UserData");
             File.WriteAllText(HabitBoostFolderPath + @"\" + Username + @"\UserData\password.txt", Password);
             File.WriteAllLines(HabitBoostFolderPath + @"\" + Username + @"\UserData\datas.txt", dummyData);
-
         }
 
         public static bool DoesUserExists(string userName)
@@ -113,13 +111,13 @@ namespace UserInterface
 
                 #region Button Non-Invokable Binded to InputField
                 // Error spot! Warning! null stuff
-                currentGraphicElement = GetCurrentActiveGraphicElement(GetCurrentActiveScene());
-                if (currentGraphicElement != null)
+                CurrentGraphicElement = GetCurrentActiveGraphicElement(GetCurrentActiveScene());
+                if (CurrentGraphicElement != null)
                 {
-                    currentActiveButton = currentGraphicElement.GetCurrentActiveButton();
-                    if (currentActiveButton != null)
+                    CurrentActiveButton = CurrentGraphicElement.GetCurrentActiveButton();
+                    if (CurrentActiveButton != null)
                     {
-                        HabitInterface? bindedInterface = currentActiveButton.BindedInterface;
+                        HabitInterface? bindedInterface = CurrentActiveButton.BindedInterface;
                         if (bindedInterface != null)
                         {
                             CurrentProgramState = ProgramState.Edit;
@@ -131,12 +129,12 @@ namespace UserInterface
                 #endregion
 
                 #region Button Invokable
-                if (currentGraphicElement != null)
+                if (CurrentGraphicElement != null)
                 {
-                    currentActiveButton = currentGraphicElement.GetCurrentActiveButton();
-                    if (currentActiveButton != null && currentActiveButton.IsInvokable)
+                    CurrentActiveButton = CurrentGraphicElement.GetCurrentActiveButton();
+                    if (CurrentActiveButton != null && CurrentActiveButton.IsInvokable)
                     {
-                        ButtonInvokedInformation = currentActiveButton.InvokeButton();
+                        ButtonInvokedInformation = CurrentActiveButton.InvokeButton();
 
 
                         if (ButtonInvokedInformation[0..2] == "-1")
@@ -232,6 +230,8 @@ namespace UserInterface
                                 CurrentInterfaceLevel = 1;
                             }
                         }
+
+                        // Habit Edit Invoke
                         else if (ButtonInvokedInformation[0] == '4')
                         {
                             string difficultyString = ButtonInvokedInformation[41..49].Replace("~", "");
@@ -253,6 +253,42 @@ namespace UserInterface
                             }
                         }
 
+                        // Create User Invoke
+                        else if (ButtonInvokedInformation[0] == '5')
+                        {
+                            string username = ButtonInvokedInformation[1..30].Replace("~", "");
+                            string password = ButtonInvokedInformation[31..40].Replace("~", "");
+                            void ClearInputFields()
+                            {
+                                List<GraphicElement> currentScene = GetCurrentActiveScene();
+                                foreach (InputField inputField in currentScene[0]?.InputFields ?? Enumerable.Empty<InputField>())
+                                {
+                                    inputField.ClearFieldText();
+                                }
+                            }
+                            if (DoesUserExists(username))
+                            {
+                                // User already exists message
+                                ClearInputFields();
+                            }
+                            else if (password == "")
+                            {
+                                // Password is empty message
+                                ClearInputFields();
+                            }
+                            else if (username == "")
+                            {
+                                // Username is empty message
+                                ClearInputFields();
+                            }
+                            else
+                            {
+                                CreateUser(username, password);
+                                User.ReadData(UserFolderPath + @"\" + username);
+                                SwitchScreen(ProgramScreen.Main);
+                            }
+                        }
+
                     }
                 }
                 #endregion
@@ -263,10 +299,10 @@ namespace UserInterface
                 if (CurrentProgramState == ProgramState.Edit)
                 {
                     CurrentProgramState = ProgramState.Browse;
-                    if (currentActiveButton != null)
+                    if (CurrentActiveButton != null)
                     {
-                        CurrentInterfaceLevel = currentActiveButton.MenuInterfaceLevel;
-                        CurrentInterfaceIndexSelectorY = currentActiveButton.InterfaceIndexY;
+                        CurrentInterfaceLevel = CurrentActiveButton.MenuInterfaceLevel;
+                        CurrentInterfaceIndexSelectorY = CurrentActiveButton.InterfaceIndexY;
                     }
                 }
                 else if (CurrentProgramState == ProgramState.Browse)

@@ -204,6 +204,8 @@ namespace UserInterface
                 --StartingIndex;
             }
         }
+
+        public void ClearFieldText() { FieldText = ""; }
     }
 
 }

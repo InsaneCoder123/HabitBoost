@@ -117,7 +117,7 @@ namespace UserInterface
             createUserButton.InterfaceIndexY = 1;
             createUserButton.InterfaceIndexX = 0;
             createUserButton.IsInvokable = true;
-            //loginButton.SetInvokedMethod(LoginUser);
+            createUserButton.SetInvokedMethod(SwitchToCreateAccountScreen);
 
             Buttons.Add(loginButton);
             Buttons.Add(createUserButton);
@@ -126,6 +126,11 @@ namespace UserInterface
         public string SwitchToLoginScreen()
         {
             return "1" + ((int)ProgramScreen.Login).ToString();
+        }
+
+        public string SwitchToCreateAccountScreen()
+        {
+            return "1" + ((int)ProgramScreen.CreateUser).ToString();
         }
     }
     #endregion
@@ -231,7 +236,108 @@ namespace UserInterface
         }
     }
     #endregion
+    #region Create Account Scene Graphics
+    public class CreateAccountGraphic : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&@%%%%%%%%%%%%%%%%%%%%@" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&@%%%%%%%%%%%%%%%%%%%%@" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&&&&&&&&&&&&&&@" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+        public override int MaxWidth { get; set; } = 31;
+        public override int MaxHeight { get; set; } = 7;
+        public InputField UsernameInput { get; set; } = new InputField();
+        public InputField PasswordInput { get; set; } = new InputField();
+        public Button Username { get; set; } = new Button();
+        public Button Password { get; set; } = new Button();
+        public Button Login { get; set; } = new Button();
 
+        public CreateAccountGraphic()
+        {
+            InputFields = [];
+            Buttons = [];
+
+            UsernameInput.HorizontalLength = 20;
+            UsernameInput.VerticalLength = 1;
+            UsernameInput.XPosition = 10;
+            UsernameInput.YPosition = 1;
+            UsernameInput.MenuInterfaceLevel = 1;
+            UsernameInput.FieldText = "";
+            UsernameInput.IsHorizontalExpandable = true;
+            UsernameInput.InterfaceIndexY = 0;
+            UsernameInput.InterfaceIndexX = 0;
+            UsernameInput.MaxFieldTextLength = 10;
+
+            PasswordInput.HorizontalLength = 20;
+            PasswordInput.VerticalLength = 1;
+            PasswordInput.XPosition = 10;
+            PasswordInput.YPosition = 3;
+            PasswordInput.MenuInterfaceLevel = 1;
+            PasswordInput.FieldText = "";
+            PasswordInput.IsPrivate = true;
+            UsernameInput.IsHorizontalExpandable = true;
+            PasswordInput.InterfaceIndexY = 1;
+            PasswordInput.InterfaceIndexX = 0;
+            PasswordInput.MaxFieldTextLength = 10;
+
+            Username.HorizontalLength = 8;
+            Username.VerticalLength = 1;
+            Username.XPosition = 1;
+            Username.YPosition = 1;
+            Username.MenuInterfaceLevel = 0;
+            Username.ButtonText = "USERNAME";
+            Username.BindedInterface = UsernameInput;
+            Username.InterfaceIndexY = 0;
+            Username.InterfaceIndexX = 0;
+
+            Password.HorizontalLength = 8;
+            Password.VerticalLength = 1;
+            Password.XPosition = 1;
+            Password.YPosition = 3;
+            Password.MenuInterfaceLevel = 0;
+            Password.BindedInterface = PasswordInput;
+            Password.ButtonText = "PASSWORD";
+            Password.InterfaceIndexY = 1;
+            Password.InterfaceIndexX = 0;
+
+            Login.HorizontalLength = 29;
+            Login.VerticalLength = 1;
+            Login.XPosition = 1;
+            Login.YPosition = 5;
+            Login.MenuInterfaceLevel = 0;
+            Login.ButtonText = "        CREATE ACCOUNT       ";
+            Login.InterfaceIndexY = 2;
+            Login.InterfaceIndexX = 0;
+            Login.IsInvokable = true;
+            Login.SetInvokedMethod(CreateUser);
+
+            InputFields.Add(UsernameInput);
+            InputFields.Add(PasswordInput);
+
+            Buttons.Add(Username);
+            Buttons.Add(Password);
+            Buttons.Add(Login);
+        }
+
+        public string CreateUser()
+        {
+            string CreateUserToken = "5";
+            // Returns a string of int filled with information about the user input field
+            // 0 - first digit signifies the invoke type, 0 for login, 1 for switch screen
+            // 0 Login
+            // 000000000000000... - Next 30 chars are the user ID
+            // 0000000000 - next 10 chars are the user password
+
+            // 1 Switch Screen
+            CreateUserToken += UsernameInput.FieldText.PadRight(30, '~');
+            CreateUserToken += PasswordInput.FieldText.PadRight(10, '~');
+            return CreateUserToken;
+        }
+    }
+    #endregion
     #region Main Scene Graphics
     public class TopBarGraphics : GraphicElement
     {

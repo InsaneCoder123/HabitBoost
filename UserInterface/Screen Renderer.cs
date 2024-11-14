@@ -32,22 +32,11 @@ namespace UserInterface
 
         public static ConsoleKeyInfo UserInputStream { get; set; }
 
-        #region Graphics
 
-        public static LoginGraphic LoginGraphic { get; set; } = new LoginGraphic();
+        public static GraphicElement? CurrentGraphicElement { get; set; }
+        public static Button? CurrentActiveButton { get; set; }
 
-        public static MainMenuGraphic MainMenuGraphic { get; set; } = new MainMenuGraphic();
-
-        public static TopBarGraphics TopBarGraphics { get; set; } = new TopBarGraphics();
-        public static HabitListGraphics HabitListGraphics { get; set; } = new HabitListGraphics();
-        public static HabitOptionGraphics HabitOptionGraphics { get; set; } = new HabitOptionGraphics();
-        public static HabitEditInterfaceGraphics HabitEditInterfaceGraphics { get; set; } = new HabitEditInterfaceGraphics();
-        #endregion
-
-        public static GraphicElement? currentGraphicElement { get; set; }
-        public static Button? currentActiveButton { get; set; }
-
-        public static List<GraphicElement> MainMenuScene = [];
+        public static List<GraphicElement> MainMenuScene  = [];
         public static List<GraphicElement> LoginScene = [];
         public static List<GraphicElement> CreateUserScene = [];
         public static List<GraphicElement> MainScene = [];
@@ -89,40 +78,71 @@ namespace UserInterface
         {
             Console.CursorVisible = false;
 
-            LoginGraphic.AbsolutePositionX = 4;
-            LoginGraphic.AbsolutePositionY = 2;
-            LoginGraphic.IsGraphicElementVisible = false;
+            #region Main Menu Graphics
+            MainMenuGraphic MainMenuGraphic = new()
+            {
+                AbsolutePositionX = 4,
+                AbsolutePositionY = 10,
+                IsGraphicElementActive = true,
+                IsGraphicElementVisible = true
+            };
+            MainMenuScene.Add(MainMenuGraphic);
+            #endregion
 
-            MainMenuGraphic.AbsolutePositionX = 4;
-            MainMenuGraphic.AbsolutePositionY = 10;
-            MainMenuGraphic.IsGraphicElementActive = true;
-            MainMenuGraphic.IsGraphicElementVisible = true;
+            #region Login Graphics
+            LoginGraphic LoginGraphic = new()
+            {
+                AbsolutePositionX = 4,
+                AbsolutePositionY = 2,
+                IsGraphicElementVisible = false
+            };
+            LoginScene.Add(LoginGraphic);
+            #endregion
 
-            TopBarGraphics.AbsolutePositionX = 1;
-            TopBarGraphics.AbsolutePositionY = 1;
-            TopBarGraphics.IsGraphicElementVisible = false;
+            #region Create User Graphics
+            CreateAccountGraphic CreateAccountGraphic = new()
+            {
+                AbsolutePositionX = 4,
+                AbsolutePositionY = 2,
+                IsGraphicElementVisible = false
+            };
+            CreateUserScene.Add(CreateAccountGraphic);
+            #endregion
 
-            HabitListGraphics.AbsolutePositionX = 1;
-            HabitListGraphics.AbsolutePositionY = 4;
-            HabitListGraphics.IsDynamic = true;
+            #region Main Graphics
+            TopBarGraphics TopBarGraphics = new()
+            {
+                AbsolutePositionX = 1,
+                AbsolutePositionY = 1,
+                IsGraphicElementVisible = false
+            };
+
+            HabitListGraphics HabitListGraphics = new()
+            {
+                AbsolutePositionX = 1,
+                AbsolutePositionY = 4,
+                IsDynamic = true
+            };
             HabitListGraphics.AdjustVariableData(ref user);
 
-            HabitEditInterfaceGraphics.AbsolutePositionX = 70;
-            HabitEditInterfaceGraphics.AbsolutePositionY = 4;
-            HabitEditInterfaceGraphics.IsGraphicElementVisible = false;
+            HabitEditInterfaceGraphics HabitEditInterfaceGraphics = new()
+            {
+                AbsolutePositionX = 70,
+                AbsolutePositionY = 4,
+                IsGraphicElementVisible = false
+            };
 
-            HabitOptionGraphics.AbsolutePositionX = 75;
-            HabitOptionGraphics.AbsolutePositionY = 4;
-
-
-            MainMenuScene.Add(MainMenuGraphic);
-
-            LoginScene.Add(LoginGraphic);
+            HabitOptionGraphics HabitOptionGraphics = new()
+            {
+                AbsolutePositionX = 75,
+                AbsolutePositionY = 4
+            };
 
             MainScene.Add(TopBarGraphics);
             MainScene.Add(HabitListGraphics);
             MainScene.Add(HabitOptionGraphics);
             MainScene.Add(HabitEditInterfaceGraphics);
+            #endregion
 
         }
 

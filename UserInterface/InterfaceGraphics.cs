@@ -40,6 +40,7 @@ namespace UserInterface
                                                            // 5 - Escape Graphic Starting Interface Index Y
                                                            // 6 - Escape Graphic Starting Interface Index X
                                                            // 7 - Escape Graphic Starting Interface Level
+        public ProgramScreen PreviousScene { get; set; }
 
         public virtual string Graphic { get; set; } = "";
         public List<InputField>? InputFields { get; set; }
@@ -170,6 +171,7 @@ namespace UserInterface
         {
             InputFields = [];
             Buttons = [];
+            PreviousScene = ProgramScreen.MainMenu;
 
             UsernameInput.HorizontalLength = 20;
             UsernameInput.VerticalLength = 1;
@@ -272,6 +274,7 @@ namespace UserInterface
         {
             InputFields = [];
             Buttons = [];
+            PreviousScene = ProgramScreen.MainMenu;
 
             UsernameInput.HorizontalLength = 20;
             UsernameInput.VerticalLength = 1;
@@ -375,6 +378,8 @@ namespace UserInterface
             ID = "003";
             Buttons = [];
             Labels = [];
+            PreviousScene = ProgramScreen.MainMenu;
+
             IsDynamic = true;
             UsernameLabel.LabelText = "USERNAME11";
             UsernameLabel.XPosition = 10;
@@ -444,7 +449,7 @@ namespace UserInterface
             {
                 return "3" + "1" + "0" + InfoToken[0]; 
             }
-            return "2" + "000" + "1" + "0" + "0" + "1" + "0"; // Type - ID to toggle-
+            return "2" + "000" + "1" + "0" + "0" + "1" + "0" + "1"; // Type - ID to toggle-
                                                             // 1/0 True/False -
                                                             // InterfaceY index default -
                                                             // InterfaceX index default-
@@ -485,6 +490,7 @@ namespace UserInterface
         public HabitListGraphics()
         {
             ID = "000";
+            InfoToken = " 1003000";
             IsGraphicElementVisibleDefault = false;
         }
 
@@ -549,7 +555,7 @@ namespace UserInterface
 
         public string SetHabitOptionActive()
         {
-            return "2" + "001" + "1" + "0" + "0" + "3" + "0"; // Type -
+            return "2" + "001" + "1" + "0" + "0" + "3" + "0" + "1"; // Type -
                                                         // ID of the habit list -
                                                         // 1/0 True/False -
                                                         // InterfaceY index default -

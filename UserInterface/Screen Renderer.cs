@@ -4,6 +4,7 @@ namespace UserInterface
 {
     public enum ProgramScreen
     {
+        None=0,
         MainMenu,
         Login,
         CreateUser,

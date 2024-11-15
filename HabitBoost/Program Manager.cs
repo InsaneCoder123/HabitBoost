@@ -146,7 +146,7 @@ namespace UserInterface
 
                 #region Button Invokable
 
-                void ClearInputFields()
+                static void ClearInputFields()
                 {
                     List<GraphicElement> currentScene = GetCurrentActiveScene();
                     foreach (InputField inputField in currentScene[0]?.InputFields ?? Enumerable.Empty<InputField>())
@@ -201,7 +201,7 @@ namespace UserInterface
                         else if (ButtonInvokedInformation[0] == '2')
                         {
                             ToggleSpecificGraphicElement(ButtonInvokedInformation[1..4], ButtonInvokedInformation[4] == '1',
-                                CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[8] == '1');
+                                CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[8] == '1', ButtonInvokedInformation[9] == '1');
                             CurrentInterfaceIndexSelectorY = ButtonInvokedInformation[5] - '0';
                             CurrentInterfaceIndexSelectorX = ButtonInvokedInformation[6] - '0';
                             CurrentInterfaceLevel = ButtonInvokedInformation[7] - '0';
@@ -344,7 +344,8 @@ namespace UserInterface
                 }
                 else if (CurrentProgramState == ProgramState.Browse)
                 {
-                    string currentActiveGraphicInfoToken = GetCurrentActiveGraphicElement(GetCurrentActiveScene())?.InfoToken ?? "";
+                    GraphicElement? currentActiveGraphicElement = GetCurrentActiveGraphicElement(GetCurrentActiveScene());
+                    string currentActiveGraphicInfoToken = currentActiveGraphicElement?.InfoToken ?? "";
                     bool isEscapeInfoPresent =
                         !char.IsWhiteSpace(currentActiveGraphicInfoToken[2]) &&
                         !char.IsWhiteSpace(currentActiveGraphicInfoToken[3]) &&
@@ -356,6 +357,14 @@ namespace UserInterface
                         CurrentInterfaceIndexSelectorY = currentActiveGraphicInfoToken[5] - '0';
                         CurrentInterfaceIndexSelectorX = currentActiveGraphicInfoToken[6] - '0';
                         CurrentInterfaceLevel = currentActiveGraphicInfoToken[7] - '0';
+                    }
+
+                    if (currentActiveGraphicElement?.PreviousScene != ProgramScreen.None)
+                    {
+                        if (currentActiveGraphicElement?.PreviousScene != null)
+                        {
+                            SwitchScreen(currentActiveGraphicElement.PreviousScene);
+                        }
                     }
                 }
             }

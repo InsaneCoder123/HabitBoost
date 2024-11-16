@@ -94,7 +94,12 @@ namespace UserInterface
             UserInputStreamString = "";
             UserInputStream = Console.ReadKey(intercept: true);
             UserInputStreamString = UserInputStream.KeyChar.ToString();
+            GraphicElement CurrentActiveGraphic = GetCurrentActiveGraphicElement(GetCurrentActiveScene())!;
 
+            static int[] GetMaxInterfaceIndex(GraphicElement graphicElement, int InterfaceLevel)
+            {
+                return [graphicElement.MaxIndexPerInterface![InterfaceLevel][0], graphicElement.MaxIndexPerInterface[InterfaceLevel][1]];
+            }
 
             if (UserInputStream.Key == ConsoleKey.UpArrow && CurrentInterfaceIndexSelectorY != 0)
             {
@@ -102,19 +107,21 @@ namespace UserInterface
                 if (CurrentProgramState == ProgramState.Browse)
                 { --CurrentInterfaceIndexSelectorY; }
             }
-            else if (UserInputStream.Key == ConsoleKey.DownArrow)
+            else if (UserInputStream.Key == ConsoleKey.DownArrow && 
+                CurrentInterfaceIndexSelectorY != GetMaxInterfaceIndex(CurrentActiveGraphic, CurrentInterfaceLevel)[1])
             {
                 UserInputStreamString = "";
                 if (CurrentProgramState == ProgramState.Browse)
                 { ++CurrentInterfaceIndexSelectorY; }
             }
-            else if (UserInputStream.Key == ConsoleKey.LeftArrow)
+            else if (UserInputStream.Key == ConsoleKey.LeftArrow && CurrentInterfaceIndexSelectorX != 0)
             {
                 UserInputStreamString = "";
                 if (CurrentProgramState == ProgramState.Browse)
                 { --CurrentInterfaceIndexSelectorX; }
             }
-            else if (UserInputStream.Key == ConsoleKey.RightArrow)
+            else if (UserInputStream.Key == ConsoleKey.RightArrow &&
+                CurrentInterfaceIndexSelectorX != GetMaxInterfaceIndex(CurrentActiveGraphic, CurrentInterfaceLevel)[0])
             {
                 UserInputStreamString = "";
                 if (CurrentProgramState == ProgramState.Browse)

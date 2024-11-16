@@ -19,6 +19,7 @@ namespace UserInterface
 
         public virtual int MaxWidth { get; set; } = 0;
         public virtual int MaxHeight { get; set; } = 0;
+        public virtual int[][]? MaxIndexPerInterface { get; set; } // [[InterfaceLevel, MaxX, MaxY], [etc.]]
 
         public bool IsGraphicElementVisible { get; set; } = false;
         public bool IsGraphicElementVisibleDefault { get; set; } = true;
@@ -29,6 +30,7 @@ namespace UserInterface
         public static bool IsJournalListEmpty { get; set; } = false;
         public static bool IsToDoListEmpty { get; set; } = false;
 
+        public int StartingIndex { get; set; } = 0;
 
         public int AbsolutePositionX { get; set; } = 0;
         public int AbsolutePositionY { get; set; } = 0;
@@ -90,6 +92,7 @@ namespace UserInterface
 
         public override int MaxWidth { get; set; } = 28;
         public override int MaxHeight { get; set; } = 5;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 1]];
 
         public Button loginButton { get; set; } = new Button();
         public Button createUserButton { get; set; } = new Button();
@@ -161,6 +164,8 @@ namespace UserInterface
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
         public override int MaxWidth { get; set; } = 31;
         public override int MaxHeight { get; set; } = 7;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 2], [0, 1]];
+
         public InputField UsernameInput { get; set; } = new InputField();
         public InputField PasswordInput { get; set; } = new InputField();
         public Button Username { get; set; } = new Button();
@@ -268,6 +273,8 @@ namespace UserInterface
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
         public override int MaxWidth { get; set; } = 31;
         public override int MaxHeight { get; set; } = 7;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 2]];
+
         public InputField UsernameInput { get; set; } = new InputField();
         public InputField PasswordInput { get; set; } = new InputField();
         public Button Username { get; set; } = new Button();
@@ -373,6 +380,7 @@ namespace UserInterface
 
         public override int MaxWidth { get; set; } = 99;
         public override int MaxHeight { get; set; } = 3;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[2, 0]];
 
         public Button HabitsButton { get; set; } = new Button();
         public Button JournalButton { get; set; } = new Button();
@@ -524,20 +532,22 @@ namespace UserInterface
 
         public override int MaxWidth { get; set; } = 69;
         public override int MaxHeight { get; set; } = 21;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 9]];
 
         public HabitListGraphics()
         {
             ID = "000";
             InfoToken = " 1003000";
             IsGraphicElementVisibleDefault = false;
+            
         }
 
         public override void AdjustVariableData(ref UserData user)
         {
             Buttons = [];
             Labels = [];
-
-            for (int i = 0; i < 10; i++)
+            MaxIndexPerInterface![1][1] = user.HabitList.Count - 1;
+            for (int i = StartingIndex; i < 10 + StartingIndex; i++)
             {
                 if (i >= user.HabitList.Count)
                 {
@@ -619,6 +629,7 @@ namespace UserInterface
 
         public override int MaxWidth { get; set; } = 18;
         public override int MaxHeight { get; set; } = 9;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 0], [0, 0], [0, 3]];
 
         public Button FinishButton { get; set; } = new Button();
         public Button AddButton { get; set; } = new Button();
@@ -727,16 +738,16 @@ namespace UserInterface
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
             "@%%%%%%%%%%%%%%%%%%%%%%%%%%%%@" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@@&&&&&&&&&&&&@@&&&&&&&&&&&&@@" +
+            "@@&&&&&&&&&&&&&&&&&&&&&&&&&&@@" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
 
         public override int MaxWidth { get; set; } = 30;
         public override int MaxHeight { get; set; } = 12;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 0], [0, 0], [0, 3], [0, 2]];
 
         public Button HabitUserName { get; set; } = new Button();
         public Button HabitDifficulty { get; set; } = new Button();
         public Button ConfirmButton { get; set; } = new Button();
-        public Button CancelButton { get; set; } = new Button();
 
         public InputField HabitNameInput { get; set; } = new InputField();
         public InputField HabitDifficultyInput { get; set; } = new InputField();
@@ -769,27 +780,16 @@ namespace UserInterface
             HabitDifficulty.InterfaceIndexX = 0;
             HabitDifficulty.BindedInterface = HabitDifficultyInput;
 
-            ConfirmButton.HorizontalLength = 12;
+            ConfirmButton.HorizontalLength = 26;
             ConfirmButton.VerticalLength = 1;
             ConfirmButton.XPosition = 2;
             ConfirmButton.YPosition = 10;
             ConfirmButton.MenuInterfaceLevel = 4;
-            ConfirmButton.ButtonText = "  CONFIRM   ";
+            ConfirmButton.ButtonText = CustomDisplay.CenterString("CONFIRM", 26);
             ConfirmButton.InterfaceIndexY = 2;
             ConfirmButton.InterfaceIndexX = 0;
             ConfirmButton.IsInvokable = true;
             ConfirmButton.SetInvokedMethod(ConfirmAddHabit);
-
-            CancelButton.HorizontalLength = 12;
-            CancelButton.VerticalLength = 1;
-            CancelButton.XPosition = 16;
-            CancelButton.YPosition = 10;
-            CancelButton.MenuInterfaceLevel = 4;
-            CancelButton.ButtonText = "   CANCEL   ";
-            CancelButton.InterfaceIndexY = 2;
-            CancelButton.InterfaceIndexX = 1;
-            CancelButton.IsInvokable = true;
-            CancelButton.SetInvokedMethod(CancelAddHabit);
 
             HabitNameInput.HorizontalLength = 28;
             HabitNameInput.VerticalLength = 1;
@@ -816,7 +816,6 @@ namespace UserInterface
             Buttons.Add(HabitUserName);
             Buttons.Add(HabitDifficulty);
             Buttons.Add(ConfirmButton);
-            Buttons.Add(CancelButton);
 
             InputFields.Add(HabitNameInput);
             InputFields.Add(HabitDifficultyInput);
@@ -851,13 +850,6 @@ namespace UserInterface
             return HabitToken;
         }
 
-        public string CancelAddHabit() {
-            foreach (InputField inputField in InputFields)
-            {
-                inputField.FieldText = "";
-            }
-            return "-1" + "000";
-        }
     }
     #endregion
 
@@ -890,6 +882,7 @@ namespace UserInterface
 
         public override int MaxWidth { get; set; } = 63;
         public override int MaxHeight { get; set; } = 21;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 9]];
 
         public JournalListGraphic()
         {
@@ -902,6 +895,7 @@ namespace UserInterface
         {
             Buttons = [];
             Labels = [];
+            MaxIndexPerInterface![1][1] = user.JournalList.Count - 1;
 
             for (int i = 0; i < 10; i++)
             {
@@ -982,6 +976,7 @@ namespace UserInterface
 
         public override int MaxWidth { get; set; } = 35;
         public override int MaxHeight { get; set; } = 3;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 0], [0, 0], [3, 0]];
 
         public Button AddButton { get; set; } = new Button();
         public Button ViewButton { get; set; } = new Button();
@@ -1104,6 +1099,7 @@ namespace UserInterface
 
         public override int MaxWidth { get; set; } = 63;
         public override int MaxHeight { get; set; } = 21;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 0], [0, 0], [0, 3], [0, 2], [0, 2]];
 
         public InputField TitleInput { get; set; } = new InputField();
         public InputField EntryInput { get; set; } = new InputField();
@@ -1241,6 +1237,7 @@ namespace UserInterface
         public override int MaxWidth { get; set; } = 63;
         public override int MaxHeight { get; set; } = 19;
 
+
         public VariableLabel Title { get; set; } = new VariableLabel();
         public VariableLabel Entry { get; set; } = new VariableLabel();
         public VariableLabel TitleLabel { get; set; } = new VariableLabel();
@@ -1324,6 +1321,7 @@ namespace UserInterface
 
         public override int MaxWidth { get; set; } = 76;
         public override int MaxHeight { get; set; } = 21;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 9], [0, 0], [0, 3], [0, 2]];
 
         public TaskListGraphics()
         {
@@ -1336,6 +1334,8 @@ namespace UserInterface
         {
             Buttons = [];
             Labels = [];
+
+            MaxIndexPerInterface![1][1] = user.TaskList.Count - 1;
 
             for (int i = 0; i < 10; i++)
             {
@@ -1421,6 +1421,7 @@ namespace UserInterface
 
         public override int MaxWidth { get; set; } = 18;
         public override int MaxHeight { get; set; } = 7;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 0], [0, 0], [0, 2], [0, 2]];
 
         public Button AddButton { get; set; } = new Button();
         public Button DoneButton { get; set; } = new Button();
@@ -1519,6 +1520,7 @@ namespace UserInterface
         #region Properties
         public override int MaxWidth { get; set; } = 30;
         public override int MaxHeight { get; set; } = 15;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 0], [0, 0], [0, 3], [0, 4]];
 
         public Button TaskNameButton { get; set; } = new Button();
         public Button TaskDueDateButton { get; set; } = new Button();

@@ -418,6 +418,8 @@ namespace UserInterface
             JournalButton.ButtonText = "  JOURNAL ";
             JournalButton.InterfaceIndexY = 0;
             JournalButton.InterfaceIndexX = 1;
+            JournalButton.IsInvokable = true;
+            JournalButton.SetInvokedMethod(SetJournalListActive);
 
             ToDoButton.HorizontalLength = 10;
             ToDoButton.VerticalLength = 1;
@@ -449,15 +451,30 @@ namespace UserInterface
             {
                 return "3" + "1" + "0" + InfoToken[0]; 
             }
-            return "2" + "000" + "1" + "0" + "0" + "1" + "0" + "1"; // Type - ID to toggle-
+            return "2" + "000" + "1" + "0" + "0" + "1" + "0" + "1" + "0" + "0"; // Type - ID to toggle-
                                                             // 1/0 True/False -
                                                             // InterfaceY index default -
                                                             // InterfaceX index default-
                                                             // Interface level default
                                                             // 0 false 1 true, if turn off current active graphic
         }
+
+        public string SetJournalListActive()
+        {
+            if (IsJournalListEmpty)
+            {
+                return "3" + "1" + "0" + InfoToken[0];
+            }
+            return "2" + "004" + "1" + "0" + "0" + "1" + "0" + "1" + "0" + "0"; // Type - ID to toggle-
+                                                                    // 1/0 True/False -
+                                                                    // InterfaceY index default -
+                                                                    // InterfaceX index default-
+                                                                    // Interface level default
+                                                                    // 0 false 1 true, if turn off current active graphic
+        }
     }
 
+    #region Habit List Graphics
     public class HabitListGraphics : GraphicElement
     {
         public override string Graphic { get; set; } =
@@ -555,7 +572,7 @@ namespace UserInterface
 
         public string SetHabitOptionActive()
         {
-            return "2" + "001" + "1" + "0" + "0" + "3" + "0" + "1"; // Type -
+            return "2" + "001" + "1" + "0" + "0" + "3" + "0" + "1" + "0" + "0"; // Type -
                                                         // ID of the habit list -
                                                         // 1/0 True/False -
                                                         // InterfaceY index default -
@@ -822,4 +839,252 @@ namespace UserInterface
         }
     }
     #endregion
+
+    #region Journal List Graphics
+    public class JournalListGraphic : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" + // ADD VIEW EDIT DELETE
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+
+
+        public override int MaxWidth { get; set; } = 63;
+        public override int MaxHeight { get; set; } = 21;
+
+        public JournalListGraphic()
+        {
+            ID = "004";
+            InfoToken = " 1003010";
+            IsGraphicElementVisibleDefault = false;
+        }
+
+        public override void AdjustVariableData(ref UserData user)
+        {
+            Buttons = [];
+            Labels = [];
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (i >= user.JournalList.Count)
+                {
+                    VariableLabel journalTitles = new()
+                    {
+                        HorizontalLength = 53,
+                        VerticalLength = 1,
+                        XPosition = 8,
+                        YPosition = 1 + (i * 2),
+                        LabelText = "".PadRight(40) + "   " + "".PadRight(10)
+                    };
+                    Labels.Add(journalTitles);
+                    Button journalButton = new()
+                    {
+                        HorizontalLength = 1,
+                        VerticalLength = 1,
+                        XPosition = 2,
+                        YPosition = 1 + (i * 2),
+                        MenuInterfaceLevel = -1,
+                        ButtonText = " ",
+                        InterfaceIndexY = i,
+                        InterfaceIndexX = 0
+                    };
+                    Buttons.Add(journalButton);
+                    continue;
+                }
+                Button journalButtons = new()
+                {
+                    HorizontalLength = 1,
+                    VerticalLength = 1,
+                    XPosition = 2,
+                    YPosition = 1 + (i * 2),
+                    MenuInterfaceLevel = 1,
+                    ButtonText = " ",
+                    InterfaceIndexY = i,
+                    InterfaceIndexX = 0,
+                    IsInvokable = true,
+                };
+                journalButtons.SetInvokedMethod(SetJournalOptionViewActive);
+                Buttons.Add(journalButtons);
+
+                VariableLabel journalTitle = new()
+                {
+                    HorizontalLength = 53,
+                    VerticalLength = 1,
+                    XPosition = 8,
+                    YPosition = 1 + (i * 2),
+                    LabelText = user.JournalList[i].Name.PadRight(30) + "   " + user.JournalList[i].DateCreated.ToShortDateString().PadRight(20)
+                };
+                Labels.Add(journalTitle);
+            }
+        }
+
+        public static string SetJournalOptionViewActive()
+        {
+            return "2" + "005" + "1" + "0" + "0" + "3" + "0" + "1" + "0" + "1"; // Type -
+                                                                    // ID-
+                                                                    // 1/0 True/False -
+                                                                    // InterfaceY index default -
+                                                                    // InterfaceX index default-
+                                                                    // Interface level default -
+                                                                    // 0 false 1 true, if turn off current active graphic
+                                                                    // Activate at xcoordinate as active?
+                                                                    // Activate at ycoordinate as active?
+
+        }
+    }
+
+    public class JournalOperations : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &&&&&&& &&&&&&& &&&&&&& &&&&&&& @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+
+
+        public override int MaxWidth { get; set; } = 35;
+        public override int MaxHeight { get; set; } = 3;
+
+        public Button AddButton { get; set; } = new Button();
+        public Button ViewButton { get; set; } = new Button();
+        public Button EditButton { get; set; } = new Button();
+        public Button DeleteButton { get; set; } = new Button();
+
+
+        public JournalOperations()
+        {
+            ID = "005";
+            InfoToken = "  004001";
+            IsGraphicElementVisibleDefault = false;
+            Buttons = [];
+
+            AddButton.HorizontalLength = 7;
+            AddButton.VerticalLength = 1;
+            AddButton.XPosition = 2;
+            AddButton.YPosition = 1;
+            AddButton.MenuInterfaceLevel = 3;
+            AddButton.ButtonText = "  ADD  ";
+            AddButton.InterfaceIndexY = 0;
+            AddButton.InterfaceIndexX = 0;
+            AddButton.IsInvokable = true;
+            AddButton.SetInvokedMethod(AddJournal);
+
+            ViewButton.HorizontalLength = 7;
+            ViewButton.VerticalLength = 1;
+            ViewButton.XPosition = 10;
+            ViewButton.YPosition = 1;
+            ViewButton.MenuInterfaceLevel = 3;
+            ViewButton.ButtonText = "  VIEW ";
+            ViewButton.InterfaceIndexY = 0;
+            ViewButton.InterfaceIndexX = 1;
+            ViewButton.IsInvokable = true;
+            ViewButton.SetInvokedMethod(ViewJournal);
+
+            EditButton.HorizontalLength = 7;
+            EditButton.VerticalLength = 1;
+            EditButton.XPosition = 18;
+            EditButton.YPosition = 1;
+            EditButton.MenuInterfaceLevel = 3;
+            EditButton.ButtonText = " EDIT  ";
+            EditButton.InterfaceIndexY = 0;
+            EditButton.InterfaceIndexX = 2;
+            EditButton.IsInvokable = true;
+            EditButton.SetInvokedMethod(EditJournal);
+
+            DeleteButton.HorizontalLength = 7;
+            DeleteButton.VerticalLength = 1;
+            DeleteButton.XPosition = 26;
+            DeleteButton.YPosition = 1;
+            DeleteButton.MenuInterfaceLevel = 3;
+            DeleteButton.ButtonText = "DELETE ";
+            DeleteButton.InterfaceIndexY = 0;
+            DeleteButton.InterfaceIndexX = 3;
+            DeleteButton.IsInvokable = true;
+            DeleteButton.SetInvokedMethod(DeleteJournal);
+
+            Buttons.Add(AddButton);
+            Buttons.Add(ViewButton);
+            Buttons.Add(EditButton);
+            Buttons.Add(DeleteButton);
+
+        }
+
+        public string AddJournal()
+        {
+            return "6" + "1" + "1" + InfoToken[0]; // Type 3 (Operation) -
+                                                   // Add, Delete, Edit, Finish
+                                                   // Disable Current Element
+                                                   // Journal Index
+        }
+        public string ViewJournal()
+        {
+            return "6" + "2" + "1" + InfoToken[0]; // Type 3 (Operation) -
+                                                   // Add, Delete, Edit, Finish
+                                                   // Disable Current Element
+                                                   // Journal Index
+        }
+        public string EditJournal()
+        {
+            return "6" + "3" + "1" + InfoToken[0]; // Type 3 (Operation) -
+                                                   // Add, Delete, Edit, Finish
+                                                   // Disable Current Element
+                                                   // Journal Index
+        }
+        public string DeleteJournal()
+        {
+            return "6" + "2" + "1" + InfoToken[0]; // Type 3 (Operation) -
+                                                   // Add, Delete, Edit, Finish
+                                                   // Disable Current Element
+                                                   // Journal Index
+        }
+    }
+
+    public class AddJournalInterfaceGraphics : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" + // ADD VIEW EDIT DELETE
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+
+        public override int MaxWidth { get; set; } = 35;
+        public override int MaxHeight { get; set; } = 3;
+    }
+
+    #endregion
+        #endregion
 }

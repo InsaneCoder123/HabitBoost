@@ -150,10 +150,26 @@ namespace UserInterface
                 AbsolutePositionY = 4
             };
 
+            JournalListGraphic JournalListGraphic = new()
+            {
+                AbsolutePositionX = 1,
+                AbsolutePositionY = 4,
+                IsDynamic = true
+            };
+
+            JournalOperations JournalOperations = new()
+            {
+                AbsolutePositionX = 65,
+                AbsolutePositionY = 10,
+                IsGraphicElementVisible = false
+            };
+
             MainScene.Add(TopBarGraphics);
             MainScene.Add(HabitListGraphics);
             MainScene.Add(HabitOptionGraphics);
             MainScene.Add(HabitEditInterfaceGraphics);
+            MainScene.Add(JournalListGraphic);
+            MainScene.Add(JournalOperations);
             #endregion
 
         }
@@ -179,7 +195,8 @@ namespace UserInterface
             }
         }
 
-        public static void ToggleSpecificGraphicElement(string ID, bool toggle, string token, bool disableCurrentElement = false, bool overwritePreviousInterfaceToken = true)
+        public static void ToggleSpecificGraphicElement(string ID, bool toggle, string token, bool disableCurrentElement = false, 
+            bool overwritePreviousInterfaceToken = true, bool activateAtSameXCoordinateAsActiveInterface = false, bool activateAtSameYCoordinateAsActiveInterface = false)
         {
             var nextGraphicElement = GetCurrentActiveScene().Find(x => x.ID == ID);
             var currentActiveGraphicElement = GetCurrentActiveGraphicElement(GetCurrentActiveScene());
@@ -195,6 +212,25 @@ namespace UserInterface
 
                         nextGraphicElement.IsGraphicElementActive = toggle;
                         nextGraphicElement.IsGraphicElementVisible = toggle;
+
+                        Button? activeButton = currentActiveGraphicElement.GetCurrentActiveButton();
+                        InputField? activeInputField = currentActiveGraphicElement.GetCurrentActiveInputField();
+
+
+                        if ( activateAtSameXCoordinateAsActiveInterface)
+                        {
+                            if (activeButton != null)
+                                nextGraphicElement.AbsolutePositionX = activeButton.XPosition + currentActiveGraphicElement.AbsolutePositionX - 1;
+                            else if (activeInputField != null)
+                                nextGraphicElement.AbsolutePositionX = activeInputField.XPosition + currentActiveGraphicElement.AbsolutePositionX - 1;
+                        }
+                        if (activateAtSameYCoordinateAsActiveInterface)
+                        {
+                            if (activeButton != null)
+                                nextGraphicElement.AbsolutePositionY = activeButton.YPosition + currentActiveGraphicElement.AbsolutePositionY - 1;
+                            else if (activeInputField != null)
+                                nextGraphicElement.AbsolutePositionY = activeInputField.YPosition + currentActiveGraphicElement.AbsolutePositionY - 1;
+                        }
 
 
                         string infoToken = nextGraphicElement.InfoToken;

@@ -16,6 +16,8 @@ namespace UserInterface
         public int RenderPointerX { get; set; } = 0;
         public int RenderPointerY { get; set; } = 0;
         public bool IsInvokable { get; set; } = false;
+        public bool HasSubInterface { get; set; } = false; // TODO
+        public bool IsSubInterfaceSelected { get; set; } = false; // Implement highlighting of habit/journal/tasks if it is selected
     }
 
     public abstract class InterfaceOption : HabitInterface // Mother class for options like add, edit, delete
@@ -73,6 +75,7 @@ namespace UserInterface
     public class Button : HabitInterface
     {
         public string ButtonText { get; set; } = "";
+        public ConsoleColor TextColor { get; set; } = ConsoleColor.Red;
         public HabitInterface? BindedInterface { get; set; }
         private Func<string>? AtInvoked;
 
@@ -109,7 +112,7 @@ namespace UserInterface
                 }
                 else
                 {
-                    CustomDisplay.DisplayColoredText(ButtonText[RenderIndex].ToString(), ConsoleColor.Red);
+                    CustomDisplay.DisplayColoredText(ButtonText[RenderIndex].ToString(), TextColor);
                 }
 
                 if (RenderIndex == (HorizontalLength * VerticalLength) - 1)

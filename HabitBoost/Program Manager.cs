@@ -126,7 +126,6 @@ namespace UserInterface
                 //CurrentInterfaceIndexSelector = 0;
 
                 #region Button Non-Invokable Binded to InputField
-                // Error spot! Warning! null stuff
                 CurrentGraphicElement = GetCurrentActiveGraphicElement(GetCurrentActiveScene());
                 if (CurrentGraphicElement != null)
                 {
@@ -201,7 +200,8 @@ namespace UserInterface
                         else if (ButtonInvokedInformation[0] == '2')
                         {
                             ToggleSpecificGraphicElement(ButtonInvokedInformation[1..4], ButtonInvokedInformation[4] == '1',
-                                CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[8] == '1', ButtonInvokedInformation[9] == '1');
+                                CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[8] == '1', ButtonInvokedInformation[9] == '1', 
+                                ButtonInvokedInformation[10] == '1', ButtonInvokedInformation[11] == '1');
                             CurrentInterfaceIndexSelectorY = ButtonInvokedInformation[5] - '0';
                             CurrentInterfaceIndexSelectorX = ButtonInvokedInformation[6] - '0';
                             CurrentInterfaceLevel = ButtonInvokedInformation[7] - '0';
@@ -326,6 +326,64 @@ namespace UserInterface
                             }
                         }
 
+                        // Journal Operation Invoke
+                        else if (ButtonInvokedInformation[0] == '6')
+                        {
+                            // Add Operation
+                            if (ButtonInvokedInformation[1] == '1')
+                            {
+                                ToggleSpecificGraphicElement("002", true,
+                                    CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                CurrentInterfaceIndexSelectorY = 0;
+                                CurrentInterfaceIndexSelectorX = 0;
+                                CurrentInterfaceLevel = 4;
+                            }
+
+                            // Delete Operation
+                            if (ButtonInvokedInformation[1] == '2')
+                            {
+                                User.DeleteJournalEntry(UserFolderPath, int.Parse(ButtonInvokedInformation[3..]));
+                                UpdateInformation();
+                                if (HabitEditInterfaceGraphics.IsJournalListEmpty)
+                                {
+                                    ToggleSpecificGraphicElement("003", true,
+                                        CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                    CurrentInterfaceIndexSelectorY = 0;
+                                    CurrentInterfaceIndexSelectorX = 1;
+                                    CurrentInterfaceLevel = 0;
+                                }
+                                else
+                                {
+                                    ToggleSpecificGraphicElement("004", true,
+                                        CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                    CurrentInterfaceIndexSelectorY = 0;
+                                    CurrentInterfaceIndexSelectorX = 0;
+                                    CurrentInterfaceLevel = 1;
+                                }
+                            }
+
+                            // Edit Operation
+                            if (ButtonInvokedInformation[1] == '3')
+                            {
+                                ToggleSpecificGraphicElement("002", true,
+                                   CurrentInterfaceIndexSelectorY.ToString() + '2', ButtonInvokedInformation[2] == '1', false);
+                                CurrentInterfaceIndexSelectorY = 0;
+                                CurrentInterfaceIndexSelectorX = 0;
+                                CurrentInterfaceLevel = 4;
+                            }
+
+                            // View Operation
+                            if (ButtonInvokedInformation[1] == '4')
+                            {
+                                User.EditHabit(UserFolderPath, int.Parse(ButtonInvokedInformation[3..]), true);
+                                UpdateInformation();
+                                ToggleSpecificGraphicElement("000", true,
+                                   CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                CurrentInterfaceIndexSelectorY = 0;
+                                CurrentInterfaceIndexSelectorX = 0;
+                                CurrentInterfaceLevel = 1;
+                            }
+                        }
                     }
                 }
                 #endregion

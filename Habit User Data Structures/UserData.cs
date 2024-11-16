@@ -14,6 +14,8 @@ namespace Habit_User_Data_Structures
 
         public int Level { get; set; }
         public int Experience { get; set; }
+        public int tasksCompleted { get; set; }
+        public int habitsCompleted { get; set; }
 
         public List<Habit> HabitList { get; set; } = [];
         public List<JournalEntry> JournalList { get; set; } = [];
@@ -346,17 +348,17 @@ namespace Habit_User_Data_Structures
             WriteJournalData(DataFolder, entry.ID);
         }
 
-        public void AddTask(string DataFolder)
+        public void AddTask(string DataFolder, string Name, DateTime DateDue, HabitBoostDifficulty difficulty)
         {
             Task task = new()
             {
                 ID = FindFreeID(TaskList.Cast<IIdentifiable>().ToList()),
-                Name = "New Task",
+                Name = Name,
                 Experience = 5,
                 Completed = false,
-                Difficulty = HabitBoostDifficulty.Medium,
+                Difficulty = difficulty,
                 DateCreated = DateTime.Now,
-                DateDue = DateTime.Now.AddDays(7)
+                DateDue = DateDue
             };
             TaskList.Add(task);
             WriteTaskData(DataFolder, task.ID);

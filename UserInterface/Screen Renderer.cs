@@ -189,6 +189,18 @@ namespace UserInterface
                 AbsolutePositionY = 4,
                 IsDynamic = true
             };
+            TaskOptionGraphics TaskOptionGraphics = new()
+            {
+                AbsolutePositionX = 79,
+                AbsolutePositionY = 4
+            };
+
+            TaskEditInterface TaskEditInterface = new()
+            {
+                AbsolutePositionX = 40,
+                AbsolutePositionY = 4,
+                IsGraphicElementVisible = false
+            };
             #endregion
 
             MainScene.Add(TopBarGraphics);
@@ -200,6 +212,8 @@ namespace UserInterface
             MainScene.Add(AddJournalInterfaceGraphics);
             MainScene.Add(ViewJournalEntry);
             MainScene.Add(TaskListGraphics);
+            MainScene.Add(TaskOptionGraphics);
+            MainScene.Add(TaskEditInterface);
             #endregion
 
         }

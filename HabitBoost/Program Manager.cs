@@ -1,5 +1,6 @@
 ﻿using Habit_User_Data_Structures;
 using System.ComponentModel.Design;
+using System.Xml;
 using static UserInterface.ScreenRenderer;
 
 namespace UserInterface
@@ -411,6 +412,96 @@ namespace UserInterface
                                     User.AddJournalEntry(HabitBoostFolderPath, journalTitle, journalEntry);
                                 }
                                 ToggleSpecificGraphicElement("004", true,
+                                CurrentInterfaceIndexSelectorY.ToString(), true);
+                                CurrentInterfaceIndexSelectorY = 0;
+                                CurrentInterfaceIndexSelectorX = 0;
+                                CurrentInterfaceLevel = 1;
+                            }
+
+                        }
+
+                        // Task Operation Invoke
+                        else if (ButtonInvokedInformation[0] == '8')
+                        {
+                            // Add Operation
+                            if (ButtonInvokedInformation[1] == '1')
+                            {
+                                ToggleSpecificGraphicElement("010", true,
+                                    CurrentInterfaceIndexSelectorY.ToString(), ["009", "008"]);
+                                CurrentInterfaceIndexSelectorY = 0;
+                                CurrentInterfaceIndexSelectorX = 0;
+                                CurrentInterfaceLevel = 4;
+                            }
+
+                            // Finish Then Delete Operation
+                            if (ButtonInvokedInformation[1] == '2')
+                            {
+                                User.DeleteTask(UserFolderPath, int.Parse(ButtonInvokedInformation[3..]));
+                                UpdateInformation();
+                                if (HabitEditInterfaceGraphics.IsToDoListEmpty)
+                                {
+                                    ToggleSpecificGraphicElement("003", true,
+                                        CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                    CurrentInterfaceIndexSelectorY = 0;
+                                    CurrentInterfaceIndexSelectorX = 1;
+                                    CurrentInterfaceLevel = 0;
+                                }
+                                else
+                                {
+                                    ToggleSpecificGraphicElement("008", true,
+                                        CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                    CurrentInterfaceIndexSelectorY = 0;
+                                    CurrentInterfaceIndexSelectorX = 0;
+                                    CurrentInterfaceLevel = 1;
+                                }
+                            }
+
+                            // Edit Operation
+                            if (ButtonInvokedInformation[1] == '3')
+                            {
+                                ToggleSpecificGraphicElement("006", true,
+                                   CurrentInterfaceIndexSelectorY.ToString() + "2", ["004", "005"], false);
+                                CurrentInterfaceIndexSelectorY = 0;
+                                CurrentInterfaceIndexSelectorX = 0;
+                                CurrentInterfaceLevel = 4;
+                            }
+                        }
+
+                        // Task Edit Invoke
+                        else if (ButtonInvokedInformation[0] == '9')
+                        {
+                            string taskName = ButtonInvokedInformation[1..21].Replace("~", "");
+                            string taskDueDate = ButtonInvokedInformation[21..31].Replace("~", "");
+                            string taskDifficultyString = ButtonInvokedInformation[31..39].Replace("~", "");
+                            string dateFormat = "dd/MM/yyyy";
+                            if (taskName == "" || !DateTime.TryParseExact(taskDueDate, dateFormat, null, System.Globalization.DateTimeStyles.None, out DateTime dateValue) ||
+                                !Enum.TryParse(taskDifficultyString, out HabitBoostDifficulty difficulty))
+                            {
+                                if (taskName == "")
+                                {
+                                    AddBottomMessage("Empty Journal Title!", true);
+                                }
+                                if (!DateTime.TryParseExact(taskDueDate, dateFormat, null, System.Globalization.DateTimeStyles.None, out _))
+                                {
+                                    AddBottomMessage("Enter Due Date in Valid Format! dd/MM/yyyy", true);
+                                }
+                                if (!Enum.TryParse(taskDifficultyString, out HabitBoostDifficulty _))
+                                {
+                                    AddBottomMessage("Invalid Difficulty! (Easy/Medium/Hard/VeryHard) Only!", true);
+                                }
+                                ClearInputFields();
+                            }
+                            else
+                            {
+                                if (ButtonInvokedInformation[39] == '0')
+                                {
+                                    //User.EditJournalEntry(UserFolderPath, int.Parse(ButtonInvokedInformation[532..]), ButtonInvokedInformation[1..31].Replace("~", ""), ButtonInvokedInformation[31..501].Replace("~", ""));
+                                }
+                                else
+                                {
+                                    User.AddTask(HabitBoostFolderPath, taskName, dateValue, difficulty);
+                                }
+                                ToggleSpecificGraphicElement("008", true,
                                 CurrentInterfaceIndexSelectorY.ToString(), true);
                                 CurrentInterfaceIndexSelectorY = 0;
                                 CurrentInterfaceIndexSelectorX = 0;

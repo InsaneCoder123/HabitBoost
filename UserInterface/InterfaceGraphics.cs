@@ -429,6 +429,8 @@ namespace UserInterface
             ToDoButton.ButtonText = "   TODO   ";
             ToDoButton.InterfaceIndexY = 0;
             ToDoButton.InterfaceIndexX = 2;
+            ToDoButton.IsInvokable = true;
+            ToDoButton.SetInvokedMethod(SetTaskListActive);
 
             Buttons.Add(HabitsButton);
             Buttons.Add(JournalButton);
@@ -471,6 +473,15 @@ namespace UserInterface
                                                                     // InterfaceX index default-
                                                                     // Interface level default
                                                                     // 0 false 1 true, if turn off current active graphic
+        }
+
+        public string SetTaskListActive() 
+        {
+            if (IsToDoListEmpty)
+            {
+                return "3" + "1" + "0" + InfoToken[0];
+            }
+            return "2" + "008" + "1" + "0" + "0" + "1" + "0" + "1" + "0" + "0";
         }
     }
 
@@ -1289,6 +1300,337 @@ namespace UserInterface
 
             }
    
+        }
+    }
+    #endregion
+
+    #region ToDo List Graphics
+    public class TaskListGraphics : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+
+
+        public override int MaxWidth { get; set; } = 76;
+        public override int MaxHeight { get; set; } = 21;
+
+        public TaskListGraphics()
+        {
+            ID = "008";
+            InfoToken = " 1003010";
+            IsGraphicElementVisibleDefault = false;
+        }
+
+        public override void AdjustVariableData(ref UserData user)
+        {
+            Buttons = [];
+            Labels = [];
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (i >= user.TaskList.Count)
+                {
+                    VariableLabel taskLists = new()
+                    {
+                        HorizontalLength = 66,
+                        VerticalLength = 1,
+                        XPosition = 8,
+                        YPosition = 1 + (i * 2),
+                        LabelText = "".PadRight(66)
+                    };
+                    Labels.Add(taskLists);
+                    Button taskButton = new()
+                    {
+                        HorizontalLength = 1,
+                        VerticalLength = 1,
+                        XPosition = 2,
+                        YPosition = 1 + (i * 2),
+                        MenuInterfaceLevel = -1,
+                        ButtonText = " ",
+                        InterfaceIndexY = i,
+                        InterfaceIndexX = 0
+                    };
+                    Buttons.Add(taskButton);
+                    continue;
+                }
+                Button taskButtons = new()
+                {
+                    HorizontalLength = 1,
+                    VerticalLength = 1,
+                    XPosition = 2,
+                    YPosition = 1 + (i * 2),
+                    MenuInterfaceLevel = 1,
+                    ButtonText = " ",
+                    InterfaceIndexY = i,
+                    InterfaceIndexX = 0,
+                    IsInvokable = true,
+                };
+                taskButtons.SetInvokedMethod(SetTaskOptionActive);
+                Buttons.Add(taskButtons);
+
+                VariableLabel taskTitle = new()
+                {
+                    HorizontalLength = 66,
+                    VerticalLength = 1,
+                    XPosition = 8,
+                    YPosition = 1 + (i * 2),
+                    LabelText = user.TaskList[i].Name.PadRight(30) + "   " +
+                    user.TaskList[i].DateCreated.ToShortDateString().PadRight(20) + "   " + user.TaskList[i].DateDue.ToShortDateString().PadRight(10)
+                };
+                Labels.Add(taskTitle);
+            }
+        }
+
+        public static string SetTaskOptionActive()
+        {
+            return "2" + "005" + "1" + "0" + "0" + "3" + "0" + "1" + "0" + "1"; // Type -
+                                                                                // ID-
+                                                                                // 1/0 True/False -
+                                                                                // InterfaceY index default -
+                                                                                // InterfaceX index default-
+                                                                                // Interface level default -
+                                                                                // 0 false 1 true, if turn off current active graphic
+                                                                                // Activate at xcoordinate as active?
+                                                                                // Activate at ycoordinate as active?
+
+        }
+    }
+
+    public class HabitListGraphics : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" + // 40 Character Limit for Habit Name NAME/FINISHED/UNFINISHED
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++       @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+
+
+        public override int MaxWidth { get; set; } = 69;
+        public override int MaxHeight { get; set; } = 21;
+
+        public HabitListGraphics()
+        {
+            ID = "000";
+            InfoToken = " 1003000";
+            IsGraphicElementVisibleDefault = false;
+        }
+
+        public override void AdjustVariableData(ref UserData user)
+        {
+            Buttons = [];
+            Labels = [];
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (i >= user.HabitList.Count)
+                {
+                    VariableLabel habitLabels = new()
+                    {
+                        HorizontalLength = 53,
+                        VerticalLength = 1,
+                        XPosition = 8,
+                        YPosition = 1 + (i * 2),
+                        LabelText = "".PadRight(40) + "   " + "".PadRight(10)
+                    };
+                    Labels.Add(habitLabels);
+                    Button habitButtons = new()
+                    {
+                        HorizontalLength = 1,
+                        VerticalLength = 1,
+                        XPosition = 2,
+                        YPosition = 1 + (i * 2),
+                        MenuInterfaceLevel = -1,
+                        ButtonText = " ",
+                        InterfaceIndexY = i,
+                        InterfaceIndexX = 0
+                    };
+                    Buttons.Add(habitButtons);
+                    continue;
+                }
+                Button habitButton = new()
+                {
+                    HorizontalLength = 1,
+                    VerticalLength = 1,
+                    XPosition = 2,
+                    YPosition = 1 + (i * 2),
+                    MenuInterfaceLevel = 1,
+                    ButtonText = " ",
+                    InterfaceIndexY = i,
+                    InterfaceIndexX = 0,
+                    IsInvokable = true,
+                };
+                habitButton.SetInvokedMethod(SetHabitOptionActive);
+                Buttons.Add(habitButton);
+
+                VariableLabel habitLabel = new()
+                {
+                    HorizontalLength = 53,
+                    VerticalLength = 1,
+                    XPosition = 8,
+                    YPosition = 1 + (i * 2),
+                    LabelText = user.HabitList[i].Name.PadRight(40) + "   " + (user.HabitList[i].Completed ? "FINISHED" : "UNFINISHED").PadRight(10)
+                };
+                Labels.Add(habitLabel);
+            }
+        }
+
+        public string SetHabitOptionActive()
+        {
+            return "2" + "001" + "1" + "0" + "0" + "3" + "0" + "1" + "0" + "0"; // Type -
+                                                                                // ID of the habit list -
+                                                                                // 1/0 True/False -
+                                                                                // InterfaceY index default -
+                                                                                // InterfaceX index default-
+                                                                                // Interface level default -
+                                                                                // 0 false 1 true, if turn off current active graphic
+
+        }
+    }
+
+    public class TaskOptionGraphics : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "@@@@@@@@@@@@@@@@@@"+
+            "@&&&&&&&&&&&&&&&&@" + // ADD
+            "@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&@" + //DONE
+            "@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&@" + //EDIT
+            "@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&@" + //DELETE
+            "@@@@@@@@@@@@@@@@@@";
+
+        public override int MaxWidth { get; set; } = 18;
+        public override int MaxHeight { get; set; } = 9;
+
+        public Button AddButton { get; set; } = new Button();
+        public Button DoneButton { get; set; } = new Button();
+        public Button EditButton { get; set; } = new Button();
+        public Button DeleteButton { get; set; } = new Button();
+
+        public TaskOptionGraphics()
+        {
+            ID = "001";
+            InfoToken = "  000001";
+            IsGraphicElementVisibleDefault = false;
+            Buttons = [];
+
+            FinishButton.HorizontalLength = 16;
+            FinishButton.VerticalLength = 1;
+            FinishButton.XPosition = 1;
+            FinishButton.YPosition = 1;
+            FinishButton.MenuInterfaceLevel = 3;
+            FinishButton.ButtonText = "     FINISH     ";
+            FinishButton.InterfaceIndexY = 0;
+            FinishButton.InterfaceIndexX = 0;
+            FinishButton.IsInvokable = true;
+            FinishButton.SetInvokedMethod(FinishSelectedHabit);
+
+            AddButton.HorizontalLength = 16;
+            AddButton.VerticalLength = 1;
+            AddButton.XPosition = 1;
+            AddButton.YPosition = 3;
+            AddButton.MenuInterfaceLevel = 3;
+            AddButton.ButtonText = "      ADD       ";
+            AddButton.InterfaceIndexY = 1;
+            AddButton.InterfaceIndexX = 0;
+            AddButton.IsInvokable = true;
+            AddButton.SetInvokedMethod(AddHabit);
+
+            EditButton.HorizontalLength = 16;
+            EditButton.VerticalLength = 1;
+            EditButton.XPosition = 1;
+            EditButton.YPosition = 5;
+            EditButton.MenuInterfaceLevel = 3;
+            EditButton.ButtonText = "      EDIT      ";
+            EditButton.InterfaceIndexY = 2;
+            EditButton.InterfaceIndexX = 0;
+            EditButton.IsInvokable = true;
+            EditButton.SetInvokedMethod(EditHabit);
+
+            DeleteButton.HorizontalLength = 16;
+            DeleteButton.VerticalLength = 1;
+            DeleteButton.XPosition = 1;
+            DeleteButton.YPosition = 7;
+            DeleteButton.MenuInterfaceLevel = 3;
+            DeleteButton.ButtonText = "     DELETE     ";
+            DeleteButton.InterfaceIndexY = 3;
+            DeleteButton.InterfaceIndexX = 0;
+            DeleteButton.IsInvokable = true;
+            DeleteButton.SetInvokedMethod(DeleteSelectedHabit);
+
+            Buttons.Add(FinishButton);
+            Buttons.Add(AddButton);
+            Buttons.Add(EditButton);
+            Buttons.Add(DeleteButton);
+        }
+
+        public string FinishSelectedHabit()
+        {
+            return "3" + "4" + "1" + InfoToken[0]; // Type 3 (Operation) - 
+                                                   // Add, Delete, Edit, Finish
+                                                   // Disable Current Element
+                                                   // Habit Index
+        }
+
+        public string DeleteSelectedHabit()
+        {
+            return "3" + "2" + "1" + InfoToken[0]; // Type 3 (Operation) -
+                                                   // Add, Delete, Edit, Finish
+                                                   // Disable Current Element
+                                                   // Habit Index
+        }
+
+        public string AddHabit()
+        {
+            return "3" + "1" + "1" + InfoToken[0]; // Type 3 (Operation) -
+                                                   // Add, Delete, Edit, Finish
+                                                   // Disable Current Element
+                                                   // Habit Index
+        }
+        public string EditHabit()
+        {
+            return "3" + "3" + "1" + InfoToken[0]; // Type 3 (Operation) -
+                                                   // Add, Delete, Edit, Finish
+                                                   // Disable Current Element
+                                                   // Habit Index
         }
     }
     #endregion

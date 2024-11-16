@@ -122,6 +122,7 @@ namespace UserInterface
             #endregion
 
             #region Main Graphics
+            #region Habit
             TopBarGraphics TopBarGraphics = new()
             {
                 AbsolutePositionX = 1,
@@ -150,6 +151,8 @@ namespace UserInterface
                 AbsolutePositionY = 4
             };
 
+            #endregion
+            #region Journal
             JournalListGraphic JournalListGraphic = new()
             {
                 AbsolutePositionX = 1,
@@ -178,6 +181,15 @@ namespace UserInterface
                 IsGraphicElementVisible = false,
                 IsDynamic = true
             };
+            #endregion
+            #region Task
+            TaskListGraphics TaskListGraphics = new()
+            {
+                AbsolutePositionX = 1,
+                AbsolutePositionY = 4,
+                IsDynamic = true
+            };
+            #endregion
 
             MainScene.Add(TopBarGraphics);
             MainScene.Add(HabitListGraphics);
@@ -187,6 +199,7 @@ namespace UserInterface
             MainScene.Add(JournalOperations);
             MainScene.Add(AddJournalInterfaceGraphics);
             MainScene.Add(ViewJournalEntry);
+            MainScene.Add(TaskListGraphics);
             #endregion
 
         }

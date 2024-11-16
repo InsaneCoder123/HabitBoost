@@ -459,8 +459,8 @@ namespace UserInterface
                             // Edit Operation
                             if (ButtonInvokedInformation[1] == '3')
                             {
-                                ToggleSpecificGraphicElement("006", true,
-                                   CurrentInterfaceIndexSelectorY.ToString() + "2", ["004", "005"], false);
+                                ToggleSpecificGraphicElement("010", true,
+                                   CurrentInterfaceIndexSelectorY.ToString() + "2", ["009", "008"], false);
                                 CurrentInterfaceIndexSelectorY = 0;
                                 CurrentInterfaceIndexSelectorX = 0;
                                 CurrentInterfaceLevel = 4;
@@ -495,7 +495,7 @@ namespace UserInterface
                             {
                                 if (ButtonInvokedInformation[39] == '0')
                                 {
-                                    //User.EditJournalEntry(UserFolderPath, int.Parse(ButtonInvokedInformation[532..]), ButtonInvokedInformation[1..31].Replace("~", ""), ButtonInvokedInformation[31..501].Replace("~", ""));
+                                    User.EditTask(UserFolderPath, int.Parse(ButtonInvokedInformation[39..]), taskName, difficulty, dateValue);
                                 }
                                 else
                                 {

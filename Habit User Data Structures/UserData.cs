@@ -476,28 +476,28 @@ namespace Habit_User_Data_Structures
             }
         }
 
-        public void EditTask(string DataFolder, string taskID, string name, HabitBoostDifficulty difficulty, int experience, bool completed, DateTime dateDue)
+        public void EditTask(string DataFolder, string taskID, string name, HabitBoostDifficulty difficulty, DateTime dateDue)
         {
             Task? task = TaskList.Find(task => task.ID == taskID);
             if (task != null)
             {
                 task.Name = name;
                 task.Difficulty = difficulty;
-                task.Experience = experience;
-                task.Completed = completed;
+                task.Experience = 0;
+                task.Completed = false;
                 task.DateDue = dateDue;
                 WriteTaskData(DataFolder, task.ID);
             }
         }
-        public void EditTask(string DataFolder, int index, string name, HabitBoostDifficulty difficulty, int experience, bool completed, DateTime dateDue)
+        public void EditTask(string DataFolder, int index, string name, HabitBoostDifficulty difficulty, DateTime dateDue)
         {
             Task task = TaskList[index];
             if (task != null)
             {
                 task.Name = name;
                 task.Difficulty = difficulty;
-                task.Experience = experience;
-                task.Completed = completed;
+                task.Experience = 0;
+                task.Completed = false;
                 task.DateDue = dateDue;
                 WriteTaskData(DataFolder, task.ID);
             }

@@ -247,6 +247,10 @@ namespace UserInterface
             // 1 Switch Screen
             LoginToken += UsernameInput.FieldText.PadRight(30, '~');
             LoginToken += PasswordInput.FieldText.PadRight(10, '~');
+            foreach (InputField inputField in InputFields!)
+            {
+                inputField.ClearFieldText();
+            }    
             return LoginToken;
         }
     }
@@ -350,6 +354,11 @@ namespace UserInterface
             // 1 Switch Screen
             CreateUserToken += UsernameInput.FieldText.PadRight(30, '~');
             CreateUserToken += PasswordInput.FieldText.PadRight(10, '~');
+
+            foreach (InputField inputField in InputFields!)
+            {
+                inputField.ClearFieldText();
+            }
             return CreateUserToken;
         }
     }
@@ -445,6 +454,7 @@ namespace UserInterface
         {
             UsernameLabel.LabelText = user?.Username?.PadRight(10) ?? "";
             LevelLabel.LabelText = user?.Level.ToString().PadRight(3) ?? "";
+            ExperienceLabel.LabelText = user?.Experience.ToString().PadLeft(3, '0') + "/" + 100;
         }
 
         public string SetHabitListActive()
@@ -1395,7 +1405,7 @@ namespace UserInterface
                     XPosition = 8,
                     YPosition = 1 + (i * 2),
                     LabelText = user.TaskList[i].Name.PadRight(30) + "   " +
-                    user.TaskList[i].DateCreated.ToShortDateString().PadRight(20) + "   " + user.TaskList[i].DateDue.ToShortDateString().PadRight(10)
+                    user.TaskList[i].Difficulty.ToString().PadRight(20) + "   " + user.TaskList[i].DateDue.ToShortDateString().PadRight(10)
                 };
                 Labels.Add(taskTitle);
             }

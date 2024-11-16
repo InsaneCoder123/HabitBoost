@@ -189,6 +189,11 @@ namespace UserInterface
                                 User.ReadData(UserFolderPath + @"\" + ButtonInvokedInformation[1..30].Replace("~", ""));
                                 SwitchScreen(ProgramScreen.Main);
                             }
+                            else 
+                            {
+                                AddBottomMessage("Invalid Username or Password!", true);
+                                ClearInputFields();
+                            }
                         }
 
                         // Switch Screen Invoke

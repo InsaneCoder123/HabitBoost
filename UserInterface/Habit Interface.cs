@@ -43,6 +43,13 @@ namespace UserInterface
             if (RelativeX == XPosition + RenderPointerX && RelativeY == YPosition + RenderPointerY)
             {
                 int RenderIndex = (RenderPointerY * HorizontalLength) + RenderPointerX;
+                ++RenderPointerX;
+
+                if (RenderIndex == (HorizontalLength - 1) + ((HorizontalLength) * RenderPointerY))
+                {
+                    RenderPointerX = 0;
+                    ++RenderPointerY;
+                }
 
                 if (LabelText.Length <= RenderIndex)
                 {
@@ -60,14 +67,8 @@ namespace UserInterface
                     return;
                 }
 
-                if (RenderIndex == HorizontalLength - 1)
-                {
-                    RenderPointerX = 0;
-                    ++RenderPointerY;
-                    return;
-                }
 
-                ++RenderPointerX;
+                
             }
         }
     }
@@ -105,6 +106,12 @@ namespace UserInterface
                     return;
                 }
 
+                if (RenderIndex == (HorizontalLength - 1) + ((HorizontalLength) * RenderPointerY))
+                {
+                    RenderPointerX = 0;
+                    ++RenderPointerY;
+                }
+
                 if (CurrentInterfaceIndexSelectorY == InterfaceIndexY && CurrentInterfaceIndexSelectorX == InterfaceIndexX
                     && MenuInterfaceLevel == CurrentInterfaceLevel)
                 {
@@ -119,13 +126,6 @@ namespace UserInterface
                 {
                     RenderPointerX = 0;
                     RenderPointerY = 0;
-                    return;
-                }
-
-                if (RenderIndex == HorizontalLength - 1)
-                {
-                    RenderPointerX = 0;
-                    ++RenderPointerY;
                     return;
                 }
 

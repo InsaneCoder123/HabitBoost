@@ -171,6 +171,14 @@ namespace UserInterface
                 IsGraphicElementVisible = false
             };
 
+            ViewJournalEntry ViewJournalEntry = new()
+            {
+                AbsolutePositionX = 2,
+                AbsolutePositionY = 4,
+                IsGraphicElementVisible = false,
+                IsDynamic = true
+            };
+
             MainScene.Add(TopBarGraphics);
             MainScene.Add(HabitListGraphics);
             MainScene.Add(HabitOptionGraphics);
@@ -178,6 +186,7 @@ namespace UserInterface
             MainScene.Add(JournalListGraphic);
             MainScene.Add(JournalOperations);
             MainScene.Add(AddJournalInterfaceGraphics);
+            MainScene.Add(ViewJournalEntry);
             #endregion
 
         }
@@ -450,7 +459,7 @@ namespace UserInterface
                     int graphicIndex = (graphicElement.RenderPointerY * graphicElement.MaxWidth) + graphicElement.RenderPointerX;
 
                     if (graphicElement.Graphic[graphicIndex] == '@')
-                    { CustomDisplay.DisplayColoredText(" ", ConsoleColor.White); }
+                    { CustomDisplay.DisplayColoredText("+", ConsoleColor.White); }
                     else if (graphicElement.Graphic[graphicIndex] == '%') 
                     {
                         if (graphicElement.InputFields != null)

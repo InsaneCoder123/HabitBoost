@@ -164,7 +164,7 @@ namespace UserInterface
 
                         if (ButtonInvokedInformation[0..2] == "-1")
                         {
-                            ToggleSpecificGraphicElement("000", true,
+                            ToggleSpecificGraphicElement(ButtonInvokedInformation[2..5], true,
                                     CurrentInterfaceIndexSelectorY.ToString(), true);
                             CurrentInterfaceIndexSelectorY = 0;
                             CurrentInterfaceIndexSelectorX = 0;
@@ -365,8 +365,8 @@ namespace UserInterface
                             // Edit Operation
                             if (ButtonInvokedInformation[1] == '3')
                             {
-                                ToggleSpecificGraphicElement("002", true,
-                                   CurrentInterfaceIndexSelectorY.ToString() + '2', ButtonInvokedInformation[2] == '1', false);
+                                ToggleSpecificGraphicElement("006", true,
+                                   CurrentInterfaceIndexSelectorY.ToString() + "2", ["004", "005"], false);
                                 CurrentInterfaceIndexSelectorY = 0;
                                 CurrentInterfaceIndexSelectorX = 0;
                                 CurrentInterfaceLevel = 4;
@@ -375,14 +375,48 @@ namespace UserInterface
                             // View Operation
                             if (ButtonInvokedInformation[1] == '4')
                             {
-                                User.EditHabit(UserFolderPath, int.Parse(ButtonInvokedInformation[3..]), true);
-                                UpdateInformation();
-                                ToggleSpecificGraphicElement("000", true,
-                                   CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                ToggleSpecificGraphicElement("007", true,
+                                   CurrentInterfaceIndexSelectorY.ToString() + "0", ["004", "005"], ButtonInvokedInformation[2] == '1');
+                                CurrentInterfaceIndexSelectorY = 0;
+                                CurrentInterfaceIndexSelectorX = 0;
+                                CurrentInterfaceLevel = 4;
+                            }
+                        }
+
+                        // Journal Edit Invoke
+                        else if (ButtonInvokedInformation[0] == '7')
+                        {
+                            string journalEntry = ButtonInvokedInformation[31..531].Replace("~", "");
+                            string journalTitle = ButtonInvokedInformation[1..31].Replace("~", "");
+                            if (journalTitle == "" || journalEntry == "")
+                            {
+                                if (journalTitle == "")
+                                {
+                                    AddBottomMessage("Empty Journal Title!", true);
+                                }
+                                if (journalEntry == "")
+                                {
+                                    AddBottomMessage("Empty Habit Name!", true);
+                                }
+                                ClearInputFields();
+                            }
+                            else 
+                            {
+                                if (ButtonInvokedInformation[531] == '0')
+                                {
+                                    User.EditJournalEntry(UserFolderPath, int.Parse(ButtonInvokedInformation[532..]), ButtonInvokedInformation[1..31].Replace("~", ""), ButtonInvokedInformation[31..501].Replace("~", ""));
+                                }
+                                else
+                                {
+                                    User.AddJournalEntry(HabitBoostFolderPath, journalTitle, journalEntry);
+                                }
+                                ToggleSpecificGraphicElement("004", true,
+                                CurrentInterfaceIndexSelectorY.ToString(), true);
                                 CurrentInterfaceIndexSelectorY = 0;
                                 CurrentInterfaceIndexSelectorX = 0;
                                 CurrentInterfaceLevel = 1;
                             }
+
                         }
                     }
                 }

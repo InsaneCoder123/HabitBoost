@@ -835,7 +835,7 @@ namespace UserInterface
             {
                 inputField.FieldText = "";
             }
-            return "-1";
+            return "-1" + "000";
         }
     }
     #endregion
@@ -1035,7 +1035,7 @@ namespace UserInterface
         }
         public string ViewJournal()
         {
-            return "6" + "2" + "1" + InfoToken[0]; // Type 3 (Operation) -
+            return "6" + "4" + "0" + InfoToken[0]; // Type 3 (Operation) -
                                                    // Add, Delete, Edit, Finish
                                                    // Disable Current Element
                                                    // Journal Index
@@ -1152,6 +1152,7 @@ namespace UserInterface
             ConfirmButton.InterfaceIndexY = 2;
             ConfirmButton.InterfaceIndexX = 0;
             ConfirmButton.IsInvokable = true;
+            ConfirmButton.SetInvokedMethod(ConfirmAddJournal);
 
             CancelButton.HorizontalLength = 28;
             CancelButton.VerticalLength = 1;
@@ -1162,6 +1163,7 @@ namespace UserInterface
             CancelButton.InterfaceIndexY = 2;
             CancelButton.InterfaceIndexX = 1;
             CancelButton.IsInvokable = true;
+            CancelButton.SetInvokedMethod(CancelAddJournal);
 
             InputFields.Add(TitleInput);
             InputFields.Add(EntryInput);
@@ -1171,7 +1173,124 @@ namespace UserInterface
             Buttons.Add(TitleButton);
             Buttons.Add(EntryButton);
         }
+
+        public string ConfirmAddJournal()
+        {
+            string JournalToken = "7";
+
+
+
+            // The next 40 characters are the habit name
+            // The next 8 characters are the habit difficulty
+
+            //TODO check if difficulty input text is valid
+            JournalToken += TitleInput.FieldText.PadRight(30, '~');
+            JournalToken += EntryInput.FieldText.PadRight(500, '~');
+
+            foreach (InputField inputField in InputFields!)
+            {
+                inputField.FieldText = "";
+            }
+
+            if (InfoToken[1] == '2')
+            {
+                JournalToken += "0" + InfoToken[0];
+            }
+            else
+            {
+                JournalToken += " ";
+            }
+            return JournalToken;
+        }
+
+        public string CancelAddJournal()
+        {
+            foreach (InputField inputField in InputFields!)
+            {
+                inputField.FieldText = "";
+            }
+            return "-1" + "004";
+        }
+    }
+
+    public class ViewJournalEntry : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ +++++++++++ @ +++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+
+        public override int MaxWidth { get; set; } = 63;
+        public override int MaxHeight { get; set; } = 19;
+
+        public VariableLabel Title { get; set; } = new VariableLabel();
+        public VariableLabel Entry { get; set; } = new VariableLabel();
+        public VariableLabel TitleLabel { get; set; } = new VariableLabel();
+        public VariableLabel EntryLabel { get; set; } = new VariableLabel();
+
+
+        public ViewJournalEntry()
+        {
+            ID = "007";
+            InfoToken = " 1004001";
+
+            Labels = [];
+            IsGraphicElementVisibleDefault = false;
+
+            TitleLabel.HorizontalLength = 11;
+            TitleLabel.VerticalLength = 1;
+            TitleLabel.XPosition = 2;
+            TitleLabel.YPosition = 1;
+            TitleLabel.LabelText = CustomDisplay.CenterString("TITLE", 11);
+
+            EntryLabel.HorizontalLength = 59;
+            EntryLabel.VerticalLength = 1;
+            EntryLabel.XPosition = 2;
+            EntryLabel.YPosition = 3;
+            EntryLabel.LabelText = CustomDisplay.CenterString("ENTRY", 59);
+
+            Labels.Add(TitleLabel);
+            Labels.Add(EntryLabel);
+            Labels.Add(Title);
+            Labels.Add(Entry);
+        }
+
+        public override void AdjustVariableData(ref UserData user)
+        {
+            if (InfoToken[0] != 32)
+            { 
+                Title.HorizontalLength = 45;
+                Title.VerticalLength = 1;
+                Title.XPosition = 16;
+                Title.YPosition = 1;
+                Title.LabelText = user.JournalList[InfoToken[0] - '0'].Name.PadRight(45);
+
+                Entry.HorizontalLength = 59;
+                Entry.VerticalLength = 13;
+                Entry.XPosition = 2;
+                Entry.YPosition = 5;
+                Entry.LabelText = user.JournalList[InfoToken[0] - '0'].Entry.PadRight(767);
+
+            }
+   
+        }
     }
     #endregion
-        #endregion
+    #endregion
 }

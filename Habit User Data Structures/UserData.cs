@@ -333,13 +333,13 @@ namespace Habit_User_Data_Structures
             WriteHabitData(DataFolder, habit.ID);
         }
 
-        public void AddJournalEntry(string DataFolder)
+        public void AddJournalEntry(string DataFolder, string Name, string Entry)
         {
             JournalEntry entry = new()
             {
                 ID = FindFreeID(JournalList.Cast<IIdentifiable>().ToList()),
-                Name = "New Journal Entry",
-                Entry = "Oh yeah test test test test",
+                Name = Name,
+                Entry =  Entry,
                 DateCreated = DateTime.Now
             };
             JournalList.Add(entry);

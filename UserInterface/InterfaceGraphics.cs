@@ -1099,7 +1099,7 @@ namespace UserInterface
             "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
             "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@ &&&&&&&&&&&&&&&&&&&&&&&&&&&&  &&&&&&&&&&&&&&&&&&&&&&&&&&&&& @" +
+            "@ &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
 
         public override int MaxWidth { get; set; } = 63;
@@ -1109,13 +1109,13 @@ namespace UserInterface
         public InputField EntryInput { get; set; } = new InputField();
 
         public Button ConfirmButton { get; set; } = new Button();
-        public Button CancelButton { get; set; } = new Button();
         public Button TitleButton { get; set; } = new Button();
         public Button EntryButton { get; set; } = new Button();
 
         public AddJournalInterfaceGraphics()
         {
             ID = "006";
+            InfoToken = " 1004001";
             InputFields = [];
             Buttons = [];
             IsGraphicElementVisibleDefault = false;
@@ -1164,33 +1164,22 @@ namespace UserInterface
             EntryButton.IsInvokable = false;
 
 
-            ConfirmButton.HorizontalLength = 28;
+            ConfirmButton.HorizontalLength = 59;
             ConfirmButton.VerticalLength = 1;
             ConfirmButton.XPosition = 2;
             ConfirmButton.YPosition = 19;
             ConfirmButton.MenuInterfaceLevel = 4;
-            ConfirmButton.ButtonText = CustomDisplay.CenterString("CONFIRM", 28);
+            ConfirmButton.ButtonText = CustomDisplay.CenterString("CONFIRM", 59);
             ConfirmButton.InterfaceIndexY = 2;
             ConfirmButton.InterfaceIndexX = 0;
             ConfirmButton.IsInvokable = true;
             ConfirmButton.SetInvokedMethod(ConfirmAddJournal);
 
-            CancelButton.HorizontalLength = 28;
-            CancelButton.VerticalLength = 1;
-            CancelButton.XPosition = 32;
-            CancelButton.YPosition = 19;
-            CancelButton.MenuInterfaceLevel = 4;
-            CancelButton.ButtonText = CustomDisplay.CenterString("CANCEL", 28);
-            CancelButton.InterfaceIndexY = 2;
-            CancelButton.InterfaceIndexX = 1;
-            CancelButton.IsInvokable = true;
-            CancelButton.SetInvokedMethod(CancelAddJournal);
 
             InputFields.Add(TitleInput);
             InputFields.Add(EntryInput);
 
             Buttons.Add(ConfirmButton);
-            Buttons.Add(CancelButton);
             Buttons.Add(TitleButton);
             Buttons.Add(EntryButton);
         }
@@ -1224,14 +1213,6 @@ namespace UserInterface
             return JournalToken;
         }
 
-        public string CancelAddJournal()
-        {
-            foreach (InputField inputField in InputFields!)
-            {
-                inputField.FieldText = "";
-            }
-            return "-1" + "004";
-        }
     }
 
     public class ViewJournalEntry : GraphicElement

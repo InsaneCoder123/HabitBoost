@@ -13,7 +13,22 @@ namespace Habit_User_Data_Structures
         public string? Password { get; set; }
 
         public int Level { get; set; }
-        public int Experience { get; set; }
+        public int Experience
+        {
+            set
+            {
+                if (value >= 100)
+                {
+                    Level++;
+                    Experience -= 100;
+                }
+                else
+                {
+                    Experience = value;
+                }
+            }
+            get { return Experience; }
+        }
         public int tasksCompleted { get; set; }
         public int habitsCompleted { get; set; }
 
@@ -504,6 +519,39 @@ namespace Habit_User_Data_Structures
         }
 
         #endregion
+        #endregion
+
+        #region Leveling Up and Experience
+        public void RewardExperience(HabitBoostDifficulty BoostDifficulty)
+        {
+
+        }
+
+        static int GetRandomValue(HabitBoostDifficulty difficulty)
+        {
+            Random random = new();
+            int result;
+
+            switch (difficulty)
+            {
+                case HabitBoostDifficulty.Easy:
+                    result = random.Next(1, 6); // 1 to 5
+                    break;
+                case HabitBoostDifficulty.Medium:
+                    result = random.Next(5, 8); // 5 to 7
+                    break;
+                case HabitBoostDifficulty.Hard:
+                    result = random.Next(7, 11); // 7 to 10
+                    break;
+                case HabitBoostDifficulty.VeryHard:
+                    result = random.Next(10, 16); // 10 to 15
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(difficulty), "Invalid difficulty level");
+            }
+
+            return result;
+        }
         #endregion
     }
 }

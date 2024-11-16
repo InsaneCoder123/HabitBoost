@@ -156,6 +156,11 @@ namespace UserInterface
                     Console.Write(" ");
                     return;
                 }
+                if (InputIndex == (HorizontalLength - 1) + ((HorizontalLength) * RenderPointerY))
+                {
+                    RenderPointerX = 0;
+                    ++RenderPointerY;
+                }
 
                 if (FieldText.Length <= InputIndex) 
                 {
@@ -178,14 +183,6 @@ namespace UserInterface
                 }
                 if (IsPrivate) { Console.Write("*"); }
                 else { Console.Write(FieldText[StartingIndex + InputIndex]); }
-
-
-                if (InputIndex == HorizontalLength - 1)
-                {
-                    RenderPointerX = 0;
-                    ++RenderPointerY;
-                    return;
-                }
 
             }
         }

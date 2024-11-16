@@ -332,8 +332,8 @@ namespace UserInterface
                             // Add Operation
                             if (ButtonInvokedInformation[1] == '1')
                             {
-                                ToggleSpecificGraphicElement("002", true,
-                                    CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                ToggleSpecificGraphicElement("006", true,
+                                    CurrentInterfaceIndexSelectorY.ToString(), ["004", "005"]);
                                 CurrentInterfaceIndexSelectorY = 0;
                                 CurrentInterfaceIndexSelectorX = 0;
                                 CurrentInterfaceLevel = 4;

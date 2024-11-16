@@ -164,12 +164,20 @@ namespace UserInterface
                 IsGraphicElementVisible = false
             };
 
+            AddJournalInterfaceGraphics AddJournalInterfaceGraphics = new()
+            {
+                AbsolutePositionX = 2,
+                AbsolutePositionY = 4,
+                IsGraphicElementVisible = false
+            };
+
             MainScene.Add(TopBarGraphics);
             MainScene.Add(HabitListGraphics);
             MainScene.Add(HabitOptionGraphics);
             MainScene.Add(HabitEditInterfaceGraphics);
             MainScene.Add(JournalListGraphic);
             MainScene.Add(JournalOperations);
+            MainScene.Add(AddJournalInterfaceGraphics);
             #endregion
 
         }
@@ -218,6 +226,63 @@ namespace UserInterface
 
 
                         if ( activateAtSameXCoordinateAsActiveInterface)
+                        {
+                            if (activeButton != null)
+                                nextGraphicElement.AbsolutePositionX = activeButton.XPosition + currentActiveGraphicElement.AbsolutePositionX - 1;
+                            else if (activeInputField != null)
+                                nextGraphicElement.AbsolutePositionX = activeInputField.XPosition + currentActiveGraphicElement.AbsolutePositionX - 1;
+                        }
+                        if (activateAtSameYCoordinateAsActiveInterface)
+                        {
+                            if (activeButton != null)
+                                nextGraphicElement.AbsolutePositionY = activeButton.YPosition + currentActiveGraphicElement.AbsolutePositionY - 1;
+                            else if (activeInputField != null)
+                                nextGraphicElement.AbsolutePositionY = activeInputField.YPosition + currentActiveGraphicElement.AbsolutePositionY - 1;
+                        }
+
+
+                        string infoToken = nextGraphicElement.InfoToken;
+                        if (overwritePreviousInterfaceToken)
+                        {
+                            nextGraphicElement.InfoToken = token.PadRight(2, ' ') + infoToken[2..];
+                        }
+                        else
+                        {
+                            nextGraphicElement.InfoToken = currentActiveGraphicElement.InfoToken[0].ToString() + token[1].ToString() + infoToken[2..];
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void ToggleSpecificGraphicElement(string ID, bool toggle, string token, string[] graphicToBeDisabledID,
+            bool overwritePreviousInterfaceToken = true, bool activateAtSameXCoordinateAsActiveInterface = false, bool activateAtSameYCoordinateAsActiveInterface = false)
+        {
+            var nextGraphicElement = GetCurrentActiveScene().Find(x => x.ID == ID);
+            var currentActiveGraphicElement = GetCurrentActiveGraphicElement(GetCurrentActiveScene());
+            if (currentActiveGraphicElement != null)
+            {
+                foreach (string graphicID in graphicToBeDisabledID)
+                {
+                    var scene = GetCurrentActiveScene()?.Find(x => x.ID == graphicID);
+                    if (scene != null)
+                    {
+                        scene.IsGraphicElementActive = false;
+                        scene.IsGraphicElementVisible = false;
+                    }
+                }
+                if (nextGraphicElement != null)
+                {
+                    if (currentActiveGraphicElement != null)
+                    {
+                        nextGraphicElement.IsGraphicElementActive = toggle;
+                        nextGraphicElement.IsGraphicElementVisible = toggle;
+
+                        Button? activeButton = currentActiveGraphicElement.GetCurrentActiveButton();
+                        InputField? activeInputField = currentActiveGraphicElement.GetCurrentActiveInputField();
+
+
+                        if (activateAtSameXCoordinateAsActiveInterface)
                         {
                             if (activeButton != null)
                                 nextGraphicElement.AbsolutePositionX = activeButton.XPosition + currentActiveGraphicElement.AbsolutePositionX - 1;
@@ -385,7 +450,7 @@ namespace UserInterface
                     int graphicIndex = (graphicElement.RenderPointerY * graphicElement.MaxWidth) + graphicElement.RenderPointerX;
 
                     if (graphicElement.Graphic[graphicIndex] == '@')
-                    { CustomDisplay.DisplayColoredText(" ", ConsoleColor.Green); }
+                    { CustomDisplay.DisplayColoredText(" ", ConsoleColor.White); }
                     else if (graphicElement.Graphic[graphicIndex] == '%') 
                     {
                         if (graphicElement.InputFields != null)
@@ -471,5 +536,19 @@ namespace UserInterface
             Console.Write(text);
             Console.BackgroundColor = ConsoleColor.Black;
         }
+
+        public static string CenterString(string input, int totalWidth)
+        {
+            if (string.IsNullOrEmpty(input) || totalWidth <= input.Length)
+                return input;
+
+            int spaces = totalWidth - input.Length;
+            int padLeft = spaces / 2;
+            int padRight = spaces - padLeft;
+
+            return new string(' ', padLeft) + input + new string(' ', padRight);
+        }
     }
+
+
 }

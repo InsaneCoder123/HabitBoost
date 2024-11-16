@@ -733,7 +733,7 @@ namespace UserInterface
             HabitUserName.XPosition = 1;
             HabitUserName.YPosition = 1;
             HabitUserName.MenuInterfaceLevel = 4;
-            HabitUserName.ButtonText = "          HABIT NAME          ";
+            HabitUserName.ButtonText = CustomDisplay.CenterString("HABIT NAME", 28);
             HabitUserName.InterfaceIndexY = 0;
             HabitUserName.InterfaceIndexX = 0;
             HabitUserName.BindedInterface = HabitNameInput;
@@ -1060,31 +1060,118 @@ namespace UserInterface
     {
         public override string Graphic { get; set; } =
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" + // ADD VIEW EDIT DELETE
+            "@ &&&&&&&&&&& @ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" + 
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
+            "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
+            "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
+            "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
+            "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
+            "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
+            "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
+            "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
+            "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
+            "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
+            "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
+            "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
+            "@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
-            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
-            "@ &     +++++++++++++++++++++++++++++++++++++++++++++++++++++ @" +
+            "@ &&&&&&&&&&&&&&&&&&&&&&&&&&&&  &&&&&&&&&&&&&&&&&&&&&&&&&&&&& @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
 
-        public override int MaxWidth { get; set; } = 35;
-        public override int MaxHeight { get; set; } = 3;
-    }
+        public override int MaxWidth { get; set; } = 63;
+        public override int MaxHeight { get; set; } = 21;
 
+        public InputField TitleInput { get; set; } = new InputField();
+        public InputField EntryInput { get; set; } = new InputField();
+
+        public Button ConfirmButton { get; set; } = new Button();
+        public Button CancelButton { get; set; } = new Button();
+        public Button TitleButton { get; set; } = new Button();
+        public Button EntryButton { get; set; } = new Button();
+
+        public AddJournalInterfaceGraphics()
+        {
+            ID = "006";
+            InputFields = [];
+            Buttons = [];
+            IsGraphicElementVisibleDefault = false;
+
+            TitleInput.HorizontalLength = 45;
+            TitleInput.VerticalLength = 1;
+            TitleInput.XPosition = 16;
+            TitleInput.YPosition = 1;
+            TitleInput.MenuInterfaceLevel = 5;
+            TitleInput.FieldText = "";
+            TitleInput.IsHorizontalExpandable = false;
+            TitleInput.InterfaceIndexY = 0;
+            TitleInput.InterfaceIndexX = 0;
+            TitleInput.MaxFieldTextLength = 40;
+
+            EntryInput.HorizontalLength = 59;
+            EntryInput.VerticalLength = 13;
+            EntryInput.XPosition = 2;
+            EntryInput.YPosition = 5;
+            EntryInput.MenuInterfaceLevel = 5;
+            EntryInput.IsHorizontalExpandable = false;
+            EntryInput.InterfaceIndexY = 1;
+            EntryInput.InterfaceIndexX = 0;
+            EntryInput.MaxFieldTextLength = 500;
+
+            TitleButton.HorizontalLength = 11;
+            TitleButton.VerticalLength = 1;
+            TitleButton.XPosition = 2;
+            TitleButton.YPosition = 1;
+            TitleButton.MenuInterfaceLevel = 4;
+            TitleButton.ButtonText = CustomDisplay.CenterString("TITLE", 11);
+            TitleButton.InterfaceIndexY = 0;
+            TitleButton.InterfaceIndexX = 0;
+            TitleButton.BindedInterface = TitleInput;
+            TitleButton.IsInvokable = false;
+
+            EntryButton.HorizontalLength = 59;
+            EntryButton.VerticalLength = 1;
+            EntryButton.XPosition = 2;
+            EntryButton.YPosition = 3;
+            EntryButton.MenuInterfaceLevel = 4;
+            EntryButton.ButtonText = CustomDisplay.CenterString("ENTRY", 59);
+            EntryButton.InterfaceIndexY = 1;
+            EntryButton.InterfaceIndexX = 0;
+            EntryButton.BindedInterface = EntryInput;
+            EntryButton.IsInvokable = false;
+
+
+            ConfirmButton.HorizontalLength = 28;
+            ConfirmButton.VerticalLength = 1;
+            ConfirmButton.XPosition = 2;
+            ConfirmButton.YPosition = 19;
+            ConfirmButton.MenuInterfaceLevel = 4;
+            ConfirmButton.ButtonText = CustomDisplay.CenterString("CONFIRM", 28);
+            ConfirmButton.InterfaceIndexY = 2;
+            ConfirmButton.InterfaceIndexX = 0;
+            ConfirmButton.IsInvokable = true;
+
+            CancelButton.HorizontalLength = 28;
+            CancelButton.VerticalLength = 1;
+            CancelButton.XPosition = 32;
+            CancelButton.YPosition = 19;
+            CancelButton.MenuInterfaceLevel = 4;
+            CancelButton.ButtonText = CustomDisplay.CenterString("CANCEL", 28);
+            CancelButton.InterfaceIndexY = 2;
+            CancelButton.InterfaceIndexX = 1;
+            CancelButton.IsInvokable = true;
+
+            InputFields.Add(TitleInput);
+            InputFields.Add(EntryInput);
+
+            Buttons.Add(ConfirmButton);
+            Buttons.Add(CancelButton);
+            Buttons.Add(TitleButton);
+            Buttons.Add(EntryButton);
+        }
+    }
     #endregion
         #endregion
 }

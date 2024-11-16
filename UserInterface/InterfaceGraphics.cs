@@ -1347,7 +1347,7 @@ namespace UserInterface
         public TaskListGraphics()
         {
             ID = "008";
-            InfoToken = " 1003010";
+            InfoToken = " 1003020";
             IsGraphicElementVisibleDefault = false;
         }
 

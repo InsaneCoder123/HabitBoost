@@ -305,6 +305,7 @@ namespace UserInterface
                         scene.IsGraphicElementActive = false;
                         scene.IsGraphicElementVisible = false;
                     }
+                    currentActiveGraphicElement.IsGraphicElementActive = false;
                 }
                 if (nextGraphicElement != null)
                 {
@@ -485,7 +486,7 @@ namespace UserInterface
                     int graphicIndex = (graphicElement.RenderPointerY * graphicElement.MaxWidth) + graphicElement.RenderPointerX;
 
                     if (graphicElement.Graphic[graphicIndex] == '@')
-                    { CustomDisplay.DisplayColoredText("+", ConsoleColor.White); }
+                    { CustomDisplay.DisplayColoredText(" ", ConsoleColor.White); }
                     else if (graphicElement.Graphic[graphicIndex] == '%') 
                     {
                         if (graphicElement.InputFields != null)

@@ -68,7 +68,7 @@ namespace Habit_User_Data_Structures
                                     try
                                     {
                                         string[] habitLines = File.ReadAllLines(habitFile);
-                                        if (habitLines.Length < 5) throw new Exception("Habit file has insufficient data.");
+                                        if (habitLines.Length < 6) { Console.WriteLine($"Habit file has insufficient data"); }
 
                                         string habitFileName = Path.GetFileName(habitFile);
                                         Habit habit = new()
@@ -78,8 +78,13 @@ namespace Habit_User_Data_Structures
                                             Difficulty = (HabitBoostDifficulty)Enum.Parse(typeof(HabitBoostDifficulty), habitLines[2]),
                                             Experience = Convert.ToInt32(habitLines[3]),
                                             Completed = Convert.ToBoolean(habitLines[4]),
+                                            DateLastCompleted = Convert.ToDateTime(habitLines[5]),
                                             DateCreated = Convert.ToDateTime(habitFileName[..2] + "-" + habitFileName[2..4] + "-" + habitFileName[4..8])
                                         };
+                                        if (habit.DateCreated != habit.DateLastCompleted) 
+                                        {
+                                            habit.Completed = false;
+                                        }
                                         HabitList.Add(habit);
                                     }
                                     catch (Exception ex)
@@ -180,7 +185,7 @@ namespace Habit_User_Data_Structures
                         catch (Exception ex)
                         {
                             Console.WriteLine($"Error reading UserData file in '{userFolder}': {ex.Message}");
-                            
+                            Console.ReadKey(intercept: true);
                         }
                     }
                 }
@@ -212,6 +217,7 @@ namespace Habit_User_Data_Structures
             if (habit == null)
             {
                 Console.WriteLine($"Habit with ID '{HabitID}' not found.");
+                Console.ReadKey(intercept: true);
                 return;
             }
 
@@ -226,13 +232,15 @@ namespace Habit_User_Data_Structures
                     habit.Name,
                     habit.Difficulty.ToString(),
                     habit.Experience.ToString(),
-                    habit.Completed.ToString()
+                    habit.Completed.ToString(),
+                    habit.DateLastCompleted.Date.ToString()
                 ];
                 File.WriteAllLines(habitFilePath, habitData);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error writing habit file '{habitFilePath}': {ex.Message}");
+                Console.ReadKey(intercept: true);
             }
         }
 
@@ -278,6 +286,7 @@ namespace Habit_User_Data_Structures
             if (task == null)
             {
                 Console.WriteLine($"Task with ID '{TaskID}' not found.");
+                Console.ReadKey(intercept: true);
                 return;
             }
 
@@ -300,6 +309,7 @@ namespace Habit_User_Data_Structures
             catch (Exception ex)
             {
                 Console.WriteLine($"Error writing task file '{taskFilePath}': {ex.Message}");
+                Console.ReadKey(intercept: true);
             }
         }
 
@@ -313,6 +323,7 @@ namespace Habit_User_Data_Structures
             catch (Exception ex)
             { 
                 ProgramMessage.Add($"Error writing UserData file in '{DataFolder}'.$");
+                Console.ReadKey(intercept: true);
             }
         }
 
@@ -331,6 +342,7 @@ namespace Habit_User_Data_Structures
             catch (Exception ex)
             {
                 ProgramMessage.Add($"Error writing UserData file in '{DataFolder}'.$");
+                Console.ReadKey(intercept: true);
             }
         }
 
@@ -502,12 +514,13 @@ namespace Habit_User_Data_Structures
                 WriteHabitData(DataFolder, habit.ID);
             }
         }
-        public void EditHabit(string DataFolder, int index, bool completed)
+        public void EditHabit(string DataFolder, int index, bool completed, DateTime dateCompleted)
         {
             Habit habit = HabitList[index];
             if (habit != null)
             {
                 habit.Completed = completed;
+                habit.DateLastCompleted = dateCompleted;
                 WriteHabitData(DataFolder, habit.ID);
             }
         }

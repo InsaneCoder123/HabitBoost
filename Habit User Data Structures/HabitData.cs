@@ -27,6 +27,7 @@
         public bool Completed { get; set; }
         public HabitBoostDifficulty Difficulty { get; set; }
         public DateTime DateCreated { get; set; }
+        public DateTime DateLastCompleted { get; set; }
     }
     public class Task : HabitBoostData, IIdentifiable
     {

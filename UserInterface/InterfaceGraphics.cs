@@ -30,7 +30,7 @@ namespace UserInterface
         public static bool IsJournalListEmpty { get; set; } = false;
         public static bool IsToDoListEmpty { get; set; } = false;
 
-        public int StartingIndex { get; set; } = 0;
+        public static int StartingIndex { get; set; } = 0;
 
         public int AbsolutePositionX { get; set; } = 0;
         public int AbsolutePositionY { get; set; } = 0;
@@ -467,6 +467,7 @@ namespace UserInterface
 
         public string SetHabitListActive()
         {
+            StartingIndex = 0;
             if (IsHabitListEmpty)
             {
                 return "3" + "1" + "0" + InfoToken[0];
@@ -481,9 +482,10 @@ namespace UserInterface
 
         public string SetJournalListActive()
         {
+            StartingIndex = 0;
             if (IsJournalListEmpty)
             {
-                return "3" + "1" + "0" + InfoToken[0];
+                return "6" + "1" + "0" + InfoToken[0];
             }
             return "2" + "004" + "1" + "0" + "0" + "1" + "0" + "1" + "0" + "0"; // Type - ID to toggle-
                                                                                 // 1/0 True/False -
@@ -495,9 +497,10 @@ namespace UserInterface
 
         public string SetTaskListActive()
         {
+            StartingIndex = 0;
             if (IsToDoListEmpty)
             {
-                return "3" + "1" + "0" + InfoToken[0];
+                return "8" + "1" + "0" + InfoToken[0];
             }
             return "2" + "008" + "1" + "0" + "0" + "1" + "0" + "1" + "0" + "0";
         }
@@ -546,8 +549,9 @@ namespace UserInterface
         {
             Buttons = [];
             Labels = [];
-            MaxIndexPerInterface![1][1] = user.HabitList.Count - 1;
-            for (int i = StartingIndex; i < 10 + StartingIndex; i++)
+            MaxIndexPerInterface![1][1] = Math.Min(user.HabitList.Count - 1, 9);
+            StartingIndex = Math.Min(Math.Max(user.HabitList.Count - 10, 0), StartingIndex);
+            for (int i = 0; i < 10; i++)
             {
                 if (i >= user.HabitList.Count)
                 {
@@ -595,7 +599,7 @@ namespace UserInterface
                     VerticalLength = 1,
                     XPosition = 8,
                     YPosition = 1 + (i * 2),
-                    LabelText = user.HabitList[i].Name.PadRight(40) + "   " + (user.HabitList[i].Completed ? "FINISHED" : "UNFINISHED").PadRight(10)
+                    LabelText = user.HabitList[i + StartingIndex].Name.PadRight(40) + "   " + (user.HabitList[i + StartingIndex].Completed ? "FINISHED" : "UNFINISHED").PadRight(10)
                 };
                 Labels.Add(habitLabel);
             }
@@ -1520,7 +1524,7 @@ namespace UserInterface
         #region Properties
         public override int MaxWidth { get; set; } = 30;
         public override int MaxHeight { get; set; } = 15;
-        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 0], [0, 0], [0, 3], [0, 4]];
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 0], [0, 0], [0, 3], [0, 4], [0, 2]];
 
         public Button TaskNameButton { get; set; } = new Button();
         public Button TaskDueDateButton { get; set; } = new Button();

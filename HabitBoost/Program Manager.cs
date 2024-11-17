@@ -99,6 +99,7 @@ namespace UserInterface
 
         public static void UserInput()
         {
+            UpdateInformation();
             UserInputStreamString = "";
             UserInputStream = Console.ReadKey(intercept: true);
             UserInputStreamString = UserInputStream.KeyChar.ToString();          
@@ -115,12 +116,21 @@ namespace UserInterface
                 if (CurrentProgramState == ProgramState.Browse)
                 { --CurrentInterfaceIndexSelectorY; }
             }
-            else if (UserInputStream.Key == ConsoleKey.DownArrow && 
+            else if (UserInputStream.Key == ConsoleKey.UpArrow && CurrentInterfaceIndexSelectorY == 0)
+            {
+                HabitEditInterfaceGraphics.StartingIndex = Math.Max(0, HabitEditInterfaceGraphics.StartingIndex - 1);
+            }
+            else if (UserInputStream.Key == ConsoleKey.DownArrow &&
                 CurrentInterfaceIndexSelectorY != GetMaxInterfaceIndex(CurrentActiveGraphic, CurrentInterfaceLevel)[1])
             {
                 UserInputStreamString = "";
                 if (CurrentProgramState == ProgramState.Browse)
                 { ++CurrentInterfaceIndexSelectorY; }
+            }
+            else if (UserInputStream.Key == ConsoleKey.DownArrow &&
+                CurrentInterfaceIndexSelectorY == GetMaxInterfaceIndex(CurrentActiveGraphic, CurrentInterfaceLevel)[1])
+            {
+                HabitEditInterfaceGraphics.StartingIndex = Math.Min(9, HabitEditInterfaceGraphics.StartingIndex + 1);
             }
             else if (UserInputStream.Key == ConsoleKey.LeftArrow && CurrentInterfaceIndexSelectorX != 0)
             {
@@ -189,6 +199,7 @@ namespace UserInterface
                         // Login Invoke
                         else if (ButtonInvokedInformation[0] == '0')
                         {
+                            User = new UserData();
                             string username = ButtonInvokedInformation[1..30].Replace("~", "");
                             string password = ButtonInvokedInformation[31..40].Replace("~", "");
 
@@ -204,7 +215,7 @@ namespace UserInterface
                                 User.ReadData(UserFolderPath + @"\" + ButtonInvokedInformation[1..30].Replace("~", ""));
                                 SwitchScreen(ProgramScreen.Main);
                             }
-                            else 
+                            else
                             {
                                 AddBottomMessage("Invalid Username or Password!", true);
                                 ClearInputFields();
@@ -221,7 +232,7 @@ namespace UserInterface
                         else if (ButtonInvokedInformation[0] == '2')
                         {
                             ToggleSpecificGraphicElement(ButtonInvokedInformation[1..4], ButtonInvokedInformation[4] == '1',
-                                CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[8] == '1', ButtonInvokedInformation[9] == '1', 
+                                CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[8] == '1', ButtonInvokedInformation[9] == '1',
                                 ButtonInvokedInformation[10] == '1', ButtonInvokedInformation[11] == '1');
                             CurrentInterfaceIndexSelectorY = ButtonInvokedInformation[5] - '0';
                             CurrentInterfaceIndexSelectorX = ButtonInvokedInformation[6] - '0';
@@ -249,7 +260,7 @@ namespace UserInterface
                                 if (HabitEditInterfaceGraphics.IsHabitListEmpty)
                                 {
                                     ToggleSpecificGraphicElement("003", true,
-                                        CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                        CurrentInterfaceIndexSelectorY.ToString(), ["000", "001"]);
                                     CurrentInterfaceIndexSelectorY = 0;
                                     CurrentInterfaceIndexSelectorX = 0;
                                     CurrentInterfaceLevel = 0;
@@ -280,14 +291,18 @@ namespace UserInterface
                                 if (!User.HabitList[int.Parse(ButtonInvokedInformation[3..])].Completed)
                                 {
                                     User.RewardExperience(User.HabitList[int.Parse(ButtonInvokedInformation[3..])].Difficulty, UserFolderPath + @"\" + User.Username);
+                                    User.EditHabit(UserFolderPath, int.Parse(ButtonInvokedInformation[3..]), true, DateTime.Now);
+                                    UpdateInformation();
+                                    ToggleSpecificGraphicElement("000", true,
+                                       CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                    CurrentInterfaceIndexSelectorY = 0;
+                                    CurrentInterfaceIndexSelectorX = 0;
+                                    CurrentInterfaceLevel = 1;
                                 }
-                                User.EditHabit(UserFolderPath, int.Parse(ButtonInvokedInformation[3..]), true);
-                                UpdateInformation();
-                                ToggleSpecificGraphicElement("000", true,
-                                   CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
-                                CurrentInterfaceIndexSelectorY = 0;
-                                CurrentInterfaceIndexSelectorX = 0;
-                                CurrentInterfaceLevel = 1;
+                                else
+                                {
+                                    AddBottomMessage("Habit already finished!", true);
+                                }
                             }
                         }
 
@@ -427,7 +442,7 @@ namespace UserInterface
                                 }
                                 ClearInputFields();
                             }
-                            else 
+                            else
                             {
                                 if (ButtonInvokedInformation[531] == '0')
                                 {
@@ -469,9 +484,9 @@ namespace UserInterface
                                 if (HabitEditInterfaceGraphics.IsToDoListEmpty)
                                 {
                                     ToggleSpecificGraphicElement("003", true,
-                                        CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');
+                                        CurrentInterfaceIndexSelectorY.ToString(), ["008", "009"]);
                                     CurrentInterfaceIndexSelectorY = 0;
-                                    CurrentInterfaceIndexSelectorX = 1;
+                                    CurrentInterfaceIndexSelectorX = 2;
                                     CurrentInterfaceLevel = 0;
                                 }
                                 else
@@ -563,11 +578,39 @@ namespace UserInterface
                         !char.IsWhiteSpace(currentActiveGraphicInfoToken[4]);
                     if (isEscapeInfoPresent)
                     {
-                        ToggleSpecificGraphicElement(currentActiveGraphicInfoToken[2..5], true,
+                        GraphicElement currentActiveGraphic = GetCurrentActiveGraphicElement(GetCurrentActiveScene())!;
+                        if (HabitEditInterfaceGraphics.IsToDoListEmpty && currentActiveGraphic.ID == "010")
+                        {
+                            ToggleSpecificGraphicElement("003", true,
                             CurrentInterfaceIndexSelectorY.ToString(), true);
-                        CurrentInterfaceIndexSelectorY = currentActiveGraphicInfoToken[5] - '0';
-                        CurrentInterfaceIndexSelectorX = currentActiveGraphicInfoToken[6] - '0';
-                        CurrentInterfaceLevel = currentActiveGraphicInfoToken[7] - '0';
+                            CurrentInterfaceIndexSelectorY = 0;
+                            CurrentInterfaceIndexSelectorX = 2;
+                            CurrentInterfaceLevel = 0;
+                        }
+                        else if (HabitEditInterfaceGraphics.IsHabitListEmpty && currentActiveGraphic.ID == "001")
+                        {
+                            ToggleSpecificGraphicElement("003", true,
+                            CurrentInterfaceIndexSelectorY.ToString(), true);
+                            CurrentInterfaceIndexSelectorY = 0;
+                            CurrentInterfaceIndexSelectorX = 0;
+                            CurrentInterfaceLevel = 0;
+                        }
+                        else if (HabitEditInterfaceGraphics.IsJournalListEmpty && currentActiveGraphic.ID == "007")
+                        {
+                            ToggleSpecificGraphicElement("003", true,
+                            CurrentInterfaceIndexSelectorY.ToString(), true);
+                            CurrentInterfaceIndexSelectorY = 0;
+                            CurrentInterfaceIndexSelectorX = 1;
+                            CurrentInterfaceLevel = 0;
+                        }
+                        else
+                        {
+                            ToggleSpecificGraphicElement(currentActiveGraphicInfoToken[2..5], true,
+                                CurrentInterfaceIndexSelectorY.ToString(), true);
+                            CurrentInterfaceIndexSelectorY = currentActiveGraphicInfoToken[0] - '0';
+                            CurrentInterfaceIndexSelectorX = currentActiveGraphicInfoToken[6] - '0';
+                            CurrentInterfaceLevel = currentActiveGraphicInfoToken[7] - '0';
+                        }
                     }
 
                     if (currentActiveGraphicElement?.PreviousScene != ProgramScreen.None)

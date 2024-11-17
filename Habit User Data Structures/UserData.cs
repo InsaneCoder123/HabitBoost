@@ -173,7 +173,7 @@ namespace Habit_User_Data_Structures
                                 }
                                 else
                                 {
-                                    Actions.Add(dateValue, actionsValue);
+                                    Actions.Add(dateValue.Date, actionsValue);
                                 }
                             }
                         }
@@ -312,6 +312,24 @@ namespace Habit_User_Data_Structures
             }
             catch (Exception ex)
             { 
+                ProgramMessage.Add($"Error writing UserData file in '{DataFolder}'.$");
+            }
+        }
+
+        public void WriteUserData(string DataFolder)
+        {
+            try
+            {
+                List<string> strings = [];
+                for (int i = 0; i < Actions.Count; i++)
+                {
+                    strings.Add(Actions.ElementAt(i).Key.Date.ToString());
+                    strings.Add(Actions.ElementAt(i).Value.ToString());
+                }
+                File.WriteAllLines(Path.Combine(DataFolder, "UserData", "actions.txt"), strings);
+            }
+            catch (Exception ex)
+            {
                 ProgramMessage.Add($"Error writing UserData file in '{DataFolder}'.$");
             }
         }
@@ -543,6 +561,22 @@ namespace Habit_User_Data_Structures
         }
 
         #endregion
+        #endregion
+
+        #region Actions Tracking
+        public void AddAction(string DataFolder, DateTime date, int actions)
+        {
+            if (Actions.ContainsKey(date.Date))
+            {
+                Actions[date.Date] += actions;
+            }
+            else
+            {
+                Actions.Add(date.Date, actions);
+            }
+            ProgramMessage.Add($"You have gained {actions} action. {date.Date.ToShortDateString()}#");
+            WriteUserData(DataFolder);
+        }
         #endregion
 
         #region Leveling Up and Experience

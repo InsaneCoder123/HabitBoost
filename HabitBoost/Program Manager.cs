@@ -321,6 +321,7 @@ namespace UserInterface
                                 }
                                 ToggleSpecificGraphicElement("000", true,
                                     CurrentInterfaceIndexSelectorY.ToString(), true);
+                                User.AddAction(UserFolderPath + @"\" + User.Username, DateTime.Now, 1);
                                 CurrentInterfaceIndexSelectorY = 0;
                                 CurrentInterfaceIndexSelectorX = 0;
                                 CurrentInterfaceLevel = 1;

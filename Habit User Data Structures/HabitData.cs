@@ -42,11 +42,4 @@
         public required DateTime DateCreated { get; set; }
         public required string Entry { get; set; }
     }
-    public class Achievement : HabitBoostData, IIdentifiable
-    {
-        public required string AchievementDescription { get; set; }
-        public int Experience { get; set; } = 10;
-        public required bool Completed { get; set; }
-        public required HabitBoostDifficulty Difficulty { get; set; }
-    }
 }

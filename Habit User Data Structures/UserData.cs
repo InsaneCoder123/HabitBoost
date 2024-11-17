@@ -22,7 +22,6 @@ namespace Habit_User_Data_Structures
         public List<Habit> HabitList { get; set; } = [];
         public List<JournalEntry> JournalList { get; set; } = [];
         public List<Task> TaskList { get; set; } = [];
-        public List<Achievement> AchievementList { get; set; } = [];
 
         public static List<string> ProgramMessage { get; set; } = [];
 

@@ -305,6 +305,7 @@ namespace UserInterface
                                     CurrentInterfaceIndexSelectorY = 0;
                                     CurrentInterfaceIndexSelectorX = 0;
                                     CurrentInterfaceLevel = 1;
+                                    User.AddAction(UserFolderPath + @"\" + User.Username, DateTime.Now, 1);
                                 }
                                 else
                                 {
@@ -453,12 +454,18 @@ namespace UserInterface
                             {
                                 if (ButtonInvokedInformation[531] == '0')
                                 {
-                                    User.EditJournalEntry(UserFolderPath, int.Parse(ButtonInvokedInformation[532..]), ButtonInvokedInformation[1..31].Replace("~", ""), ButtonInvokedInformation[31..501].Replace("~", ""));
+                                    User.EditJournalEntry(UserFolderPath, 
+                                        int.Parse(ButtonInvokedInformation[532..]), 
+                                        ButtonInvokedInformation[1..31].Replace("~", ""), 
+                                        ButtonInvokedInformation[31..501].Replace("~", ""));
                                 }
                                 else
                                 {
-                                    User.AddJournalEntry(HabitBoostFolderPath, journalTitle, journalEntry);
-                                    User.RewardExperience(HabitBoostDifficulty.Easy, UserFolderPath + @"\" + User.Username);
+                                    User.AddJournalEntry(HabitBoostFolderPath, 
+                                        journalTitle, journalEntry);
+                                    User.RewardExperience(HabitBoostDifficulty.Easy, 
+                                        UserFolderPath + @"\" + User.Username);
+                                    User.AddAction(UserFolderPath + @"\" + User.Username, DateTime.Now, 1);
                                 }
                                 ToggleSpecificGraphicElement("004", true,
                                 CurrentInterfaceIndexSelectorY.ToString() + "0", true, false);
@@ -488,6 +495,7 @@ namespace UserInterface
                                 User.RewardExperience(User.TaskList[int.Parse(ButtonInvokedInformation[3..])].Difficulty, UserFolderPath + @"\" + User.Username);
                                 User.DeleteTask(UserFolderPath, int.Parse(ButtonInvokedInformation[3..]));
                                 UpdateInformation();
+                                User.AddAction(UserFolderPath + @"\" + User.Username, DateTime.Now, 1);
                                 if (HabitEditInterfaceGraphics.IsToDoListEmpty)
                                 {
                                     ToggleSpecificGraphicElement("003", true,
@@ -496,6 +504,7 @@ namespace UserInterface
                                     CurrentInterfaceIndexSelectorX = 2;
                                     CurrentInterfaceLevel = 0;
                                 }
+                                else
                                 else
                                 {
                                     ToggleSpecificGraphicElement("008", true,
@@ -550,6 +559,7 @@ namespace UserInterface
                                 else
                                 {
                                     User.AddTask(HabitBoostFolderPath, taskName, dateValue, difficulty);
+                                    User.AddAction(UserFolderPath + @"\" + User.Username, DateTime.Now, 1);
                                 }
                                 ToggleSpecificGraphicElement("008", true,
                                 CurrentInterfaceIndexSelectorY.ToString(), true);

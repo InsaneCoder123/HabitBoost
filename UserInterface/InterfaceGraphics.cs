@@ -1470,13 +1470,6 @@ namespace UserInterface
         public string ConfirmAddJournal()
         {
             string JournalToken = "7";
-
-
-
-            // The next 40 characters are the habit name
-            // The next 8 characters are the habit difficulty
-
-            //TODO check if difficulty input text is valid
             JournalToken += TitleInput.FieldText.PadRight(30, '~');
             JournalToken += EntryInput.FieldText.PadRight(500, '~');
 
@@ -1484,8 +1477,7 @@ namespace UserInterface
             {
                 inputField.FieldText = "";
             }
-
-            if (InfoToken[1] == '2')
+            if (InfoToken[1] == '2') // Edit Mode
             {
                 JournalToken += "0" + InfoToken[0];
             }

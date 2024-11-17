@@ -505,7 +505,6 @@ namespace UserInterface
                                     CurrentInterfaceLevel = 0;
                                 }
                                 else
-                                else
                                 {
                                     ToggleSpecificGraphicElement("008", true,
                                         CurrentInterfaceIndexSelectorY.ToString(), ButtonInvokedInformation[2] == '1');

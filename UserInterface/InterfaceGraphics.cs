@@ -88,18 +88,25 @@ namespace UserInterface
             "@&&&&&&&&&&&&&&&&&&&&&&&&&&@" + // USER LOGIN
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
             "@&&&&&&&&&&&&&&&&&&&&&&&&&&@" + // CREATE ACCOUNT
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&&&&&&&&&&&@" + // View Statistics
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@&&&&&&&&&&&&&&&&&&&&&&&&&&@" + // Exit
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
 
         public override int MaxWidth { get; set; } = 28;
-        public override int MaxHeight { get; set; } = 5;
-        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 1]];
+        public override int MaxHeight { get; set; } = 9;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 3]];
 
         public Button loginButton { get; set; } = new Button();
         public Button createUserButton { get; set; } = new Button();
+        public Button StatisticsButton { get; set; } = new Button();
+        public Button ExitButton { get; set; } = new Button();
 
         public MainMenuGraphic()
         {
             Buttons = [];
+            ID = "012";
 
             loginButton.HorizontalLength = 26;
             loginButton.VerticalLength = 1;
@@ -123,8 +130,32 @@ namespace UserInterface
             createUserButton.IsInvokable = true;
             createUserButton.SetInvokedMethod(SwitchToCreateAccountScreen);
 
+            StatisticsButton.HorizontalLength = 26;
+            StatisticsButton.VerticalLength = 1;
+            StatisticsButton.XPosition = 1;
+            StatisticsButton.YPosition = 5;
+            StatisticsButton.MenuInterfaceLevel = 0;
+            StatisticsButton.ButtonText = CustomDisplay.CenterString("STATISTICS", 26);
+            StatisticsButton.InterfaceIndexY = 2;
+            StatisticsButton.InterfaceIndexX = 0;
+            StatisticsButton.IsInvokable = true;
+            StatisticsButton.SetInvokedMethod(SwitchToStatisticScreen);
+
+            ExitButton.HorizontalLength = 26;
+            ExitButton.VerticalLength = 1;
+            ExitButton.XPosition = 1;
+            ExitButton.YPosition = 7;
+            ExitButton.MenuInterfaceLevel = 0;
+            ExitButton.ButtonText = CustomDisplay.CenterString("EXIT", 26);
+            ExitButton.InterfaceIndexY = 3;
+            ExitButton.InterfaceIndexX = 0;
+            ExitButton.IsInvokable = true;
+            ExitButton.SetInvokedMethod(SwitchToCreateAccountScreen);
+
             Buttons.Add(loginButton);
             Buttons.Add(createUserButton);
+            Buttons.Add(StatisticsButton);
+            Buttons.Add(ExitButton);
         }
 
         public string SwitchToLoginScreen()
@@ -135,6 +166,11 @@ namespace UserInterface
         public string SwitchToCreateAccountScreen()
         {
             return "1" + ((int)ProgramScreen.CreateUser).ToString();
+        }
+
+        public string SwitchToStatisticScreen()
+        {
+            return "A  ";
         }
     }
 
@@ -149,9 +185,248 @@ namespace UserInterface
 
         public override int MaxWidth { get; set; } = 82;
         public override int MaxHeight { get; set; } = 5;
+        public TitleGraphic()
+        {
+            ID = "013";
+        }
     }
+
+    public class StatisticsGraphic : GraphicElement
+    {
+        public override string Graphic { get; set; } =
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &&&&&&&&&&&& @ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@                                                                          @" +
+            "@                                                                          @" +
+            "@    10 │ +  +  +  +  +  +  +       USERNAME   ++++++++++                  @" +
+            "@  A  9 │ +  +  +  +  +  +  +       LEVEL      +++                         @" +
+            "@  C  8 │ +  +  +  +  +  +  +       EXPERIENCE +++                         @" +
+            "@  T  7 │ +  +  +  +  +  +  +                                              @" +
+            "@  I  6 │ +  +  +  +  +  +  +       TOTAL NUMBER OF ACTIONS   +++          @" +
+            "@  O  5 │ +  +  +  +  +  +  +       TOTAL NUMBER OF HABITS    +++          @" +
+            "@  N  4 │ +  +  +  +  +  +  +       TOTAL NUMBER OF JOURNAL   +++          @" +
+            "@  S  3 │ +  +  +  +  +  +  +       TOTAL NUMBER OF TASKS     +++          @" +
+            "@     2 │ +  +  +  +  +  +  +                                              @" +
+            "@     1 │ +  +  +  +  +  +  +                                              @" +
+            "@       └──────────────────────                                            @" +
+            "@         7  6  5  4  3  2  1                                              @" +
+            "@           D A Y S  A G O       SCALE = +++++                             @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
+            "@ &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& @" +
+            "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
+        public override int MaxWidth { get; set; } = 76;
+        public override int MaxHeight { get; set; } = 21;
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 1], [0, 1], [0, 1]];
+
+        public Button UserNameInputbutton { get; set; } = new Button();
+        public Button SearchButton { get; set; } = new Button();
+        public InputField UserNameInputButton { get; set; } = new InputField();
+
+        public VariableLabel UsernameLabel { get; set; } = new VariableLabel();
+        public VariableLabel LevelLabel { get; set; } = new VariableLabel();
+        public VariableLabel ExperienceLabel { get; set; } = new VariableLabel();
+        public VariableLabel TotalActionsLabel { get; set; } = new VariableLabel();
+        public VariableLabel TotalHabitsLabel { get; set; } = new VariableLabel();
+        public VariableLabel TotalJournalLabel { get; set; } = new VariableLabel();
+        public VariableLabel TotalTasksLabel { get; set; } = new VariableLabel();
+        public VariableLabel GraphScale { get; set; } = new VariableLabel();
+
+
+        public StatisticsGraphic()
+        { 
+            Buttons = [];
+            InputFields = [];
+
+            ID = "011";
+            InfoToken = " 1012000";
+
+            #region Static Graphics
+            UserNameInputbutton.HorizontalLength = 12;
+            UserNameInputbutton.VerticalLength = 1;
+            UserNameInputbutton.XPosition = 2;
+            UserNameInputbutton.YPosition = 1;
+            UserNameInputbutton.MenuInterfaceLevel = 1;
+            UserNameInputbutton.ButtonText = CustomDisplay.CenterString("USERNAME", 12);
+            UserNameInputbutton.InterfaceIndexY = 0;
+            UserNameInputbutton.InterfaceIndexX = 0;
+            UserNameInputbutton.BindedInterface = UserNameInputButton;
+
+            SearchButton.HorizontalLength = 72;
+            SearchButton.VerticalLength = 1;
+            SearchButton.XPosition = 2;
+            SearchButton.YPosition = 19;
+            SearchButton.MenuInterfaceLevel = 1;
+            SearchButton.ButtonText = CustomDisplay.CenterString("SEARCH", 72);
+            SearchButton.InterfaceIndexY = 1;
+            SearchButton.InterfaceIndexX = 0;
+            SearchButton.IsInvokable = true;
+            SearchButton.SetInvokedMethod(SearchUser);
+
+            UserNameInputButton.HorizontalLength = 57;
+            UserNameInputButton.VerticalLength = 1;
+            UserNameInputButton.XPosition = 17;
+            UserNameInputButton.YPosition = 1;
+            UserNameInputButton.MenuInterfaceLevel = 2;
+            UserNameInputButton.FieldText = "";
+            UserNameInputButton.InterfaceIndexY = 0;
+            UserNameInputButton.InterfaceIndexX = 0;
+            UserNameInputButton.MaxFieldTextLength = 10;
+
+            Buttons.Add(UserNameInputbutton);
+            Buttons.Add(SearchButton);
+            InputFields.Add(UserNameInputButton);
+            #endregion
+            UsernameLabel.HorizontalLength = 10;
+            UsernameLabel.VerticalLength = 1;
+            UsernameLabel.XPosition = 47;
+            UsernameLabel.YPosition = 5;
+
+            LevelLabel.HorizontalLength = 3;
+            LevelLabel.VerticalLength = 1;
+            LevelLabel.XPosition = 47;
+            LevelLabel.YPosition = 6;
+
+            ExperienceLabel.HorizontalLength = 3;
+            ExperienceLabel.VerticalLength = 1;
+            ExperienceLabel.XPosition = 47;
+            ExperienceLabel.YPosition = 7;
+
+            TotalActionsLabel.HorizontalLength = 3;
+            TotalActionsLabel.VerticalLength = 1;
+            TotalActionsLabel.XPosition = 62;
+            TotalActionsLabel.YPosition = 9;
+
+            TotalHabitsLabel.HorizontalLength = 3;
+            TotalHabitsLabel.VerticalLength = 1;
+            TotalHabitsLabel.XPosition = 62;
+            TotalHabitsLabel.YPosition = 10;
+
+            TotalJournalLabel.HorizontalLength = 3;
+            TotalJournalLabel.VerticalLength = 1;
+            TotalJournalLabel.XPosition = 62;
+            TotalJournalLabel.YPosition = 11;
+
+            TotalTasksLabel.HorizontalLength = 3;
+            TotalTasksLabel.VerticalLength = 1;
+            TotalTasksLabel.XPosition = 62;
+            TotalTasksLabel.YPosition = 12;
+
+            GraphScale.HorizontalLength = 5;
+            GraphScale.VerticalLength = 1;
+            GraphScale.XPosition = 41;
+            GraphScale.YPosition = 17;
+
+
+        }
+
+        public override void AdjustVariableData(ref UserData user)
+        {
+            #region Dynamic Graphics
+            Labels = [];
+
+            if (user.Username != null)
+            {
+                UsernameLabel.LabelText = user.Username.PadRight(10) ?? "".PadRight(10);
+                LevelLabel.LabelText = user.Level.ToString().PadRight(3) ?? "".PadRight(3);
+                ExperienceLabel.LabelText = user.Experience.ToString().PadRight(3) ?? "".PadRight(3);
+
+                TotalActionsLabel.LabelText = user.Actions.Sum(pair => pair.Value).ToString().PadRight(3) ?? "".PadRight(3);
+                TotalHabitsLabel.LabelText = user.HabitList.Count.ToString().PadRight(3) ?? "".PadRight(3);
+                TotalJournalLabel.LabelText = user.JournalList.Count.ToString().PadRight(3) ?? "".PadRight(3);
+                TotalTasksLabel.LabelText = user.TaskList.Count.ToString().PadRight(3) ?? "".PadRight(3);
+            }
+            else
+            {
+                UsernameLabel.LabelText = "".PadRight(10, '_');
+                LevelLabel.LabelText =  "".PadRight(3, '_');
+                ExperienceLabel.LabelText = "".PadRight(3, '_');
+
+                TotalActionsLabel.LabelText = "".PadRight(3, '_');
+                TotalHabitsLabel.LabelText = "".PadRight(3, '_');
+                TotalJournalLabel.LabelText = "".PadRight(3, '_');
+                TotalTasksLabel.LabelText = "".PadRight(3, '_');
+            }
+            Labels.Add(UsernameLabel);
+            Labels.Add(LevelLabel);
+            Labels.Add(ExperienceLabel);
+            Labels.Add(TotalActionsLabel);
+            Labels.Add(TotalHabitsLabel);
+            Labels.Add(TotalJournalLabel);
+            Labels.Add(TotalTasksLabel);
+
+            for (int i = 0; i < 7; i++)
+            {
+                if (user.Username == null)
+                {
+                    VariableLabel variable = new()
+                    {
+                        HorizontalLength = 1,
+                        VerticalLength = 10,
+                        XPosition = 10 + (i * 3),
+                        YPosition = 5,
+                        LabelText = " "
+                    };
+                    GraphScale.LabelText = "".PadRight(5, '_');
+                    Labels.Add(GraphScale);
+                    Labels.Add(variable);
+                }
+                else
+                {
+                    double factor = 0;
+                    int[] data = CalculateGraph(user, ref factor);
+                    char[] charArray = new char[10];
+                    for (int j = 0; j < charArray.Length; j++)
+                    {
+                        charArray[j] = '0';
+                    }
+                    if (data[i] > 0 && data[i] <= 10)
+                    {
+                        charArray[10 - data[i]] = 'X';
+                    }
+                    string dataResult = new string(charArray);
+                    VariableLabel variable = new()
+                    {
+                        HorizontalLength = 1,
+                        VerticalLength = 10,
+                        XPosition = 10 + (i * 3),
+                        YPosition = 5,
+                        LabelText = dataResult
+                    };
+                    GraphScale.LabelText = Math.Round(factor, 2).ToString().PadRight(5);
+                    Labels.Add(GraphScale);
+                    Labels.Add(variable);
+                }    
+            }
+            #endregion
+        }
+
+        public int[] CalculateGraph(UserData user, ref double factor)
+        {
+            int[] graphValues = { 0, 0, 0, 0, 0, 0, 0 };
+            for (int i = 6; i >= 0; i--)
+            {
+                user.Actions.TryGetValue(DateTime.Now.Date.AddDays(-(i+1)), out graphValues[6 - i]);
+            }
+            factor = (double)graphValues.Max() / 10;
+            for (int i = 0; i < 7; i++)
+            {
+                graphValues[i] = (int)Math.Round(graphValues[i] / factor);
+            }
+            return graphValues;
+        }
+
+        public string SearchUser()
+        {
+            string Token = "B";
+            Token += UserNameInputButton.FieldText.PadRight(10, '~');
+            return Token;
+        }
+
+    }
+
     #endregion
-    #region Login Scene Graphics
+        #region Login Scene Graphics
     public class LoginGraphic : GraphicElement
     {
         public override string Graphic { get; set; } =

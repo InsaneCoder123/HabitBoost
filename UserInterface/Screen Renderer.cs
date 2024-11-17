@@ -94,8 +94,16 @@ namespace UserInterface
                 AbsolutePositionY = 2,
                 IsGraphicElementVisible = true
             };
+            StatisticsGraphic StatisticsGraphic = new()
+            {
+                AbsolutePositionX = 12,
+                AbsolutePositionY = 1,
+                IsGraphicElementVisible = false,
+                IsDynamic = true
+            };
             MainMenuScene.Add(MainMenuGraphic);
             MainMenuScene.Add(TitleGraphic);
+            MainMenuScene.Add(StatisticsGraphic);
             #endregion
 
             #region Login Graphics
@@ -486,7 +494,7 @@ namespace UserInterface
                     int graphicIndex = (graphicElement.RenderPointerY * graphicElement.MaxWidth) + graphicElement.RenderPointerX;
 
                     if (graphicElement.Graphic[graphicIndex] == '@')
-                    { CustomDisplay.DisplayColoredText(" ", ConsoleColor.White); }
+                    { CustomDisplay.DisplayColoredText("+", ConsoleColor.White); }
                     else if (graphicElement.Graphic[graphicIndex] == '%') 
                     {
                         if (graphicElement.InputFields != null)

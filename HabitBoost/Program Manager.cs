@@ -175,9 +175,12 @@ namespace UserInterface
                 static void ClearInputFields()
                 {
                     List<GraphicElement> currentScene = GetCurrentActiveScene();
-                    foreach (InputField inputField in currentScene[0]?.InputFields ?? Enumerable.Empty<InputField>())
+                    foreach (GraphicElement graphicElement in currentScene)
                     {
-                        inputField.ClearFieldText();
+                        foreach (InputField inputField in graphicElement?.InputFields ?? Enumerable.Empty<InputField>())
+                        {
+                            inputField.ClearFieldText();
+                        }               
                     }
                 }
 
@@ -553,6 +556,42 @@ namespace UserInterface
                             }
 
                         }
+
+                        // Statistic Screen Invoke
+                        else if (ButtonInvokedInformation[0] == 'A')
+                        {
+                            ToggleSpecificGraphicElement("011", true,
+                                CurrentInterfaceIndexSelectorY.ToString(), ["012", "013"]);
+                            CurrentInterfaceIndexSelectorY = 0;
+                            CurrentInterfaceIndexSelectorX = 0;
+                            CurrentInterfaceLevel = 1;
+                        }
+
+                        // Statistic Search Invoke
+                        else if (ButtonInvokedInformation[0] == 'B')
+                        {
+                            string searchQuery = ButtonInvokedInformation[1..].Replace("~", "");
+                            if (searchQuery == "")
+                            {
+                                AddBottomMessage("Empty Search Query!", true);
+                                ClearInputFields();
+                            }
+                            else
+                            {
+                                if (!Directory.Exists(UserFolderPath + @"\" + searchQuery))
+                                {
+                                    AddBottomMessage("User does not exist!", true);
+                                }
+                                else
+                                {
+                                    User.ReadData(UserFolderPath + @"\" + searchQuery);
+                                }
+                                CurrentInterfaceIndexSelectorY = 0;
+                                CurrentInterfaceIndexSelectorX = 0;
+                                CurrentInterfaceLevel = 1;
+                                ClearInputFields();
+                            }
+                        }
                     }
                 }
                 #endregion
@@ -606,6 +645,10 @@ namespace UserInterface
                         }
                         else
                         {
+                            if (CurrentGraphicElement!.ID == "012")
+                            {
+                                MainMenuScene[1].IsGraphicElementVisible = true;
+                            }
                             ToggleSpecificGraphicElement(currentActiveGraphicInfoToken[2..5], true,
                                 CurrentInterfaceIndexSelectorY.ToString(), true);
                             CurrentInterfaceIndexSelectorY = currentActiveGraphicInfoToken[0] - '0';

@@ -28,7 +28,7 @@ namespace Habit_User_Data_Structures
 
         #region File Handling
 
-        public void DoesFolderExist(string FolderName)
+        public static void DoesFolderExist(string FolderName)
         {
             if (Directory.Exists(FolderName))
             {

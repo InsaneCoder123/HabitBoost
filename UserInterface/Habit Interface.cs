@@ -54,7 +54,6 @@ namespace UserInterface
                 if (LabelText.Length <= RenderIndex)
                 {
                     Console.Write(" ");
-                    ++RenderPointerX;
                     return;
                 }
 
@@ -66,9 +65,7 @@ namespace UserInterface
                     RenderPointerY = 0;
                     return;
                 }
-
-
-                
+             
             }
         }
     }

@@ -10,6 +10,10 @@ namespace Main
             ProgramManager.StartProgram();
             ScreenRenderer.InitiateGraphics(ref ProgramManager.User);
             UserData.VerifySystemFolder(ProgramManager.HabitBoostFolderPath);
+            ProgramManager.AddBottomMessage("CONTROLS:", false);
+            ProgramManager.AddBottomMessage("ARROW KEYS - MOVE", false);
+            ProgramManager.AddBottomMessage("ENTER - SELECT", false);
+            ProgramManager.AddBottomMessage("ESC - BACK", false);
 
             while (ProgramManager.isProgramRunning == true)
             {

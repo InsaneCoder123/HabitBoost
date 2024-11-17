@@ -1,35 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="UserInterface.HabitInterface" Collapsed="true">
-    <Position X="12.5" Y="0.75" Width="1.5" />
+    <Position X="13" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>KAAhAIAAAABAAAAABEAAAgAAEAQAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>Habit Interface.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UserInterface.InterfaceOption" Collapsed="true">
-    <Position X="4.75" Y="1.75" Width="1.5" />
+    <Position X="9" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Habit Interface.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UserInterface.VariableLabel" Collapsed="true">
-    <Position X="14" Y="1.75" Width="1.5" />
+    <Position X="14.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAIAAAAA=</HashCode>
       <FileName>Habit Interface.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UserInterface.Button" Collapsed="true">
-    <Position X="10.25" Y="1.75" Width="1.5" />
+    <Position X="10.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAgAAAAABAAAAAIAAAAAAEAgAAAAAAAEAAAAAAAIAA=</HashCode>
       <FileName>Habit Interface.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UserInterface.InputField" Collapsed="true">
-    <Position X="12.25" Y="1.75" Width="1.5" />
+    <Position X="12.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAABAgAQAAAAAAAEAACAAAAAAAAAAAEAAEABAAAEAQ=</HashCode>
       <FileName>Habit Interface.cs</FileName>
@@ -152,34 +152,6 @@
     <TypeIdentifier>
       <HashCode>AAAQAAAEAAAAAQABQAAAAAAAAAACICAAAQAAAAAAEhA=</HashCode>
       <FileName>InterfaceGraphics.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="UserInterface.AddJournal" Collapsed="true">
-    <Position X="9" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>JournalOptions.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="UserInterface.ViewJournal" Collapsed="true">
-    <Position X="9" Y="6.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>JournalOptions.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="UserInterface.EditJournal" Collapsed="true">
-    <Position X="6.75" Y="6.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>JournalOptions.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="UserInterface.DeleteJournal" Collapsed="true">
-    <Position X="6.75" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>JournalOptions.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="UserInterface.ScreenRenderer" Collapsed="true">

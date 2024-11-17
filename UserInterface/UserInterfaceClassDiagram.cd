@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="UserInterface.HabitInterface" Collapsed="true">
+    <Position X="12.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KAAhAIAAAABAAAAABEAAAgAAEAQAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Habit Interface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.InterfaceOption" Collapsed="true">
+    <Position X="4.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Habit Interface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.VariableLabel" Collapsed="true">
+    <Position X="14" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAIAAAAA=</HashCode>
+      <FileName>Habit Interface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.Button" Collapsed="true">
+    <Position X="10.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAABAAAAAIAAAAAAEAgAAAAAAAEAAAAAAAIAA=</HashCode>
+      <FileName>Habit Interface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.InputField" Collapsed="true">
+    <Position X="12.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAgAQAAAAAAAEAACAAAAAAAAAAAEAAEABAAAEAQ=</HashCode>
+      <FileName>Habit Interface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.GraphicElement" Collapsed="true">
+    <Position X="12.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>iCBQBAABFCAggAAABAEAAAAEBAAAACAEAABAggAAUhA=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.MainMenuGraphic" Collapsed="true">
+    <Position X="9.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAQAgAAAAAAQAAAAAAEAAAAAAiAEAAAAAEjA=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.TitleGraphic" Collapsed="true">
+    <Position X="11.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBA=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.StatisticsGraphic" Collapsed="true">
+    <Position X="15" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAASAACAAAAAAAAAAAAAAAAgRAAAIAAACIBAAABAUhI=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.LoginGraphic" Collapsed="true">
+    <Position X="19" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAQAAAAAAAAAAAAACAABQAAAAEhE=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.CreateAccountGraphic" Collapsed="true">
+    <Position X="11.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAQAAAAAAAQAAAAAAAAAAAAACAABQAAAAEhA=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.TopBarGraphics" Collapsed="true">
+    <Position X="13.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EACQAACAAAgAAAAAAAgRAAAABAAAAAAACAAAAAAAEhI=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.HabitListGraphics" Collapsed="true">
+    <Position X="9.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAIAAAABAAAAAAAAAAAAAAAEhA=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.HabitOptionGraphics" Collapsed="true">
+    <Position X="17" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAQAAAAAAQAAAAAAAQAAAAAAAMAAAAAAAAAAIAIkhA=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.HabitEditInterfaceGraphics" Collapsed="true">
+    <Position X="17" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAEAAAAAAAAAAAAABAAACAAQAAAIAQAAAAAAEhA=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.JournalListGraphic" Collapsed="true">
+    <Position X="6.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAQAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAEhA=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.JournalOperations" Collapsed="true">
+    <Position X="6" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAQAAAAAAAAAQAAAACAAAAAAAEAAAAAAAAAAIEAExI=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.AddJournalInterfaceGraphics" Collapsed="true">
+    <Position X="13.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQABAAIAAAAAAEAAAAAABAAAAAAAAAAQABAAAAEhA=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.ViewJournalEntry" Collapsed="true">
+    <Position X="15.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAEAAAAAAAIAABAAAAAAAAAACAAAAEBA=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.TaskListGraphics" Collapsed="true">
+    <Position X="19" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAQAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAEhA=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.TaskOptionGraphics" Collapsed="true">
+    <Position X="8" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAQACgAAAAACEAAAAAAAAAAAAAAAAAAAAAAAIAAEhA=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.TaskEditInterface" Collapsed="true">
+    <Position X="7.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAEAAAAAQABQAAAAAAAAAACICAAAQAAAAAAEhA=</HashCode>
+      <FileName>InterfaceGraphics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.AddJournal" Collapsed="true">
+    <Position X="9" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>JournalOptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.ViewJournal" Collapsed="true">
+    <Position X="9" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>JournalOptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.EditJournal" Collapsed="true">
+    <Position X="6.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>JournalOptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.DeleteJournal" Collapsed="true">
+    <Position X="6.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>JournalOptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.ScreenRenderer" Collapsed="true">
+    <Position X="15.25" Y="5.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="UserInterface.ScreenRenderer.ProgramState" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Screen Renderer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gAAgAEAQIEAAAAAAgABBAAEACABABABUAAAAEAMQhAw=</HashCode>
+      <FileName>Screen Renderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UserInterface.CustomDisplay" Collapsed="true">
+    <Position X="13.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAIAAAAAAAAAAAAAAAAAAABAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Screen Renderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="UserInterface.ProgramScreen" Collapsed="true">
+    <Position X="11.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAAAQAAAAAAAAAAAQBAEAAAA=</HashCode>
+      <FileName>Screen Renderer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -26,13 +26,6 @@ namespace UserInterface
         public virtual void InvokedAction() { }
     }
 
-    public class HabitSelectable : HabitInterface // Selectables like the list of habits, todos, or journal entries
-    {
-        public bool IsOptionSelectable { get; set; } // If the user can enter the selectable and select an option
-        public required InterfaceOption Option { get; set; }
-        public required HabitBoostData Content { get; set; }
-    }
-
 
     public class VariableLabel : HabitInterface
     {

@@ -592,6 +592,13 @@ namespace UserInterface
                                 ClearInputFields();
                             }
                         }
+
+                        //Exit
+                        else if (ButtonInvokedInformation[0] == 'C') 
+                        {
+                            ProgramManager.isProgramRunning = false;
+                            Console.Clear();
+                        }
                     }
                 }
                 #endregion
@@ -645,7 +652,7 @@ namespace UserInterface
                         }
                         else
                         {
-                            if (CurrentGraphicElement!.ID == "012")
+                            if (CurrentGraphicElement!.ID == "012" || CurrentGraphicElement!.ID == "011")
                             {
                                 MainMenuScene[1].IsGraphicElementVisible = true;
                             }
@@ -696,6 +703,15 @@ namespace UserInterface
                     }
                 }
             }
+
+            if (UserInputStream.Key == ConsoleKey.Q && CurrentProgramState == ProgramState.Browse) 
+            {
+                AddBottomMessage("LVL = LEVEL", false);
+                AddBottomMessage("EXP = EXPERIENCE", false);
+                AddBottomMessage("Each productive actions adds experience points.", false);
+                AddBottomMessage("With enough experience points, you level up.", false);
+            }
+
             SyncScreenHeightToProgramMessage();
         }
     }

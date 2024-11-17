@@ -14,6 +14,7 @@ namespace Main
             ProgramManager.AddBottomMessage("ARROW KEYS - MOVE", false);
             ProgramManager.AddBottomMessage("ENTER - SELECT", false);
             ProgramManager.AddBottomMessage("ESC - BACK", false);
+            ProgramManager.AddBottomMessage("PRESS Q LEGEND", false);
 
             while (ProgramManager.isProgramRunning == true)
             {

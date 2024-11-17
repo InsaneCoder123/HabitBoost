@@ -150,7 +150,7 @@ namespace UserInterface
             ExitButton.InterfaceIndexY = 3;
             ExitButton.InterfaceIndexX = 0;
             ExitButton.IsInvokable = true;
-            ExitButton.SetInvokedMethod(SwitchToCreateAccountScreen);
+            ExitButton.SetInvokedMethod(ExitProgram);
 
             Buttons.Add(loginButton);
             Buttons.Add(createUserButton);
@@ -171,6 +171,11 @@ namespace UserInterface
         public string SwitchToStatisticScreen()
         {
             return "A  ";
+        }
+
+        public string ExitProgram()
+        {
+            return "C   ";
         }
     }
 
@@ -211,7 +216,7 @@ namespace UserInterface
             "@     1 │ +  +  +  +  +  +  +                                              @" +
             "@       └──────────────────────                                            @" +
             "@         7  6  5  4  3  2  1                                              @" +
-            "@           D A Y S  A G O       SCALE = +++++                             @" +
+            "@           D A Y S  A G O       SCALE   +++++                             @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" +
             "@ &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& @" +
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
@@ -338,14 +343,14 @@ namespace UserInterface
             }
             else
             {
-                UsernameLabel.LabelText = "".PadRight(10, '_');
-                LevelLabel.LabelText =  "".PadRight(3, '_');
-                ExperienceLabel.LabelText = "".PadRight(3, '_');
+                UsernameLabel.LabelText = "".PadRight(10);
+                LevelLabel.LabelText =  "".PadRight(3);
+                ExperienceLabel.LabelText = "".PadRight(3);
 
-                TotalActionsLabel.LabelText = "".PadRight(3, '_');
-                TotalHabitsLabel.LabelText = "".PadRight(3, '_');
-                TotalJournalLabel.LabelText = "".PadRight(3, '_');
-                TotalTasksLabel.LabelText = "".PadRight(3, '_');
+                TotalActionsLabel.LabelText = "".PadRight(3);
+                TotalHabitsLabel.LabelText = "".PadRight(3);
+                TotalJournalLabel.LabelText = "".PadRight(3);
+                TotalTasksLabel.LabelText = "".PadRight(3);
             }
             Labels.Add(UsernameLabel);
             Labels.Add(LevelLabel);
@@ -367,7 +372,7 @@ namespace UserInterface
                         YPosition = 5,
                         LabelText = " "
                     };
-                    GraphScale.LabelText = "".PadRight(5, '_');
+                    GraphScale.LabelText = "".PadRight(5);
                     Labels.Add(GraphScale);
                     Labels.Add(variable);
                 }

@@ -13,29 +13,18 @@ namespace Habit_User_Data_Structures
         public string? Password { get; set; }
 
         public int Level { get; set; }
-        public int Experience
-        {
-            set
-            {
-                if (value >= 100)
-                {
-                    Level++;
-                    Experience -= 100;
-                }
-                else
-                {
-                    Experience = value;
-                }
-            }
-            get { return Experience; }
-        }
+        public int Experience { get; set; }
         public int tasksCompleted { get; set; }
         public int habitsCompleted { get; set; }
+
+        public Dictionary<DateTime, int> Actions { get; set; } = [];
 
         public List<Habit> HabitList { get; set; } = [];
         public List<JournalEntry> JournalList { get; set; } = [];
         public List<Task> TaskList { get; set; } = [];
         public List<Achievement> AchievementList { get; set; } = [];
+
+        public static List<string> ProgramMessage { get; set; } = [];
 
         #region File Handling
 
@@ -166,11 +155,32 @@ namespace Habit_User_Data_Structures
 
                             Level = Convert.ToInt32(dataLines[0]);
                             Experience = Convert.ToInt32(dataLines[1]);
+
+                            string[] actions = File.ReadAllLines(Path.Combine(userFolder, "actions.txt"));
+                            if (actions.Length % 2 != 0) throw new Exception("Actions file has an odd number of lines.");
+                            for (int i = 0; i < actions.Length; i += 2)
+                            {
+                                if (!DateTime.TryParse(actions[i], out DateTime dateValue) || !int.TryParse(actions[i+1], out int actionsValue))
+                                {
+                                    if (!DateTime.TryParse(actions[i], out DateTime _))
+                                    { 
+                                        ProgramMessage.Add($"Error reading UserData file in '{userFolder}': Invalid date format.$");
+                                    }
+                                    if (!int.TryParse(actions[i + 1], out int _))
+                                    {
+                                        ProgramMessage.Add($"Error reading UserData file in '{userFolder}': Invalid action value.$");
+                                    }
+                                }
+                                else
+                                {
+                                    Actions.Add(dateValue, actionsValue);
+                                }
+                            }
                         }
                         catch (Exception ex)
                         {
                             Console.WriteLine($"Error reading UserData file in '{userFolder}': {ex.Message}");
-                            Console.ReadKey(intercept: true);
+                            
                         }
                     }
                 }
@@ -293,6 +303,19 @@ namespace Habit_User_Data_Structures
             }
         }
 
+        public void WriteUserData(string DataFolder, int level, int experience)
+        {
+            try
+            {
+                string[] strings = [level.ToString(), experience.ToString()];
+                File.WriteAllLines(Path.Combine(DataFolder, "UserData", "datas.txt"), strings);
+            }
+            catch (Exception ex)
+            { 
+                ProgramMessage.Add($"Error writing UserData file in '{DataFolder}'.$");
+            }
+        }
+
         public static void DeleteBoostDataFile(string FilePath)
         {
             try
@@ -316,6 +339,7 @@ namespace Habit_User_Data_Structures
                 Directory.CreateDirectory(DataFolder);
             }
         }
+
         #endregion
 
         #region Boost Data Creation and Deletion
@@ -522,12 +546,21 @@ namespace Habit_User_Data_Structures
         #endregion
 
         #region Leveling Up and Experience
-        public void RewardExperience(HabitBoostDifficulty BoostDifficulty)
+        public void RewardExperience(HabitBoostDifficulty BoostDifficulty, string DataFolder)
         {
-
+            int experienceGained = GetRandomValue(BoostDifficulty);
+            Experience += experienceGained;
+            ProgramMessage.Add($"You have gained {experienceGained} experience points.#");
+            if (Experience >= 100)
+            {
+                Experience -= 100;
+                Level++;
+                ProgramMessage.Add($"Congratulations! You have leveled up to level {Level}!#");
+            }
+            WriteUserData(DataFolder, Level, Experience);
         }
 
-        static int GetRandomValue(HabitBoostDifficulty difficulty)
+        private static int GetRandomValue(HabitBoostDifficulty difficulty)
         {
             Random random = new();
             int result;

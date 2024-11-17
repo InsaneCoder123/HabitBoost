@@ -28,7 +28,6 @@ namespace UserInterface
         public static int CurrentInterfaceIndexSelectorY { get; set; } = 0;
         public static int CurrentInterfaceIndexSelectorX { get; set; } = 0;
         public static string UserInputStreamString { get; set; } = "";
-        public static List<string> ProgramMessage { get; set; } = [];
 
         public static ProgramState CurrentProgramState { get; set; } = ProgramState.Browse;
         public static ProgramScreen CurrentProgramScreen { get; set; } = ProgramScreen.MainMenu;
@@ -448,18 +447,18 @@ namespace UserInterface
                     }                   
                     else if (x == 2 && y == ScreenHeight - ((ScreenHeight - OriginalScreenHeight) + modifier))
                     {
-                        if (ProgramMessage.Count != 0)
+                        if (UserData.ProgramMessage.Count != 0)
                         {
-                            if (ProgramMessage[0][^1] == '$')
+                            if (UserData.ProgramMessage[0][^1] == '$')
                             {
-                                CustomDisplay.DisplayColoredText(ProgramMessage[0][..^1], ConsoleColor.Red);
+                                CustomDisplay.DisplayColoredText(UserData.ProgramMessage[0][..^1], ConsoleColor.Red);
                             }
-                            else if (ProgramMessage[0][^1] == '#')
+                            else if (UserData.ProgramMessage[0][^1] == '#')
                             {
-                                CustomDisplay.DisplayColoredText(ProgramMessage[0][..^1], ConsoleColor.White);
+                                CustomDisplay.DisplayColoredText(UserData.ProgramMessage[0][..^1], ConsoleColor.White);
                             }
-                            x += ProgramMessage[0].Length - 2;
-                            ProgramMessage.RemoveAt(0);
+                            x += UserData.ProgramMessage[0].Length - 2;
+                            UserData.ProgramMessage.RemoveAt(0);
                             --modifier;
                             continue;
                         }
@@ -584,6 +583,7 @@ namespace UserInterface
 
             return new string(' ', padLeft) + input + new string(' ', padRight);
         }
+
     }
 
 

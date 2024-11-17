@@ -65,13 +65,21 @@ namespace UserInterface
             // if # at end, then message
             if (isError)
             {
-                ProgramMessage.Add(message + "$");
+                UserData.ProgramMessage.Add(message + "$");
             }
             else
             {
-                ProgramMessage.Add(message + "#");
+                UserData.ProgramMessage.Add(message + "#");
             }
-            ++ScreenHeight;
+            SyncScreenHeightToProgramMessage();
+        }
+
+        public static void SyncScreenHeightToProgramMessage()
+        {
+            if (UserData.ProgramMessage.Count != OriginalScreenHeight - ScreenHeight)
+            {
+                ScreenHeight = OriginalScreenHeight + UserData.ProgramMessage.Count;
+            }
         }
 
         public static bool DoesUserExists(string userName)
@@ -93,7 +101,7 @@ namespace UserInterface
         {
             UserInputStreamString = "";
             UserInputStream = Console.ReadKey(intercept: true);
-            UserInputStreamString = UserInputStream.KeyChar.ToString();
+            UserInputStreamString = UserInputStream.KeyChar.ToString();          
             GraphicElement CurrentActiveGraphic = GetCurrentActiveGraphicElement(GetCurrentActiveScene())!;
 
             static int[] GetMaxInterfaceIndex(GraphicElement graphicElement, int InterfaceLevel)
@@ -269,6 +277,10 @@ namespace UserInterface
                             // Finish Operation
                             if (ButtonInvokedInformation[1] == '4')
                             {
+                                if (!User.HabitList[int.Parse(ButtonInvokedInformation[3..])].Completed)
+                                {
+                                    User.RewardExperience(User.HabitList[int.Parse(ButtonInvokedInformation[3..])].Difficulty, UserFolderPath + @"\" + User.Username);
+                                }
                                 User.EditHabit(UserFolderPath, int.Parse(ButtonInvokedInformation[3..]), true);
                                 UpdateInformation();
                                 ToggleSpecificGraphicElement("000", true,
@@ -350,6 +362,7 @@ namespace UserInterface
                                 CurrentInterfaceIndexSelectorY = 0;
                                 CurrentInterfaceIndexSelectorX = 0;
                                 CurrentInterfaceLevel = 4;
+
                             }
 
                             // Delete Operation
@@ -422,6 +435,7 @@ namespace UserInterface
                                 else
                                 {
                                     User.AddJournalEntry(HabitBoostFolderPath, journalTitle, journalEntry);
+                                    User.RewardExperience(HabitBoostDifficulty.Easy, UserFolderPath + @"\" + User.Username);
                                 }
                                 ToggleSpecificGraphicElement("004", true,
                                 CurrentInterfaceIndexSelectorY.ToString(), true);
@@ -448,6 +462,7 @@ namespace UserInterface
                             // Finish Then Delete Operation
                             if (ButtonInvokedInformation[1] == '2')
                             {
+                                User.RewardExperience(User.TaskList[int.Parse(ButtonInvokedInformation[3..])].Difficulty, UserFolderPath + @"\" + User.Username);
                                 User.DeleteTask(UserFolderPath, int.Parse(ButtonInvokedInformation[3..]));
                                 UpdateInformation();
                                 if (HabitEditInterfaceGraphics.IsToDoListEmpty)
@@ -491,7 +506,7 @@ namespace UserInterface
                             {
                                 if (taskName == "")
                                 {
-                                    AddBottomMessage("Empty Journal Title!", true);
+                                    AddBottomMessage("Empty Task Title!", true);
                                 }
                                 if (!DateTime.TryParseExact(taskDueDate, dateFormat, null, System.Globalization.DateTimeStyles.None, out _))
                                 {
@@ -593,6 +608,7 @@ namespace UserInterface
                     }
                 }
             }
+            SyncScreenHeightToProgramMessage();
         }
     }
 }

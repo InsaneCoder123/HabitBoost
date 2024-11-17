@@ -112,6 +112,7 @@ namespace Habit_User_Data_Structures
                                             DateCreated = Convert.ToDateTime(journalFileName[..2] + "-" + journalFileName[2..4] + "-" + journalFileName[4..8])
                                         };
                                         JournalList.Add(entry);
+                                        JournalList = [.. JournalList.OrderByDescending(entry => entry.DateCreated)];
                                     }
                                     catch (Exception ex)
                                     {
@@ -141,6 +142,7 @@ namespace Habit_User_Data_Structures
                                             DateCreated = Convert.ToDateTime(taskFileName[..2] + "-" + taskFileName[2..4] + "-" + taskFileName[4..8])
                                         };
                                         TaskList.Add(task);
+                                        TaskList = [.. TaskList.OrderBy(task => task.DateDue)];
                                     }
                                     catch (Exception ex)
                                     {
@@ -414,6 +416,7 @@ namespace Habit_User_Data_Structures
                 DateCreated = DateTime.Now
             };
             JournalList.Add(entry);
+            JournalList = [.. JournalList.OrderByDescending(entry => entry.DateCreated)];
             WriteJournalData(DataFolder, entry.ID);
         }
 
@@ -430,6 +433,7 @@ namespace Habit_User_Data_Structures
                 DateDue = DateDue
             };
             TaskList.Add(task);
+            TaskList = [.. TaskList.OrderBy(task => task.DateDue)];
             WriteTaskData(DataFolder, task.ID);
         }
         #endregion

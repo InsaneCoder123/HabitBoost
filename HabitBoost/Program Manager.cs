@@ -53,7 +53,7 @@ namespace UserInterface
 
         public static void CreateUser(string Username, string Password)
         {
-            string[] dummyData = ["1", "10"];
+            string[] dummyData = ["1", "0"];
             Directory.CreateDirectory(HabitBoostFolderPath + @"\" + Username + @"\UserData");
             File.WriteAllText(HabitBoostFolderPath + @"\" + Username + @"\UserData\password.txt", Password);
             File.WriteAllLines(HabitBoostFolderPath + @"\" + Username + @"\UserData\datas.txt", dummyData);
@@ -127,7 +127,8 @@ namespace UserInterface
                 if (CurrentProgramState == ProgramState.Browse)
                 { ++CurrentInterfaceIndexSelectorY; }
             }
-            else if (UserInputStream.Key == ConsoleKey.DownArrow &&
+            else 
+            if (UserInputStream.Key == ConsoleKey.DownArrow &&
                 CurrentInterfaceIndexSelectorY == GetMaxInterfaceIndex(CurrentActiveGraphic, CurrentInterfaceLevel)[1])
             {
                 HabitEditInterfaceGraphics.StartingIndex = Math.Min(9, HabitEditInterfaceGraphics.StartingIndex + 1);

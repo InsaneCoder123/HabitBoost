@@ -899,7 +899,8 @@ namespace UserInterface
         {
             Buttons = [];
             Labels = [];
-            MaxIndexPerInterface![1][1] = user.JournalList.Count - 1;
+            MaxIndexPerInterface![1][1] = Math.Min(user.JournalList.Count - 1, 9);
+            StartingIndex = Math.Min(Math.Max(user.JournalList.Count - 10, 0), StartingIndex);
 
             for (int i = 0; i < 10; i++)
             {
@@ -949,7 +950,7 @@ namespace UserInterface
                     VerticalLength = 1,
                     XPosition = 8,
                     YPosition = 1 + (i * 2),
-                    LabelText = user.JournalList[i].Name.PadRight(30) + "   " + user.JournalList[i].DateCreated.ToShortDateString().PadRight(20)
+                    LabelText = user.JournalList[i + StartingIndex].Name.PadRight(30) + "   " + user.JournalList[i + StartingIndex].DateCreated.ToShortDateString().PadRight(20)
                 };
                 Labels.Add(journalTitle);
             }
@@ -1339,7 +1340,8 @@ namespace UserInterface
             Buttons = [];
             Labels = [];
 
-            MaxIndexPerInterface![1][1] = user.TaskList.Count - 1;
+            MaxIndexPerInterface![1][1] = Math.Min(user.TaskList.Count - 1, 9);
+            StartingIndex = Math.Min(Math.Max(user.TaskList.Count - 10, 0), StartingIndex);
 
             for (int i = 0; i < 10; i++)
             {
@@ -1383,14 +1385,19 @@ namespace UserInterface
                 taskButtons.SetInvokedMethod(SetTaskOptionActive);
                 Buttons.Add(taskButtons);
 
+                string taskStatus = "INCOMPLETE";
+                if (user.TaskList[i + StartingIndex].DateDue < DateTime.Now.Date)
+                {
+                    taskStatus = "DUE";
+                }
                 VariableLabel taskTitle = new()
                 {
                     HorizontalLength = 66,
                     VerticalLength = 1,
                     XPosition = 8,
                     YPosition = 1 + (i * 2),
-                    LabelText = user.TaskList[i].Name.PadRight(30) + "   " +
-                    user.TaskList[i].Difficulty.ToString().PadRight(20) + "   " + user.TaskList[i].DateDue.ToShortDateString().PadRight(10)
+                    LabelText = user.TaskList[i + StartingIndex].Name.PadRight(30) + "   " +
+                    user.TaskList[i + StartingIndex].Difficulty.ToString().PadRight(8) + "   " + CustomDisplay.CenterString(taskStatus, 10) + "  " + user.TaskList[i + StartingIndex].DateDue.ToShortDateString().PadRight(10)
                 };
                 Labels.Add(taskTitle);
             }

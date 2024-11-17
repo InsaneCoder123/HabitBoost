@@ -1028,7 +1028,7 @@ namespace UserInterface
 
         public override int MaxWidth { get; set; } = 30;
         public override int MaxHeight { get; set; } = 12;
-        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 0], [0, 0], [0, 3], [0, 2]];
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 0], [0, 0], [0, 3], [0, 2], [0, 2]];
 
         public Button HabitUserName { get; set; } = new Button();
         public Button HabitDifficulty { get; set; } = new Button();
@@ -1806,7 +1806,7 @@ namespace UserInterface
         #region Properties
         public override int MaxWidth { get; set; } = 30;
         public override int MaxHeight { get; set; } = 15;
-        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 0], [0, 0], [0, 3], [0, 4], [0, 2]];
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 0], [0, 0], [0, 0], [0, 3], [0, 3], [0, 2]];
 
         public Button TaskNameButton { get; set; } = new Button();
         public Button TaskDueDateButton { get; set; } = new Button();

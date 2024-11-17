@@ -229,7 +229,7 @@ namespace UserInterface
         {
             foreach (GraphicElement graphicElement in GetCurrentActiveScene())
             {
-                if (graphicElement.IsDynamic)
+                if (graphicElement.IsDynamic && graphicElement.IsGraphicElementActive)
                 {
                     graphicElement.AdjustVariableData(ref user);
                 }

@@ -57,6 +57,9 @@ namespace UserInterface
             Directory.CreateDirectory(HabitBoostFolderPath + @"\" + Username + @"\UserData");
             File.WriteAllText(HabitBoostFolderPath + @"\" + Username + @"\UserData\password.txt", Password);
             File.WriteAllLines(HabitBoostFolderPath + @"\" + Username + @"\UserData\datas.txt", dummyData);
+            using (FileStream fileStream = File.Create(HabitBoostFolderPath + @"\" + Username + @"\UserData\actions.txt"))
+            {
+            }
         }
 
         public static void AddBottomMessage(string message, bool isError) 
@@ -131,7 +134,7 @@ namespace UserInterface
             if (UserInputStream.Key == ConsoleKey.DownArrow &&
                 CurrentInterfaceIndexSelectorY == GetMaxInterfaceIndex(CurrentActiveGraphic, CurrentInterfaceLevel)[1])
             {
-                HabitEditInterfaceGraphics.StartingIndex = Math.Min(9, HabitEditInterfaceGraphics.StartingIndex + 1);
+                HabitEditInterfaceGraphics.StartingIndex = HabitEditInterfaceGraphics.StartingIndex + 1;
             }
             else if (UserInputStream.Key == ConsoleKey.LeftArrow && CurrentInterfaceIndexSelectorX != 0)
             {
@@ -458,7 +461,7 @@ namespace UserInterface
                                     User.RewardExperience(HabitBoostDifficulty.Easy, UserFolderPath + @"\" + User.Username);
                                 }
                                 ToggleSpecificGraphicElement("004", true,
-                                CurrentInterfaceIndexSelectorY.ToString(), true);
+                                CurrentInterfaceIndexSelectorY.ToString() + "0", true, false);
                                 CurrentInterfaceIndexSelectorY = 0;
                                 CurrentInterfaceIndexSelectorX = 0;
                                 CurrentInterfaceLevel = 1;
@@ -570,6 +573,7 @@ namespace UserInterface
                         // Statistic Search Invoke
                         else if (ButtonInvokedInformation[0] == 'B')
                         {
+                            User = new UserData();
                             string searchQuery = ButtonInvokedInformation[1..].Replace("~", "");
                             if (searchQuery == "")
                             {
@@ -634,7 +638,7 @@ namespace UserInterface
                             CurrentInterfaceIndexSelectorX = 2;
                             CurrentInterfaceLevel = 0;
                         }
-                        else if (HabitEditInterfaceGraphics.IsHabitListEmpty && currentActiveGraphic.ID == "001")
+                        else if (HabitEditInterfaceGraphics.IsHabitListEmpty && currentActiveGraphic.ID == "002")
                         {
                             ToggleSpecificGraphicElement("003", true,
                             CurrentInterfaceIndexSelectorY.ToString(), true);
@@ -642,7 +646,7 @@ namespace UserInterface
                             CurrentInterfaceIndexSelectorX = 0;
                             CurrentInterfaceLevel = 0;
                         }
-                        else if (HabitEditInterfaceGraphics.IsJournalListEmpty && currentActiveGraphic.ID == "007")
+                        else if (HabitEditInterfaceGraphics.IsJournalListEmpty && currentActiveGraphic.ID == "006")
                         {
                             ToggleSpecificGraphicElement("003", true,
                             CurrentInterfaceIndexSelectorY.ToString(), true);

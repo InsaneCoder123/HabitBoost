@@ -553,7 +553,7 @@ namespace UserInterface
             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
         public override int MaxWidth { get; set; } = 31;
         public override int MaxHeight { get; set; } = 7;
-        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 2]];
+        public override int[][]? MaxIndexPerInterface { get; set; } = [[0, 2], [0, 1]];
 
         public InputField UsernameInput { get; set; } = new InputField();
         public InputField PasswordInput { get; set; } = new InputField();
@@ -830,7 +830,8 @@ namespace UserInterface
             Buttons = [];
             Labels = [];
             MaxIndexPerInterface![1][1] = Math.Min(user.HabitList.Count - 1, 9);
-            StartingIndex = Math.Min(Math.Max(user.HabitList.Count - 10, 0), StartingIndex);
+            if (IsGraphicElementActive)
+            StartingIndex = Math.Min(StartingIndex, Math.Max(user.HabitList.Count - 10, 0));
             for (int i = 0; i < 10; i++)
             {
                 if (i >= user.HabitList.Count)
@@ -1039,7 +1040,7 @@ namespace UserInterface
         public HabitEditInterfaceGraphics()
         {
             ID = "002";
-            InfoToken = " 1000102";
+            InfoToken = " 1000101";
             IsGraphicElementVisibleDefault = false;
             Buttons = [];
             InputFields = [];
@@ -1180,7 +1181,8 @@ namespace UserInterface
             Buttons = [];
             Labels = [];
             MaxIndexPerInterface![1][1] = Math.Min(user.JournalList.Count - 1, 9);
-            StartingIndex = Math.Min(Math.Max(user.JournalList.Count - 10, 0), StartingIndex);
+            if (IsGraphicElementActive)
+                StartingIndex = Math.Min(Math.Max(user.JournalList.Count - 10, 0), StartingIndex);
 
             for (int i = 0; i < 10; i++)
             {
@@ -1621,7 +1623,8 @@ namespace UserInterface
             Labels = [];
 
             MaxIndexPerInterface![1][1] = Math.Min(user.TaskList.Count - 1, 9);
-            StartingIndex = Math.Min(Math.Max(user.TaskList.Count - 10, 0), StartingIndex);
+            if (IsGraphicElementActive)
+                StartingIndex = Math.Min(Math.Max(user.TaskList.Count - 10, 0), StartingIndex);
 
             for (int i = 0; i < 10; i++)
             {
@@ -1721,7 +1724,7 @@ namespace UserInterface
         public TaskOptionGraphics()
         {
             ID = "009";
-            InfoToken = "  000001";
+            InfoToken = "  008001";
             IsGraphicElementVisibleDefault = false;
             Buttons = [];
 
@@ -1826,7 +1829,7 @@ namespace UserInterface
         public TaskEditInterface()
         {
             ID = "010";
-            InfoToken = " 1000102";
+            InfoToken = " 1008101";
             IsGraphicElementVisibleDefault = false;
             Buttons = [];
             InputFields = [];

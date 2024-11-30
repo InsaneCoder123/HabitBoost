@@ -88,7 +88,7 @@ namespace Habit_User_Data_Structures
                                     }
                                     catch (Exception ex)
                                     {
-                                        Console.WriteLine($"Error reading habit file '{habitFile}': {ex.Message}");
+                                        Console.WriteLine($"Error 001 reading habit file '{habitFile}': {ex.Message}");
                                         Console.ReadKey(intercept: true);
                                     }
                                 }
@@ -115,7 +115,7 @@ namespace Habit_User_Data_Structures
                                     }
                                     catch (Exception ex)
                                     {
-                                        Console.WriteLine($"Error reading journal file '{journalFile}': {ex.Message}");
+                                        Console.WriteLine($"Error 002 reading journal file '{journalFile}': {ex.Message}");
                                         Console.ReadKey(intercept: true);
                                     }
                                 }
@@ -145,7 +145,7 @@ namespace Habit_User_Data_Structures
                                     }
                                     catch (Exception ex)
                                     {
-                                        Console.WriteLine($"Error reading task file '{taskFile}': {ex.Message}");
+                                        Console.WriteLine($"Error 003 reading task file '{taskFile}': {ex.Message}");
                                         Console.ReadKey(intercept: true);
                                     }
                                 }
@@ -170,11 +170,11 @@ namespace Habit_User_Data_Structures
                                 {
                                     if (!DateTime.TryParse(actions[i], out DateTime _))
                                     { 
-                                        ProgramMessage.Add($"Error reading UserData file in '{userFolder}': Invalid date format.$");
+                                        ProgramMessage.Add($"Error 004 reading UserData file in '{userFolder}': Invalid date format.$");
                                     }
                                     if (!int.TryParse(actions[i + 1], out int _))
                                     {
-                                        ProgramMessage.Add($"Error reading UserData file in '{userFolder}': Invalid action value.$");
+                                        ProgramMessage.Add($"Error 005 reading UserData file in '{userFolder}': Invalid action value.$");
                                     }
                                 }
                                 else
@@ -185,7 +185,7 @@ namespace Habit_User_Data_Structures
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"Error reading UserData file in '{userFolder}': {ex.Message}");
+                            Console.WriteLine($"Error 006 reading UserData file in '{userFolder}': {ex.Message}");
                             Console.ReadKey(intercept: true);
                         }
                     }
@@ -193,17 +193,17 @@ namespace Habit_User_Data_Structures
             }
             catch (DirectoryNotFoundException ex)
             {
-                Console.WriteLine($"Directory not found: {ex.Message}");
+                Console.WriteLine($"Error 007 Directory not found: {ex.Message}");
                 Console.ReadKey(intercept: true);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Console.WriteLine($"Access denied: {ex.Message}");
+                Console.WriteLine($"Error 008 Access denied: {ex.Message}");
                 Console.ReadKey(intercept: true);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+                Console.WriteLine($"Error 009 An unexpected error occurred: {ex.Message}");
                 Console.ReadKey(intercept: true);
             }
         }
@@ -240,7 +240,7 @@ namespace Habit_User_Data_Structures
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error writing habit file '{habitFilePath}': {ex.Message}");
+                Console.WriteLine($"Error 010 writing habit file '{habitFilePath}': {ex.Message}");
                 Console.ReadKey(intercept: true);
             }
         }
@@ -254,7 +254,7 @@ namespace Habit_User_Data_Structures
             JournalEntry? journal = JournalList.Find(journal => journal.ID == JournalID);
             if (journal == null)
             {
-                Console.WriteLine($"Journal with ID '{JournalID}' not found.");
+                Console.WriteLine($"Error 011 Journal with ID '{JournalID}' not found.");
                 return;
             }
 
@@ -273,7 +273,7 @@ namespace Habit_User_Data_Structures
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error writing journal file '{journalFilePath}': {ex.Message}");
+                Console.WriteLine($"Error 012 writing journal file '{journalFilePath}': {ex.Message}");
             }
         }
 
@@ -286,7 +286,7 @@ namespace Habit_User_Data_Structures
             Task? task = TaskList.Find(task => task.ID == TaskID);
             if (task == null)
             {
-                Console.WriteLine($"Task with ID '{TaskID}' not found.");
+                Console.WriteLine($"Error 013 Task with ID '{TaskID}' not found.");
                 Console.ReadKey(intercept: true);
                 return;
             }
@@ -309,7 +309,7 @@ namespace Habit_User_Data_Structures
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error writing task file '{taskFilePath}': {ex.Message}");
+                Console.WriteLine($"Error 014 writing task file '{taskFilePath}': {ex.Message}");
                 Console.ReadKey(intercept: true);
             }
         }
@@ -323,7 +323,7 @@ namespace Habit_User_Data_Structures
             }
             catch (Exception ex)
             { 
-                ProgramMessage.Add($"Error writing UserData file in '{DataFolder}'.$");
+                ProgramMessage.Add($"Error 015 writing UserData file in '{DataFolder}'.$");
                 Console.ReadKey(intercept: true);
             }
         }
@@ -342,7 +342,7 @@ namespace Habit_User_Data_Structures
             }
             catch (Exception ex)
             {
-                ProgramMessage.Add($"Error writing UserData file in '{DataFolder}'.$");
+                ProgramMessage.Add($"Error 016 writing UserData file in '{DataFolder}'.$");
                 Console.ReadKey(intercept: true);
             }
         }
@@ -355,7 +355,7 @@ namespace Habit_User_Data_Structures
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error deleting file '{FilePath}': {ex.Message}");
+                Console.WriteLine($"Error 017 deleting file '{FilePath}': {ex.Message}");
             }
         }
 
